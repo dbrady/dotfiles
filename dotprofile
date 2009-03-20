@@ -1,0 +1,148 @@
+#
+# Your previous .profile  (if any) is saved as .profile.mpsaved
+# Setting the path for MacPorts.
+
+export EDITOR=/usr/bin/emacs
+export CVSEDITOR=/usr/bin/emacs
+export SVN_EDITOR=/usr/bin/emacs
+export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
+
+# Supposedly this can be found in the Developer Tools that came with
+# my Mac. That's the theory, at any rate; in practice it's a load of
+# dingo's bicycles.
+# export ANT_HOME='/Developer/Java/ant'
+
+# DANGER DANGER DANGER - Do not just slap paths in here willy-nilly. If it's a path to something outside of ~, it should probably go in /etc/paths.d!
+export PATH=~/bin:$PATH
+
+# Search the ls manpage for "CLICOLOR" and "color designators for an
+# explanation of this goodness.
+
+# CLICOLOR: Search "man ls" for "CLICOLOR" and "color designators".
+# a: black                                        1.  directory
+# b: red                                          2.  symbolic link
+# c: green                                        3.  socket
+# d: brown                                        4.  pipe
+# e: blue                                         5.  executable
+# f: magenta                                      6.  block special
+# g: cyan                                         7.  character special
+# h: light grey                                   8.  executable with setuid bit set
+# A: bold black, usually shows up as dark grey    9.  executable with setgid bit set
+# B: bold red                                     10. directory writable to others, with sticky bit   
+# C: bold green                                   11. directory writable to others, without sticky bit
+# D: bold brown, usually shows up as yellow
+# E: bold blue
+# F: bold magenta
+# G: bold cyan
+# H: bold light grey; looks like bright white
+# x: default foreground or background
+# 
+# The standard Mac OSX colors are: exfxcxdxbxegedabagacad
+#
+export CLICOLOR=1
+# export LSCOLORS=gxfxcxdxbxegedabagacad
+export LSCOLORS=gxfxcxdxbxegedabagacad
+
+# Use less by default b/c search works better. But keep most inifile
+# here for tweaking.
+#export PAGER="most"
+export MOST_INIFILE='/etc/most.rc'
+
+GREP_OPTIONS='--color=auto'
+GREP_COLOR='1;32'
+
+# ----------------------------------------------------------------------
+# Terminal colours (after installing GNU coreutils)
+NM="\[\033[0;38m\]" #means no background and white lines
+HI="\[\033[0;37m\]" #change this for letter colors
+HII="\[\033[0;31m\]" #change this for letter colors
+SI="\[\033[0;33m\]" #this is for the current directory
+IN="\[\033[0m\]"
+
+export PS1="$NM[ $HI\u $HII\h $SI\w$NM ] $IN"
+
+# Useful aliases
+alias ls="ls -G"
+alias ll="ls -l"
+alias 'top'='top -o cpu'
+
+# Programming crap
+alias findrb='find . -name "*.rb" -print0 | xargs -0 grep -Hn'
+alias finderb='find . -name "*.erb" -print0 | xargs -0 grep -Hn'
+alias findrhtml='find . -name "*.rhtml" -print0 | xargs -0 grep -Hn'
+alias ss='script/server'
+alias as='autospec'
+alias sc="script/console"
+alias sss="script/spec_server"
+
+alias gpmm="git push monkey master"
+alias gpom="git push origin master"
+alias gst="git status"
+alias gsi="git submodule init"
+alias gsu="git submodule update"
+
+alias cpd="cap production deploy"
+
+# Navigation crap
+alias cdlg='cd ~/lmp/leadgen'
+alias cddr='cd ~/devel/ruby'
+alias cdds='cd ~/lmp/degreesearch'
+alias cdad='cd ~/lmp/adserver'
+alias cdsr='cd ~/esp/src/shinyreports'
+alias cdcal='cd ~/images/insectpod/calendario'
+alias cdi='cd ~/images/insectpod/unpublished'
+alias cdgem='cd /Library/Ruby/Gems/1.8/gems'
+alias cdt='cd ~/Documents/todo'
+alias cdm='cd ~/lmp/market'
+
+# Applications in OSX
+alias 'firefox'='open -a Firefox'
+alias 'safari'='open -a Safari'
+#alias 'graphviz'='open -a GraphViz'
+alias 'shoes'='open -a Shoes'
+
+alias 'aq'='aquamacs'
+
+export GEMDIR=$(gem environment gemdir)
+
+# ImageMagick-6.3.9
+#export MAGICK_HOME="/Library/ImageMagick"
+#export DYLD_LIBRARY_PATH="/Library/ImageMagick/lib"
+
+# Sex up my bash prompt
+# REMOVED: Bash is retarded. Escape characters get counted in display columns.
+# If you try to do a C-a it looks like you've jumped to the middle of a line,
+# but caret is really at the head. Blech.
+# export PS1='\e[1;32m\u@\h\e[m:\e[0;32m\w\e[m\$ '
+# export PS1="\[\033[38m\]\u@\h\[\033[01;34m\] \w \[\033[31m\]\`ruby -e \"print (%x{git branch 2> /dev/null}.grep(/^\*/).first || '').gsub(/^\* (.+)$/, '(\1) ')\"\`\[\033[37m\]$\[\033[00m\] "
+
+
+# Sigh, I love this, but bash is retarded. The escape characters get counted as displayed columns. :-(
+# TODO: colorize branch based on name
+# master - white on red bg \033[1;37m\033[41m
+# next - red on normal \033[31m
+# sprint - yellow on normal \033[33m
+# others - green on normal \033[32m
+# cyan = \033[36m
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+#export PS1="\[\033[37m\]\u@\h\[\033[36m\]:\w \033[33m\$(parse_git_branch)\[\033[37m\]$\[\033[0m\] "
+
+export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(next)/\\033[31m(next)/' | sed -e 's/(sprint)/\\033[33m(sprint)/')\[\033[37m\]$\[\033[0m\] "
+
+if [ -e ~/.bash_completions ]; then
+    . ~/.bash_completions
+fi
+
+if [ -e ~/.git-completion.bash ]; then
+    . ~/.git-completion.bash
+fi
+
+# Import database abbreviations
+if [ -e  ~/bin/dbnames.sh ]; then
+    . ~/bin/dbnames.sh
+fi
+
+export RUBYOPT=rubygems
+

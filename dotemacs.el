@@ -1,0 +1,800 @@
+;;; David Brady's Aquamacs Initialization File
+
+;; (setq elisp-directory (expand-file-name "~/.elisp"))
+;; (setq ini-directory (concat elisp-directory "/ini"))
+;; (setq load-path (cons ini-directory load-path))
+;; (add-to-list 'load-path ini-directory)
+
+(setq sentence-end-double-space 'nil)
+
+;;(load "essential")
+
+;; (require 'font-lock)
+
+;Allows syntax highlighting to work, among other things
+(global-font-lock-mode 1)
+
+; ----------------------------------------------------------------------
+; CEDET
+;; Load CEDET
+(load-file "/Users/dbrady/.elisp/packages/cedet/common/cedet.el")
+
+;; Enabling various SEMANTIC minor modes.  See semantic/INSTALL for more ideas.
+;; Select one of the following:
+
+;; * This enables the database and idle reparse engines
+;;(semantic-load-enable-minimum-features)
+
+;; * This enables some tools useful for coding, such as summary mode
+;;   imenu support, and the semantic navigator
+(semantic-load-enable-code-helpers)
+
+;; * This enables even more coding tools such as the nascent intellisense mode
+;;   decoration mode, and stickyfunc mode (plus regular code helpers)
+;; (semantic-load-enable-guady-code-helpers)
+
+;; * This turns on which-func support (Plus all other code helpers)
+  ;; (semantic-load-enable-excessive-code-helpers)
+
+;; This turns on modes that aid in grammar writing and semantic tool
+;; development.  It does not enable any other features such as code
+;; helpers above.
+;; (semantic-load-enable-semantic-debugging-helpers)
+; End CEDET
+; ----------------------------------------------------------------------
+
+; ----------------------------------------------------------------------
+; ECB
+; These lines are required for ECB
+; 
+; YOU PROBABLY DO NOT WANT TO CUSTOMIZE ECB OPTIONS IN HERE! Read the
+; ECB info page, it has full docco on options customizable with
+; customize-group/customize-option, AND A LIST of options that CANNOT
+; BE CHANGED with setq!
+(add-to-list 'load-path "/Users/dbrady/.elisp/ini")
+(add-to-list 'load-path "/Users/dbrady/.elisp/packages")
+;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/eieio-0.17")
+;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/speedbar-0.14beta4")
+;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/semantic-1.4.4")
+(setq semantic-load-turn-everything-on t)
+(require 'semantic-load)
+
+; This installs ecb - it is activated with M-x ecb-activate
+(add-to-list 'load-path "/Users/dbrady/.elisp/packages/ecb-2.32")
+(require 'ecb-autoloads)
+(setq ecb-source-path (quote ("/Users/dbrady/lmp/degreesearch" "/Users/dbrady/lmp/leadgen" "/Users/dbrady/lmp/market")))
+
+
+;(if (jw-check-file "/usr/local/share/emacs/site-lisp")
+;    (add-to-load-path "/usr/local/share/emacs/site-lisp") )
+    
+
+;;; Now load all the ini-xxx files in the initialization directory
+
+;; (let ((files (directory-files ini-directory nil "^ini-.*\\.el$")))
+;;   (while (not (null files))
+;;     (ini-load (substring (car files) 0 -3))
+;;     (setq files (cdr files)) ))
+
+;; (message "Initialization Files Loaded")
+;; (custom-set-variables
+;;  '(init-face-from-resources nil)
+;;  '(mm-inline-media-tests (quote (("image/jpeg" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote jpeg) handle))) ("image/png" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote png) handle))) ("image/gif" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote gif) handle))) ("image/tiff" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote tiff) handle))) ("image/xbm" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote xbm) handle))) ("image/x-xbitmap" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote xbm) handle))) ("image/xpm" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote xpm) handle))) ("image/x-pixmap" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote xpm) handle))) ("image/bmp" mm-inline-image (lambda (handle) (mm-valid-and-fit-image-p (quote bmp) handle))) ("text/plain" mm-inline-text identity) ("text/enriched" mm-inline-text identity) ("text/richtext" mm-inline-text identity) ("text/x-patch" mm-display-patch-inline (lambda (handle) (locate-library "diff-mode"))) ("application/emacs-lisp" mm-display-elisp-inline identity) ("text/x-vcard" mm-inline-text (lambda (handle) (or (featurep (quote vcard)) (locate-library "vcard")))) ("message/delivery-status" mm-inline-text identity) ("message/rfc822" mm-inline-message identity) ("message/partial" mm-inline-partial identity) ("text/.*" mm-inline-text identity) ("audio/wav" mm-inline-audio (lambda (handle) (and (or (featurep (quote nas-sound)) (featurep (quote native-sound))) (device-sound-enabled-p)))) ("audio/au" mm-inline-audio (lambda (handle) (and (or (featurep (quote nas-sound)) (featurep (quote native-sound))) (device-sound-enabled-p)))) ("application/pgp-signature" ignore identity) ("multipart/alternative" ignore identity) ("multipart/mixed" ignore identity) ("multipart/related" ignore identity))))
+;;  '(load-home-init-file t t)
+;;  '(gnuserv-program (concat exec-directory "/gnuserv"))
+;;  '(toolbar-news-reader (quote gnus))
+;;  '(toolbar-mail-reader (quote gnus))
+;;  '(ecb-source-path (quote (("/Users/dbrady/working/rubyforge/rubygems" "RubyGems") ("/Users/dbrady/working/rubyforge/rake" "Rake")))))
+;; (custom-set-faces
+;;  '(default ((t (:size "12pt" :family "Fixed"))) t))
+;; (setq mac-option-modifier 'meta)        ; for aquamacs
+
+;; ============================
+;; End of Options Menu Settings
+
+(setq minibuffer-max-depth nil)
+
+;; Beginning of the el4r block:
+;; RCtool generated this block automatically. DO NOT MODIFY this block!
+;; (add-to-list 'load-path "/opt/local/share/emacs/site-lisp")
+
+;; (add-to-list 'load-path "/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/share/emacs/site-lisp")
+;; (require 'el4r)
+;; (el4r-boot)
+
+;; End of the el4r block.
+;; User-setting area is below this line.
+
+; ----------------------------------------------------------------------
+; Ack
+(require 'ack)
+(global-set-key "\M-A" 'ack)
+
+; ----------------------------------------------------------------------
+; Emacs on Rails Stuff
+(require 'snippet)
+(require 'find-recursive)
+(setq load-path (cons "~/.elisp/packages/emacs-rails" load-path))
+(require 'rails)
+
+;; ================================================================================
+;; dbrady-specific stuff
+
+;; Do civilized backup names.  Added by dbrady 2003-03-07, taken from
+;; http://emacswiki.wikiwikiweb.de/cgi-bin/wiki.pl?BackupDirectory
+(setq
+ backup-by-copying t         ; don't clobber symlinks
+ backup-directory-alist
+ '(("." . "~/saves"))        ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t)          ; use versioned backups
+
+(setq semanticdb-default-save-directory "~/.saves/semantic.cache")
+
+(global-set-key "\M-g" 'goto-line)
+(setq-default c-basic-offset 4)
+(setq-default indent-tabs-mode nil)
+(setq default-tab-width 2)
+
+;; Detect this OS and set keybindings accordings. Ideally this should
+;; depend on window settings, but I'm not sure how to make linux
+;; understand that I have a Command key.
+;;(defvar mswindows-p (string-match "windows" (symbol-name system-type)))
+;;(defvar macosx-p (string-match "darwin" (symbol-name system-type)))
+
+;; Actually, it's a bit trickier than this currently. I have blind
+;; carbon emacs at the command-line that lacks all of the macosx
+;; stuff, and so osxkeys doesn't work.
+;; 
+;; TODO: FIX THIS. It's all smelly and poopy and stuff. The way I
+;; currently use this is to map keys to the Command key versus the
+;; LWindows key. This is KEYBOARD functionality, not operating-system
+;; functionality! Furthermore, when you ssh or xterm into a remote
+;; machine, your local keys (like Command!) might actually be
+;; available on the remote system even though it doesn't have that
+;; key.
+;; 
+;; In other words, don't ask me for the window-system and give me back
+;; a keyboard layout.
+;; 
+;; NOTE TO SELF: IT IS AN ACCEPTABLE HACK to write a tiny config file
+;; indicating the host os and keyboard mappings, e.g. Linux vs. Mac
+;; vs. Windows and Command vs. LWindows.
+;; 
+;; Since I care more about keyboard geometry than labeling (I always
+;; map Command to WinKey rather than Ctrl, for example) I wonder if it
+;; would hurt anything to just always map the Command and LWin keys on
+;; all emacsen that I touch. Right now this would fail because
+;; Aquamacs defines the osxkeys in its own internals. I could easily
+;; steal those, however, and define them on any system if they are not
+;; already present. Assuming they do not cause collisions, this might
+;; work.
+(defvar mswindows-p (string-match "nil" (symbol-name window-system)))
+(defvar macosx-p (string-match "mac" (symbol-name window-system)))
+
+
+;; Or perhaps I should even learn to hack onto the Windows key... (oooh.)
+
+;; ----------------------------------------------------------------------
+;; Macros!
+
+;; ----------------------------------------------------------------------
+;; cucumber-align-table
+;; 
+;; With this region selected:
+;;  | a | abcd | b |
+;;  | aou | ab | ddddd |
+;; 
+;; Spits out:
+;;  | a   | abcd | b     |
+;;  | aou | ab   | ddddd |
+(fset 'cucumber-align-table
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([21 134217852 126 47 46 101 108 105 115 112 47 115 99 114 105 112 116 115 47 99 117 99 117 109 98 101 114 95 97 108 105 103 110 95 116 97 98 108 101 46 114 98 return] 0 "%d")) arg)))
+(global-set-key (kbd "\C-c |") 'cucumber-align-table)
+
+;; ----------------------------------------------------------------------
+;; function: save-macro
+;; 
+;; Taken from http://www.emacswiki.org/cgi-bin/wiki/KeyboardMacrosTricks
+;; TODO: I don't want my macros saved at the end of .emacs.
+;; 
+;; Study: This emits a much different macro version than the version I
+;; get when I save a keyboard macro. Instead of simply fsetting the
+;; keystrokes, it fsets a lambda that executes
+;; kmacro-exec-ring-item. WAY weird! How does it work, and why is it
+;; different?
+;; 
+;; Refactor: change this to seek out an insert token in this file, and
+;; insert before it.
+;; 
+;; Refactor: (might be easier) create a file for macros and have this
+;; function write them there. E.g. .elisp/dave_macros.el
+(defun save-macro (name)                  
+  "save a macro. Take a name as argument and save the last defined macro under this name at the end of your .emacs"
+  (interactive "SName of the macro :") ; ask for the name of the macro    
+  (kmacro-name-last-macro name)      ; use this name for the macro    
+  (find-file "~/.emacs")             ; open the .emacs file 
+  (goto-char (point-max))            ; go to the end of the .emacs
+  (newline)                          ; insert a newline
+  (insert-kbd-macro name)            ; copy the macro 
+  (newline)                          ; insert a newline
+  (switch-to-buffer nil))            ; return to the initial buffer
+
+;; ----------------------------------------
+;; TODO:
+;; - Port this to elisp
+;; - Save and restore the x-position of point
+;; - Find universal keybindings. I may not always be on a mac when I
+;;   want to run this macro! (Okay to figure out how to bind the
+;;   Windows key to be logically equivalent here.)
+;; 
+;; This doesn't actually work, but it's a start.
+;; (defun move-line-up
+;;     (let (columns (- (point) (point-at-bol)))
+;;       (move-beginning-of-line)
+;;       (transpose-lines)
+;;       (previous-line 2)
+;;       (forward-char columns)))
+
+
+;; BORKED! Why doesn't this work anymore? The macro is being defined
+;; just  fine, but A-S-p is being mapped to A-p, which inserts the
+;; paragraph symbol. When I wrote this macro yesterday, A-S-p was
+;; unmapped and undefined. What gives?
+(fset 'move-line-up 
+   "\C-a\C-x\C-t\C-p\C-p")
+(if macosx-p
+    (global-set-key (vector  `(,osxkeys-command-key shift p)) 
+                    'move-line-up))
+
+;; ----------------------------------------
+;; TODO:
+;; - Port this to elisp
+;; - Save and restore the x-position of point
+;; - indent both lines appropriately
+(fset 'move-line-down
+   "\C-a\C-n\C-x\C-t\C-p")
+(if macosx-p
+    (global-set-key (vector  `(,osxkeys-command-key shift n)) 
+                    'move-line-down))
+
+;; kill-line-and-replace-with-previous-yank
+;; So my old Windows habits die hard. I like to yank the src into the
+;; kill ring, then go find the line I want to overwrite. I kill that
+;; line with C-k, and want to paste the previous yank, but it's moved
+;; up in the kill ring. Not sure this is worthy of a macro and its own
+;; keybinding, since the macro is C-c y and all it's replacing is just
+;; C-k C-y M-y.
+(fset 'kill-line-and-replace-with-previous-yank
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([33554443 33554457 134217817] 0 "%d")) arg)))
+(global-set-key (kbd "\C-c y") 'kill-line-and-replace-with-previous-yank)
+
+;; delete-other-window
+;; WRITE ME! This is tricksy, because ideally I'd like to take C-u arg
+;; and delete THAT window. For now, all I really want is the ability
+;; to delete the window on the other side of the split. For now I
+;; guess I can make separate macros for delete-next-window and
+;; delete-previous-window, which are the two that I would be using
+;; nomally anyway.
+
+;; Moves to next window, deletes it, then moves back to the window you
+;; were originally in.
+(fset 'delete-next-window
+      "\C-xo\C-x0\C-u-1\C-xo")
+(global-set-key (kbd "\C-x C-0") 'delete-next-window)
+
+;; Moves back to previous window, then deletes it, returning point to
+;; the window you were originally in.
+(fset 'delete-previous-window
+      "\C-u-1\C-xo\C-x0")
+(global-set-key (kbd "\C-x M-0") 'delete-previous-window)
+
+;; Turns the leading - into a x, then finds the [.....] block and
+;; marks off one period. Results are well-defined but no less
+;; interesting if you do not have - at the beginning of the line or if
+;; the [.....] block is already full of x's.
+(fset 'fivethings-mark-item-completed
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([67108896 67108896 1 19 45 13 backspace 120 18 102 105 118 101 32 116 104 105 110 103 115 32 116 111 32 100 111 32 116 111 100 97 121 32 13 134217830 134217830 134217830 134217830 134217830 6 6 19 46 13 backspace 120 21 67108896 21 67108896 21 67108896 21 67108896] 0 "%d")) arg)))
+(global-set-key (kbd "\C-c x") 'fivethings-mark-item-completed)
+
+;;----------------------------------------------------------------------
+;; column number mode - show current column number
+(column-number-mode t)
+
+;; ...put cursor after the ) and eval with C-x, C-e
+(defvar working-for "Shiny Systems LLC" "*A string identifying who I'm working for. Used in the function comment-file.")
+(defvar copyright-since "2002" "*A string containing the beginning year for the copyright line.")
+
+;; Evaluate the appropriate lines here to set up the copyright info as desired.
+;; (setq working-for "Shiny Systems LLC")
+(defun working-for-shiny ()
+  (interactive)
+  (setq working-for "Shiny Systems LLC")
+  (setq copyright-since "2002"))
+
+(defun working-for-lmp ()
+  (interactive)
+  (setq working-for "Lead Media Partners LLC")
+  (setq copyright-since "2007"))
+
+(working-for-lmp)
+
+; Graciously provided by ams on irc.freenode.net:#emacs
+; Returns starting point of match if found, else nil
+(defun string-ends-with (regexp string)
+  (string-match (concat regexp "$") string))
+
+; Returns 0 if true, else nil
+(defun string-starts-with (regexp string)
+  (string-match (concat "^" regexp) string))
+
+(defun ensure-trailing-space (string)
+  (if (string-ends-with " " string)
+      string
+      (concat string " ")))
+
+(defun ensure-leading-space (string)
+  (if (string-starts-with " " string)
+      string
+      (concat " " string)))
+
+(defun safe-string (value default-value)
+  (if (or (null value)
+          (string= "" value))
+      default-value
+    value))
+
+(defun safe-comment-start ()
+  (ensure-trailing-space
+   (safe-string comment-start "# ")))
+
+(defun safe-comment-end ()
+  (safe-string comment-end ""))
+
+;;----------------------------------------------------------------------
+;; make-section-heading
+;; Turns uppercases the current line and surrounds it with ===='s
+(defun make-section-heading ()
+  (interactive)
+  (save-excursion
+    (upcase-region (point-at-bol) (point-at-eol)))
+  (beginning-of-line)
+  (insert (safe-comment-start))
+  (end-of-line)
+  (insert "\n" (safe-comment-start) "======================================================================" (safe-comment-end))
+  (beginning-of-line)
+  (previous-line 2)
+  (end-of-line)
+  (insert "\n" (safe-comment-start) "======================================================================")
+  (beginning-of-line)
+  (forward-line 3))
+
+;;----------------------------------------------------------------------
+;; make-minor-heading
+;; Turns uppercases the current line and surrounds it with ===='s
+(defun make-minor-heading ()
+  (interactive)
+  (save-excursion
+    (upcase-region (point-at-bol) (point-at-eol)))
+  (beginning-of-line)
+  (insert (safe-comment-start))
+  (end-of-line)
+  (insert "\n" (safe-comment-start) "----------------------------------------------------------------------" (safe-comment-end))
+  (beginning-of-line)
+  (previous-line 2)
+  (end-of-line)
+  (insert "\n" (safe-comment-start) "----------------------------------------------------------------------"))
+
+;;----------------------------------------------------------------------
+;; insert-comment-nop
+(defun insert-comment-nop ()
+  (interactive)
+  (insert (safe-comment-start) ";-) (Happy little no-op)" (safe-comment-end))
+  (indent-region (point-at-bol) (point-at-eol) nil))
+
+;;----------------------------------------------------------------------
+;; insert-comment-nop-function-body
+(defun insert-comment-nop-function-body ()
+  (interactive)
+  (let ((start (point)))
+    (insert "{\n" (safe-comment-start) ";-) (Happy little no-op)" (safe-comment-end) "\n}\n")
+    (indent-region start (point) nil)))
+
+
+
+;;----------------------------------------------------------------------
+;; insert-comment-bar
+(defun insert-comment-bar ()
+  (interactive)
+  (insert (safe-comment-start) "----------------------------------------------------------------------\n"))
+
+;;----------------------------------------------------------------------
+;; insert-comment-bar-major
+(defun insert-comment-bar-major ()
+  (interactive)
+  (insert (safe-comment-start) "======================================================================\n"))
+
+;;----------------------------------------------------------------------
+;; html functions
+(defun insert-table-declaration ()
+    (interactive)
+    (save-excursion
+        (insert "<table border=\"0\" cellpadding=\"3\" cellspacing=\"0\">\n")
+        (insert "    <tr>\n")
+        (insert "        <td>\n")
+        (insert "        </td>\n")
+        (insert "    </tr>\n")
+        (insert "</table>\n")))
+
+(defun insert-table-row ()
+    (interactive)
+    (save-excursion
+        (insert "    <tr>\n")
+        (insert "        <td>\n")
+        (insert "        </td>\n")
+        (insert "    </tr>\n")))
+
+;; (global-set-key (kbd "\C-c d") 'document-function)
+;; (global-set-key (kbd "\C-c x") 'doxygenate-function)
+;; (global-set-key (kbd "\C-c M-t") 'insert-table-declaration)
+;; (global-set-key (kbd "\C-c M-r") 'insert-table-row)
+
+;; (global-set-key (kbd "\C-c C-s") 'make-section-heading)
+;; (global-set-key (kbd "\C-c s") 'make-minor-heading)
+(global-set-key (kbd "\C-c -") 'insert-comment-bar)
+(global-set-key (kbd "\C-c =") 'insert-comment-bar-major)
+;; (global-set-key (kbd "\C-c ;") 'insert-comment-nop)
+;; (global-set-key (kbd "\C-c :") 'insert-comment-nop-function-body)
+
+;; Aquamacs puts comment-region on C-#; need to check other emacsen or else force it here
+;; Aquamacs doesn't put uncomment-region on any key, which seems dumb.
+;; (global-set-key [?\M-\C-#] 'uncomment-region)
+
+; dbrady 2008-07-14: I don't like how these keep moving around. Plz
+; find permanent home for dem kthxbai. ALSO! I dun like C-c # b/c it's
+; Left-Control C, Right-Shift 3. It's a 4-keypress "X" where my hands
+; have to do a "/" pattern followed by a "\" pattern. Make sense? Try
+; typing it a few times. (Qwerty users: C-c in Dvorak is where your
+; C-i would be. Also, what are you doing in my .emacs file? Geroff! Go
+; on, git!)
+;; (global-set-key (kbd "\C-c /") 'comment-region)
+;; (global-set-key (kbd "\C-c C-c /") 'uncomment-region)
+(global-set-key (kbd "\C-c /") 'comment-dwim)
+
+;; Bind C-c M-f to auto-fill-mode.
+(global-set-key (kbd "\C-c M-f") 'auto-fill-mode)
+
+
+;;----------------------------------------------------------------------
+;; comment-name-and-date
+;; Inserts a comment string, login name, date, and a colon.
+;; Example: // dbrady 2003-04-05:
+;; TODO! If prefix-arg is present, include the time. So:
+;; C-c /        => ; dbrady 2008-06-08: 
+;; C-u C-c /    => ; dbrady 2008-06-08 13:51:25: 
+(defun comment-name-and-date ()
+  (interactive)
+  (insert (safe-comment-start) user-login-name " " (format-time-string "%Y-%m-%d") ": " (safe-comment-end)))
+
+(defun insert-date ()
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d")))
+(global-set-key (kbd "\C-c @") 'insert-date)
+
+;;----------------------------------------------------------------------
+;; comment-file
+;; Adds a comment block at the top of the file
+;;
+;; TODO - Figure out how to put this AFTER the <?php tag in a php file.
+(defun comment-file ()
+  (interactive)
+  (beginning-of-buffer)
+  (insert (safe-comment-start) "----------------------------------------------------------------------\n")
+  (insert (safe-comment-start) " Name: " (buffer-name) "\n")
+  (insert (safe-comment-start) " Desc: \n")
+  (insert (safe-comment-start) " Auth: " user-login-name "\n")
+  (insert (safe-comment-start) " Date: " (format-time-string "%Y-%m-%d") "\n")
+  (insert (safe-comment-start) " Copyright (C) " copyright-since (format-time-string "-%Y ") working-for " \n")
+  (insert (safe-comment-start) "----------------------------------------------------------------------" (safe-comment-end) "\n")
+)
+
+(global-set-key (kbd "\C-c C-f") 'comment-file)
+
+; ----------------------------------------------------------------------
+; reload-buffer
+; Seriously, why doesn't this already exist? Reloads the current
+; buffer.  find-alternate-file will sort of already do this; if you do
+; not supply an argument to it it will reload the current
+; buffer... but it will switch you to another buffer when it does
+; it. All this function does is find-alt and then switch you back.
+(defun reload-buffer()
+  (interactive)
+  (let ((buffername (buffer-name)))
+    (find-alternate-file buffername)
+    (switch-to-buffer buffername)))
+; override the binding for find-alternate-file to be reload-buffer,
+; since that's what I always use it for.
+(global-set-key (kbd "\C-x C-v") 'reload-buffer)
+
+;;----------------------------------------------------------------------
+;; On some systems, I exist as "dbrady" but do a lot of work su'd as
+;; the account that owns a chunk of code (vpopmail on 4mykids, admin17
+;; on bnt, etc.)  In these cases, I want to use a hardcoded 'dbrady'.
+(defun comment-name-and-date-dbrady ()
+  (interactive)
+  (insert (safe-comment-start) "dbrady " (format-time-string "%Y-%m-%d") ": " (safe-comment-end)))
+
+;;----------------------------------------------------------------------
+;; For accounts where I'm su'd, uncomment the *-dbrady version
+;; (global-set-key (kbd "\C-c #") 'comment-name-and-date-dbrady)
+(global-set-key (kbd "\C-c #") 'comment-name-and-date)
+
+;;----------------------------------------------------------------------
+;; Other Modes I like to use...
+;; ;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/icicles")
+
+;; ;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/rspec-mode")
+
+(autoload 'css-mode "css-mode")
+(setq auto-mode-alist       
+     (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+
+(autoload 'php-mode "php-mode" "PHP editing mode" t)
+(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
+
+(autoload 'python-mode "python-mode")
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'auto-mode-alist '("\\.mp3\\'" . hexl-mode))
+
+;; (load "ruby-mode.el") ; manually execute this line if you need to get at ruby-mode without an autoload
+(autoload 'ruby-mode "ruby-mode")
+(add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rjs\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rxml\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
+
+; Macros to make Cwyckoff's life a tiny bit easier
+(defun insert-hashrocket ()
+  (interactive)
+  (insert " => "))
+(global-set-key "\C-c>" 'insert-hashrocket)
+
+;; This is wrong. Don't use global-set-key! Figure out how to add it to the rails keymap.
+(global-set-key "\C-c\C-c\C-l" 'rails-spec:run-this-spec)
+(global-set-key "\C-c\C-c\C-f" 'rails-spec:run-this-file)
+(global-set-key "\C-c\C-c\C-r" 'rails-spec:run-all)
+
+(load "cucumber-mode")
+
+(autoload 'puppet-mode "puppet-mode")
+(add-to-list 'auto-mode-alist '("\\.pp$" . puppet-mode))
+(add-to-list 'auto-mode-alist '("README$" . text-mode))
+(add-to-list 'auto-mode-alist '("TODO$" . text-mode))
+(add-to-list 'auto-mode-alist '("CHANGELOG$" . text-mode))
+(add-to-list 'auto-mode-alist '("CHANGES$" . text-mode))
+(add-to-list 'auto-mode-alist '("LICENSE$" . text-mode))
+
+(setq auto-mode-alist (cons '("\\.lua$" . lua-mode) auto-mode-alist))
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+
+;; version 0.0.3; locks up on me.
+;;(require 'yaml-mode)
+;; (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+(autoload 'actionscript-mode "actionscript-mode" t)
+(add-to-list 'auto-mode-alist '("\\.as\\'" . actionscript-mode))
+
+(add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.rhtml\\'" . html-mode))
+
+; ----------------------------------------------------------------------
+; More ruby mode stuff
+; Simple Lisp Files
+(add-to-list 'load-path "~/.site-lisp/el")
+(require 'pabbrev)
+
+;; Ruby Mode
+(add-to-list 'load-path "~/.site-lisp/ruby-mode")
+
+(require 'ruby-mode)
+;;(require 'ruby-electric)
+
+(autoload 'run-ruby "inf-ruby"
+  "Run an inferior Ruby process")
+(autoload 'inf-ruby-keys "inf-ruby"
+  "Set local key defs for inf-ruby in ruby-mode")
+(add-hook 'ruby-mode-hook
+          '(lambda ()
+             (inf-ruby-keys)
+             ))
+
+;; You need to fill in the variables, but once done, this runs
+;; script/console on the targeted host and application when you run
+;; inf-ruby.
+
+;; 
+;; (defun rails-remote-console ()
+;;   (interactive)
+;;   (run-ruby "ssh remotehost /apps/my-app/current/script/console"))
+
+;; (defun ruby-eval-buffer () (interactive)
+;;        "Evaluate the buffer with ruby."
+;;        (shell-command-on-region (point-min) (point-max) "ruby"))
+
+(defun my-ruby-mode-hook ()
+  (font-lock-mode t)
+  (setq standard-indent 2)
+  ; (pabbrev-mode t)
+  ; (ruby-electric-mode t)
+  (define-key ruby-mode-map "\C-c\C-a" 'ruby-eval-buffer))
+(add-hook 'ruby-mode-hook 'my-ruby-mode-hook)
+
+; (setq auto-mode-alist (cons '("\\.rb\\'" . rhtml-mode) auto-mode-alist))
+
+(autoload 'mode-compile "mode-compile"
+   "Command to compile current buffer file based on the major mode" t)
+(global-set-key "\C-cc" 'mode-compile)
+(autoload 'mode-compile-kill "mode-compile"
+ "Command to kill a compilation launched by `mode-compile'" t)
+(global-set-key "\C-ck" 'mode-compile-kill)
+
+
+;; ;; Rinari Mode (Rails)
+;; (add-to-list 'load-path "~/.site-lisp/rinari")
+;; (add-to-list 'load-path "~/.site-lisp/rinari/rhtml")
+;; (require 'rinari)
+;; (setq auto-mode-alist (cons '("\\.rhtml\\'" . rhtml-mode) auto-mode-alist))
+
+(custom-set-variables
+  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
+  ;; Your init file should contain only one such instance.
+ )
+;; (custom-set-faces
+;;   ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
+;;   ;; Your init file should contain only one such instance.
+;;  '(default ((t (:stipple nil :background "#ffffff" :foreground "#000000" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "adobe-courier")))))
+
+
+;; ----------------------------------------------------------------------
+;; Set the default font for this session. This can go here in my
+;; universal .emacs file because emacs silently ignores this if it's
+;; not running under X.
+;; dbrady 2008-03-31: ...no longer true. Aquamacs Emacs has a GUI and
+;; this conflicts with these Kubuntu-centric fonts.
+;; ----------------------------------------------------------------------
+;; Proportional font
+;; (set-default-font "lucidasans-10") 
+
+;; fixed-width font
+;(set-default-font "lucidasanstypewriter-10")
+
+;; yaml mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-hook 'yaml-mode-hook
+ '(lambda ()
+  (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
+;; ----------------------------------------------------------------------
+;; ido mode stuff
+(require 'ido)
+(ido-mode t)
+
+(defun ido-execute ()
+  (interactive)
+  (call-interactively
+   (intern
+    (ido-completing-read
+     "M-x "
+     (let (cmd-list)
+       (mapatoms (lambda (S) (when (commandp S) (setq cmd-list (cons (format "%S" S) cmd-list)))))
+       cmd-list)))))
+
+
+(global-set-key [(control meta x)] 'ido-execute)
+
+(require 'textmate)
+
+
+;; Screw you, Aquamacs. aquamacs-backward-kill-word fails about 70% of
+;; the time, saying "The mark is not set now, so there is no
+;; region". I DON'T GIVE A CRAP ABOUT YOUR STUPID REGION, JUST DELETE
+;; THE FRICKIN' WORD ALREADY!
+
+;; Is this still broken? Trying to remove it for now.
+;; (global-set-key '[(meta backspace)] 'backward-kill-word)
+
+;; ----------------------------------------------------------------------
+;; git.el
+(require 'git)
+
+; ----------------------------------------------------------------------
+; flyspell
+;; (autoload 'flyspell-mode "flyspell" "On-the-fly spelling checker." t)
+;; (autoload 'flyspell-delay-command "flyspell" "Delay on command." t)
+;; (autoload 'tex-mode-flyspell-verify "flyspell" "" t)
+
+;; some extra flyspell delayed command
+;; (mapcar 'flyspell-delay-command	'(scroll-up1 scroll-down1))
+
+; Corrections are sorted alphabetically by default; disable this to
+; get sorting by likeness.
+;; (setq flyspell-sort-corrections nil)
+
+; Doubled words are considered errors by default. Disable that for now.
+;; (setq flyspell-doublon-as-error-flag nil)
+
+;; ======================================================================
+;; Experimental
+;; ----------------------------------------------------------------------
+
+;; For Carbon Emacs, this will partially unscrew the modifier keys.
+;; This sets the option key to be alt/meta and the command key to be
+;; the extra/super/meta/whatever key. It still doesn't release Cmd to
+;; the OS, however. You can't Cmd-Q or Cmd-V*.
+;; 
+;; * There is a menu option to enable CUA clipboard. This sets
+;; Cmd-X,C,V to the clipboard keys, but STILL doesn't release the Cmd
+;; keys. Bleh. Going back to Aquamacs for now.
+;; 
+;; (setq mac-command-modifier 'alt
+;;       mac-option-modifier 'meta)
+
+;; line-num
+(require 'line-num)
+
+;; magit
+
+(require 'magit)
+(autoload 'magit-status "magit" nil t)
+
+;; YASnippet
+(require 'yasnippet)
+(yas/initialize)
+(yas/load-directory "~/.elisp/packages/snippets/")
+
+(require 'thingatpt)
+
+
+(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+(add-to-list 'interpreter-mode-alist '("sh" . sh-mode))
+(add-to-list 'interpreter-mode-alist '("bash" . sh-mode))
+
+
+;; rdebug
+(load-library "rdebug")
+(global-set-key "\C-c\C-d" 'rdebug)
+
+; From Scotty Moon: Here's how to add new key bindings to existing mode.
+; ----------------------------------------------------------------------
+;(add-hook 'rspec-mode-hook
+; (lambda ()
+; (define-key rspec-mode-map (kbd "M-s") 'run-focused-spec)
+; (define-key rspec-mode-map (kbd "M-S") 'run-specs)
+; )
+
+; ======================================================================
+; LOOKING FOR SOMETHING?
+; 
+; Not .emacs settings, but you'll come looking here, so... hi.
+; 
+; global-visual-line-mode
+; 
+; Aquamacs 1.5 introduced global-visual-line-mode, which currently
+; does not play well with semantic/ecb/rails-mode. Disable it by going
+; to Options->Customize Emacs->Specific Option... and typing
+; global-visual-line-mode in the minibuffer. Set it to nil, save it,
+; save for future sessions, and you're good to go.
+
+
+
+;; (defun show-mark-begin (beg end)
+;;   (interactive "r")
+;;   (print beg)
+;;   (print end))
+;; (global-set-key "\C-c(" 'show-mark-begin)
+
