@@ -798,3 +798,5 @@
 ;;   (print end))
 ;; (global-set-key "\C-c(" 'show-mark-begin)
 
+
+(put 'narrow-to-region 'disabled nil)
