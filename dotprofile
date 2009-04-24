@@ -40,8 +40,11 @@ export PATH=~/bin:$PATH
 # The standard Mac OSX colors are: exfxcxdxbxegedabagacad
 #
 export CLICOLOR=1
+# Standard colors look good on a white background
+export LSCOLORS=exfxcxdxbxegedabagacad
+
+# Swap blue/cyan for better visibility on dark bg
 # export LSCOLORS=gxfxcxdxbxegedabagacad
-export LSCOLORS=gxfxcxdxbxegedabagacad
 
 # Use less by default b/c search works better. But keep most inifile
 # here for tweaking.
