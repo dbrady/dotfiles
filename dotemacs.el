@@ -299,6 +299,20 @@
    (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([67108896 67108896 1 19 45 13 backspace 120 18 102 105 118 101 32 116 104 105 110 103 115 32 116 111 32 100 111 32 116 111 100 97 121 32 13 134217830 134217830 134217830 134217830 134217830 6 6 19 46 13 backspace 120 21 67108896 21 67108896 21 67108896 21 67108896] 0 "%d")) arg)))
 (global-set-key (kbd "\C-c x") 'fivethings-mark-item-completed)
 
+;; We have a lot of XSD that has to be validated based on current
+;; inventory in our database. This is a shoveling tool. Run a select
+;; query, such as "SELECT interface_name FROM study_areas", then paste
+;; the results into the xsd, rows of text like "| associates |". Then
+;; run this macro on each line of text to turn it into an xsd
+;; enumeration, e.g. "<xs:enumeration value="associates" />". This
+;; really wants to be replaced with an erb template, but for now, meh.
+(fset 'xsd-convert-sql-column-to-enumeration
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([1 4 4 5 134217826 134217830 11 1 tab 60 120 115 58 101 110 117 109 101 114 97 116 105 111 110 32 118 97 108 117 101 61 34 5 34 32 47 62 14 1] 0 "%d")) arg)))
+;; THIS SHOULD ONLY BE BOUND TO XSD MODE!!! But I'm ignorant. And
+;; lazy. Don't forget lazy. So I'm setting it globally for now.
+(global-set-key (kbd "\C-c C-c e") 'xsd-convert-sql-column-to-enumeration)
+
+
 ;;----------------------------------------------------------------------
 ;; column number mode - show current column number
 (column-number-mode t)
@@ -800,3 +814,4 @@
 
 
 (put 'narrow-to-region 'disabled nil)
+

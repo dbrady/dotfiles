@@ -1,10 +1,52 @@
+$str_methods = "foo".methods
+puts $str_methods.size
 $: << File.expand_path(File.join("~", "/devel/lib"))
   
 require "rubygems"
 require 'pp'
+require 'wirble'
 
 require "utility_belt"
+
 UtilityBelt.equip :all
+
+# These are Wirble's Default Colors
+WIRBLE_DEFAULT_COLORS = {
+  # delimiter colors
+  :comma              => :blue,
+  :refers             => :blue,
+
+  # container colors (hash and array)
+  :open_hash          => :green,
+  :close_hash         => :green,
+  :open_array         => :green,
+  :close_array        => :green,
+
+  # object colors
+  :open_object        => :light_red,
+  :object_class       => :white,
+  :object_addr_prefix => :blue,
+  :object_line_prefix => :blue,
+  :close_object       => :light_red,
+
+  # symbol colors
+  :symbol             => :yellow,
+  :symbol_prefix      => :yellow,
+
+  # string colors
+  :open_string        => :red,
+  :string             => :cyan,
+  :close_string       => :red,
+
+  # misc colors
+  :number             => :cyan,
+  :keyword            => :green,
+  :class              => :light_green,
+  :range              => :red,
+}
+
+# this does not actually work. Research later.
+Wirble.init(:colors => { :symbol => :blue, :symbol_prefix => :blue }, :init_color => true)
 
 if ENV["RAILS_ENV"]
   require 'dave_rails_hacks'
@@ -106,3 +148,8 @@ class Object; include Toggleable; end
 [ Hash, String, Array ].each {|c| c.send :include, Toggleable }
 
 
+# Save off extension methods. Now in irb I can do "puts foo.methods -
+# $EXM" and not have to see all the methods that irb, wirble,
+# utility_belt, and all the other superfriends have jammed into my
+# object.
+$EXM = ("bar".methods - $str_methods).sort

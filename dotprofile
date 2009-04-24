@@ -94,6 +94,7 @@ alias cdi='cd ~/images/insectpod/unpublished'
 alias cdgem='cd /Library/Ruby/Gems/1.8/gems'
 alias cdt='cd ~/Documents/todo'
 alias cdtr='cd ~/lmp/transporter'
+alias cdam='cd ~/lmp/api_mapper'
 alias cdc='cd ~/lmp/core_data'
 alias cdm='cd ~/lmp/market'
 
