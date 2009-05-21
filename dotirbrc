@@ -1,5 +1,8 @@
-$str_methods = "foo".methods
-puts $str_methods.size
+# String methods is a global variable, and captured before anybody
+# else has had the chance to monkeypatch anything. Look at the
+# $MONKEYPATCHES variable at the end of this file for how I use it.
+$string_methods = "foo".methods
+
 $: << File.expand_path(File.join("~", "/devel/lib"))
   
 require "rubygems"
@@ -152,4 +155,4 @@ class Object; include Toggleable; end
 # $EXM" and not have to see all the methods that irb, wirble,
 # utility_belt, and all the other superfriends have jammed into my
 # object.
-$EXM = ("bar".methods - $str_methods).sort
+$MONKEYPATCHES = ("bar".methods - $string_methods).sort

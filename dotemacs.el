@@ -566,6 +566,7 @@
 ;; (load "ruby-mode.el") ; manually execute this line if you need to get at ruby-mode without an autoload
 (autoload 'ruby-mode "ruby-mode")
 (add-to-list 'auto-mode-alist '("\\.rb\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.gemspec\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rjs\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rxml\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
@@ -782,6 +783,11 @@
 ;; rdebug
 (load-library "rdebug")
 (global-set-key "\C-c\C-d" 'rdebug)
+
+;; rdoc mode
+(load "rdoc-mode")
+(add-to-list 'auto-mode-alist '("\\.rdoc\\'" . rdoc-mode))
+
 
 ; From Scotty Moon: Here's how to add new key bindings to existing mode.
 ; ----------------------------------------------------------------------
