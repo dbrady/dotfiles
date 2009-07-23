@@ -1,0 +1,45 @@
+# .aliases - because my alias collection is way outta control
+
+# Useful aliases
+alias ls="ls -G"
+alias ll="ls -l"
+alias 'top'='top -o cpu'
+
+# Programming crap
+alias findrb='find . -name "*.rb" -print0 | xargs -0 grep -Hn'
+alias finderb='find . -name "*.erb" -print0 | xargs -0 grep -Hn'
+alias findrhtml='find . -name "*.rhtml" -print0 | xargs -0 grep -Hn'
+alias ss='script/server'
+alias as='autospec'
+alias sc="script/console"
+alias sss="script/spec_server"
+
+alias gpmm="git push monkey master"
+alias gpom="git push origin master"
+alias gst="git status"
+alias gsi="git submodule init"
+alias gsu="git submodule update"
+
+alias cpd="cap production deploy"
+
+# Navigation crap
+alias cdlg='cd ~/lmp/leadgen'
+alias cddr='cd ~/devel/ruby'
+alias cdds='cd ~/lmp/degreesearch'
+alias cdsr='cd ~/esp/src/shinyreports'
+alias cdi='cd ~/images/insectpod/unpublished'
+alias cdgem='cd /Library/Ruby/Gems/1.8/gems'
+alias cdt='cd ~/Documents/todo'
+alias cdtr='cd ~/lmp/transporter'
+alias cdam='cd ~/lmp/api_mapper'
+alias cdca='cd ~/lmp/core_api'
+alias cdc='cd ~/lmp/core_data'
+alias cdm='cd ~/lmp/market'
+
+# Applications in OSX
+alias 'firefox'='open -a Firefox'
+alias 'safari'='open -a Safari'
+#alias 'graphviz'='open -a GraphViz'
+alias 'shoes'='open -a Shoes'
+
+alias 'aq'='aquamacs'
