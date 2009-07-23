@@ -117,6 +117,14 @@
 (setq load-path (cons "~/.elisp/packages/emacs-rails" load-path))
 (require 'rails)
 
+; ----------------------------------------------------------------------
+; Erlang Crap
+(setq load-path (cons  "/opt/local/lib/erlang/lib/tools-2.6.4/emacs"
+                       load-path))
+(setq erlang-root-dir "/opt/local/lib/erlang")
+(setq exec-path (cons "/opt/local/lib/erlang/bin" exec-path))
+(require 'erlang-start)
+
 ;; ================================================================================
 ;; dbrady-specific stuff
 
@@ -546,6 +554,29 @@
 (global-set-key (kbd "\C-c #") 'comment-name-and-date)
 
 ;;----------------------------------------------------------------------
+;; Thanks cwyckoff for finding this!
+;; toggle to fullscreen mode
+(defun toggle-fullscreen ()
+  (interactive)
+  (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
+                                           nil
+                                           'fullboth)))
+(global-set-key (kbd "\C-c C-f") 'toggle-fullscreen)
+
+;;----------------------------------------------------------------------
+;; toggle-quotes
+;; changes quotes around text at point from "str" to 'str' to :str
+;; if spaces exist in region, skips :str version
+(defun toggle-quotes ()
+  (interactive)
+  ;; expand region to find nearest enclosing quotes or symbol
+  ;; if quote-type is ", replace with '
+  ;; if quote-type is ' and no spaces, replace with :
+  ;; if quote-type is ' and spaces, replace with "
+  ;; if quote-type is :, replace with "
+  )
+
+;;----------------------------------------------------------------------
 ;; Other Modes I like to use...
 ;; ;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/icicles")
 
@@ -820,4 +851,4 @@
 
 
 (put 'narrow-to-region 'disabled nil)
-
+(put 'downcase-region 'disabled nil)
