@@ -1,6 +1,7 @@
 ;;; David Brady's Aquamacs Initialization File
 
-;; (setq elisp-directory (expand-file-name "~/.elisp"))
+(setq elisp-directory (expand-file-name "~/.elisp"))
+(setq package-directory (concat elisp-directory "/packages"))
 ;; (setq ini-directory (concat elisp-directory "/ini"))
 ;; (setq load-path (cons ini-directory load-path))
 ;; (add-to-list 'load-path ini-directory)
@@ -774,6 +775,10 @@
 ; Doubled words are considered errors by default. Disable that for now.
 ;; (setq flyspell-doublon-as-error-flag nil)
 
+;; rdoc mode
+(load "rdoc-mode")
+(add-to-list 'auto-mode-alist '("\\.rdoc\\'" . rdoc-mode))
+
 ;; ======================================================================
 ;; Experimental
 ;; ----------------------------------------------------------------------
@@ -815,9 +820,29 @@
 (load-library "rdebug")
 (global-set-key "\C-c\C-d" 'rdebug)
 
-;; rdoc mode
-(load "rdoc-mode")
-(add-to-list 'auto-mode-alist '("\\.rdoc\\'" . rdoc-mode))
+; ----------------------------------------------------------------------
+; org-mode
+; 
+; setup
+; 
+;; org-mode (manual install of latest overtop of standard (read: old)
+;; org-mode that comes with Aquamacs
+(setq org-mode-directory (concat package-directory "/org-6.28e"))
+(setq load-path (cons (concat org-mode-directory "/lisp") load-path))
+(setq load-path (cons (concat org-mode-directory "/contrib/lisp") load-path))
+(require 'org-install)
+
+; activation 
+;; The following lines are always needed.  Choose your own keys.
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cb" 'org-iswitchb)
+
+; org-mode depends on global-font-lock-mode, which is turned on
+; elsewhere, but let's enforce it for org-mode buffers anyway:
+; (global-font-lock-mode 1) 
+(add-hook 'org-mode-hook 'turn-on-font-lock)
 
 
 ; From Scotty Moon: Here's how to add new key bindings to existing mode.
@@ -852,3 +877,4 @@
 
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
