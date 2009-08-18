@@ -45,3 +45,7 @@ alias 'safari'='open -a Safari'
 alias 'shoes'='open -a Shoes'
 
 alias 'aq'='aquamacs'
+
+# command aliases
+alias zf=~/pe/zend/bin/zf.sh
+alias acr='apachectl configtest && sudo apachectl restart'

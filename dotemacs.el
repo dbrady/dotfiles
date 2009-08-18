@@ -18,13 +18,13 @@
 ; ----------------------------------------------------------------------
 ; CEDET
 ;; Load CEDET
-(load-file "/Users/dbrady/.elisp/packages/cedet/common/cedet.el")
+(load-file (expand-file-name "~/.elisp/packages/cedet/common/cedet.el"))
 
 ;; Enabling various SEMANTIC minor modes.  See semantic/INSTALL for more ideas.
 ;; Select one of the following:
 
 ;; * This enables the database and idle reparse engines
-;;(semantic-load-enable-minimum-features)
+;;(semantic-load-enable-mintimum-features)
 
 ;; * This enables some tools useful for coding, such as summary mode
 ;;   imenu support, and the semantic navigator
@@ -52,18 +52,18 @@
 ; ECB info page, it has full docco on options customizable with
 ; customize-group/customize-option, AND A LIST of options that CANNOT
 ; BE CHANGED with setq!
-(add-to-list 'load-path "/Users/dbrady/.elisp/ini")
-(add-to-list 'load-path "/Users/dbrady/.elisp/packages")
-;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/eieio-0.17")
-;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/speedbar-0.14beta4")
-;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/semantic-1.4.4")
+(add-to-list 'load-path (expand-file-name "~/.elisp/ini"))
+(add-to-list 'load-path (expand-file-name "~/.elisp/packages"))
+;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/eieio-0.17"))
+;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/speedbar-0.14beta4"))
+;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/semantic-1.4.4"))
 (setq semantic-load-turn-everything-on t)
 (require 'semantic-load)
 
 ; This installs ecb - it is activated with M-x ecb-activate
-(add-to-list 'load-path "/Users/dbrady/.elisp/packages/ecb-2.32")
+(add-to-list 'load-path (expand-file-name "~/.elisp/packages/ecb-2.32"))
 (require 'ecb-autoloads)
-(setq ecb-source-path (quote ("/Users/dbrady/lmp/degreesearch" "/Users/dbrady/lmp/leadgen" "/Users/dbrady/lmp/market")))
+;(setq ecb-source-path (quote ((expand-file-name "~/lmp/degreesearch") (expand-file-name "~/lmp/leadgen") (expand-file-name "~/lmp/market"))))
 
 
 ;(if (jw-check-file "/usr/local/share/emacs/site-lisp")
@@ -85,7 +85,7 @@
 ;;  '(gnuserv-program (concat exec-directory "/gnuserv"))
 ;;  '(toolbar-news-reader (quote gnus))
 ;;  '(toolbar-mail-reader (quote gnus))
-;;  '(ecb-source-path (quote (("/Users/dbrady/working/rubyforge/rubygems" "RubyGems") ("/Users/dbrady/working/rubyforge/rake" "Rake")))))
+;;  '(ecb-source-path (quote (((expand-file-name "~/working/rubyforge/rubygems") "RubyGems") ((expand-file-name "~/working/rubyforge/rake") "Rake")))))
 ;; (custom-set-faces
 ;;  '(default ((t (:size "12pt" :family "Fixed"))) t))
 ;; (setq mac-option-modifier 'meta)        ; for aquamacs
@@ -119,12 +119,12 @@
 (require 'rails)
 
 ; ----------------------------------------------------------------------
-; Erlang Crap
-(setq load-path (cons  "/opt/local/lib/erlang/lib/tools-2.6.4/emacs"
-                       load-path))
-(setq erlang-root-dir "/opt/local/lib/erlang")
-(setq exec-path (cons "/opt/local/lib/erlang/bin" exec-path))
-(require 'erlang-start)
+;; ; Erlang Crap
+;; (setq load-path (cons  "/opt/local/lib/erlang/lib/tools-2.6.4/emacs"
+;;                        load-path))
+;; (setq erlang-root-dir "/opt/local/lib/erlang")
+;; (setq exec-path (cons "/opt/local/lib/erlang/bin" exec-path))
+;; (require 'erlang-start)
 
 ;; ================================================================================
 ;; dbrady-specific stuff
@@ -557,6 +557,7 @@
 ;;----------------------------------------------------------------------
 ;; Thanks cwyckoff for finding this!
 ;; toggle to fullscreen mode
+;; BLEURKH. This does not work with the Gnu Emacs 23 build. BLAH.
 (defun toggle-fullscreen ()
   (interactive)
   (set-frame-parameter nil 'fullscreen (if (frame-parameter nil 'fullscreen)
@@ -579,9 +580,9 @@
 
 ;;----------------------------------------------------------------------
 ;; Other Modes I like to use...
-;; ;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/icicles")
+;; ;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/icicles"))
 
-;; ;; (add-to-list 'load-path "/Users/dbrady/.elisp/packages/rspec-mode")
+;; ;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/rspec-mode"))
 
 (autoload 'css-mode "css-mode")
 (setq auto-mode-alist       
@@ -954,7 +955,19 @@ do this for the whole buffer."
 ;;   (print end))
 ;; (global-set-key "\C-c(" 'show-mark-begin)
 
+; Aquamacs defines tabbar-mode. Gnu Emacs 23 does not.
+(unless (fboundp 'tabbar-mode)
+  (require 'tabbar)
+  (tabbar-mode))
 
+(transient-mark-mode 1)
+
+; ======================================================================
+; Last but not least: automatic settings updates from emacs. It sticks
+; them here at the end; Easier to just mark this section as emacs'
+; section rather than trying to fight it and keep this updated alla
+; time.
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
 
