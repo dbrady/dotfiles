@@ -108,6 +108,7 @@ include_if_exists ~/.aliases
 include_if_exists ~/.bash_completions
 include_if_exists ~/.git-completion.bash
 include_if_exists ~/bin/dbnames.sh
+include_if_exists ~/.private
 
 export RUBYOPT=rubygems
 
@@ -117,7 +118,7 @@ export RUBYOPT=rubygems
 ##
 
 # MacPorts Installer addition on 2009-08-17_at_10:25:10: adding an appropriate PATH variable for use with MacPorts.
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export PATH=/opt/subversion/bin:/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 
 

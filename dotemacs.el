@@ -63,6 +63,7 @@
 ; This installs ecb - it is activated with M-x ecb-activate
 (add-to-list 'load-path (expand-file-name "~/.elisp/packages/ecb-2.32"))
 (require 'ecb-autoloads)
+(setq ecb-source-path (quote ((expand-file-name "~/pe/workspace/crimereports"))))
 ;(setq ecb-source-path (quote ((expand-file-name "~/lmp/degreesearch") (expand-file-name "~/lmp/leadgen") (expand-file-name "~/lmp/market"))))
 
 
@@ -938,6 +939,12 @@ do this for the whole buffer."
 ; LOOKING FOR SOMETHING?
 ; 
 ; Not .emacs settings, but you'll come looking here, so... hi.
+; 
+; ----------------------------------------------------------------------
+; "jumping cursor" bug. Scrolling up and down with C-p/C-n, the cursor
+; jumps whole blocks of text? You need to disable
+; global-visual-line-mode. Then ECB will play nice with Aquamacs. Or
+; possibly vice-versa. Anyway it fixes it.
 ; 
 ; global-visual-line-mode
 ; 
