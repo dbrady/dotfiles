@@ -144,8 +144,10 @@
 (setq semanticdb-default-save-directory "~/.saves/semantic.cache")
 
 (global-set-key "\M-g" 'goto-line)
-(setq-default c-basic-offset 4)
-(setq-default indent-tabs-mode nil)
+(setq-default c-basic-offset 2)
+;; SADNESS. Public Engines is of the devil. Tabs mode it is.
+;(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode t)
 (setq default-tab-width 2)
 
 ;; Detect this OS and set keybindings accordings. Ideally this should
@@ -426,8 +428,6 @@
     (insert "{\n" (safe-comment-start) ";-) (Happy little no-op)" (safe-comment-end) "\n}\n")
     (indent-region start (point) nil)))
 
-
-
 ;;----------------------------------------------------------------------
 ;; insert-comment-bar
 (defun insert-comment-bar ()
@@ -439,6 +439,38 @@
 (defun insert-comment-bar-major ()
   (interactive)
   (insert (safe-comment-start) "======================================================================\n"))
+
+;;----------------------------------------------------------------------
+;; insert-danger-banner
+;; TODO: If C-u N passed, send that many lines
+;; TODO: Indent this after inserting
+(defun insert-danger-banner ()
+	(interactive)
+	(insert (safe-comment-start) "DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER\n")
+	(insert (safe-comment-start) " DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGE\n")
+	(insert (safe-comment-start) "R DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANG\n")
+	(insert (safe-comment-start) "ER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DAN\n")
+	(insert (safe-comment-start) "GER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DA\n")
+	(insert (safe-comment-start) "NGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER D\n")
+	(insert (safe-comment-start) "ANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER \n")
+	(insert (safe-comment-start) "DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER\n")
+)
+
+;;----------------------------------------------------------------------
+;; insert-danger-banner-reverse
+;; TODO: Refactor me! Change me to (reverse-lines (insert-danger-banner N))
+(defun insert-danger-banner-reverse ()
+	(interactive)
+	(insert (safe-comment-start) "DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER\n")
+	(insert (safe-comment-start) "ANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER \n")
+	(insert (safe-comment-start) "NGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER D\n")
+	(insert (safe-comment-start) "GER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DA\n")
+	(insert (safe-comment-start) "ER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DAN\n")
+	(insert (safe-comment-start) "R DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANG\n")
+	(insert (safe-comment-start) " DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGE\n")
+	(insert (safe-comment-start) "DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER DANGER\n")
+)
+
 
 ;;----------------------------------------------------------------------
 ;; html functions
@@ -592,6 +624,8 @@
 (autoload 'php-mode "php-mode" "PHP editing mode" t)
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
+(require 'php-mode)
+(require 'php-electric)
 
 (autoload 'python-mode "python-mode")
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
