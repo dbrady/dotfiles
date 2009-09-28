@@ -2,9 +2,9 @@
 
 (setq elisp-directory (expand-file-name "~/.elisp"))
 (setq package-directory (concat elisp-directory "/packages"))
-;; (setq ini-directory (concat elisp-directory "/ini"))
-;; (setq load-path (cons ini-directory load-path))
-;; (add-to-list 'load-path ini-directory)
+(setq ini-directory (concat elisp-directory "/ini"))
+(setq load-path (cons ini-directory load-path))
+; (add-to-list 'load-path ini-directory)
 
 (setq sentence-end-double-space 'nil)
 
@@ -846,12 +846,50 @@
 
 
 ; ----------------------------------------------------------------------
+; remember
+; 
+; Note - remember is included in Emacs 23. OK to remove this once
+; Aquamacs catches up.
+;; (add-to-list 'load-path (concat package-directory "/remember"))
+;; (require 'remember)
+;; ; planner-mode
+;; (require 'remember-planner)
+;; (setq remember-handler-functions '(remember-planner-append))
+;; ; doesn't work... planner-annotation-functions not yet defined. Check
+;; ; org-mode setup for details; it may have come from there.
+;; ; (setq remember-annotation-functions planner-annotation-functions)
+
+;; (setq org-directory "~/Documents/orgfiles/")
+;; (setq org-default-notes-file "~/Documents/orgfiles/.notes")
+;; (setq remember-annotation-functions '(org-remember-annotation))
+;; (setq remember-handler-functions '(org-remember-handler))
+;; (add-hook 'remember-mode-hook 'org-remember-apply-template)
+;; (define-key global-map "\C-cr" 'org-remember)
+
+;; (setq org-remember-templates
+;;      '(("Todo" ?t "* TODO %? %^g\n %i\n " "~/Documents/GTD/newgtd.org" "Office")
+;;       ("Journal" ?j "\n* %^{topic} %T \n%i%?\n" "~/Documents/GTD/journal.org")
+;;       ("Book" ?b "\n* %^{Book Title} %t :READING: \n%[~/Documents/GTD/booktemp.txt]\n" 
+;;               "~/Documents/GTD/journal.org")
+;;       ("Private" ?p "\n* %^{topic} %T \n%i%?\n" "~/Documents/GTD/privnotes.org")
+;;       ("Contact" ?c "\n* %^{Name} :CONTACT:\n%[~/Documents/GTD/contemp.txt]\n" 
+;;                "~/Documents/GTD/privnotes.org")
+;;       ))
+
+; ----------------------------------------------------------------------
 ; ----------------------------------------------------------------------
 ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; BEGIN ORG-MODE HACKS
 ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; ----------------------------------------------------------------------
 ; ----------------------------------------------------------------------
+; 
+; This next bit sets counters in org-mode headlines. You write [/] at
+; the end of the line, add some tasks, and when they are checked off
+; the headline is updated to end with, e.g. [4/6] or [0/3], etc.
+; 
+; This appears to be included in Emacs 23. Check this when aquamacs
+; upgrades.
 (defun wicked/org-update-checkbox-count (&optional all)
   "Update the checkbox statistics in the current section.
 This will find all statistic cookies like [57%] and [6/12] and update
@@ -957,4 +995,7 @@ do this for the whole buffer."
 
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+(require 'linum)
+(global-linum-mode)
 
