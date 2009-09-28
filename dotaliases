@@ -38,6 +38,8 @@ alias cdca='cd ~/lmp/core_api'
 alias cdc='cd ~/lmp/core_data'
 alias cdm='cd ~/lmp/market'
 
+alias cdcr='cd ~/pe/workspace/crimereports'
+
 # Applications in OSX
 alias 'firefox'='open -a Firefox'
 alias 'safari'='open -a Safari'
@@ -45,3 +47,7 @@ alias 'safari'='open -a Safari'
 alias 'shoes'='open -a Shoes'
 
 alias 'aq'='aquamacs'
+
+# command aliases
+alias zf=~/pe/zend/bin/zf.sh
+alias acr='apachectl configtest && sudo apachectl restart'
