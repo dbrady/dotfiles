@@ -10,11 +10,6 @@
 
 ;;(load "essential")
 
-;; (require 'font-lock)
-
-;Allows syntax highlighting to work, among other things
-(global-font-lock-mode 1)
-
 ; ----------------------------------------------------------------------
 ; CEDET
 ;; Load CEDET
@@ -625,7 +620,7 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 (require 'php-mode)
-(require 'php-electric)
+;(require 'php-electric)
 
 (autoload 'python-mode "python-mode")
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
@@ -709,7 +704,6 @@
 ;;        (shell-command-on-region (point-min) (point-max) "ruby"))
 
 (defun my-ruby-mode-hook ()
-  (font-lock-mode t)
   (setq standard-indent 2)
   ; (pabbrev-mode t)
   ; (ruby-electric-mode t)
