@@ -51,4 +51,4 @@ alias 'aq'='aquamacs'
 # command aliases
 alias zf=~/pe/zend/bin/zf.sh
 alias acr='apachectl configtest && sudo apachectl restart'
-alias cdcr2='cd pe/crimereports2/backend/crimereports/'
+alias cdcr2='cd ~/pe/crimereports2/backend/crimereports/'
