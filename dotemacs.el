@@ -626,7 +626,7 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 (require 'php-mode)
-(require 'php-electric)
+;(require 'php-electric)
 
 (autoload 'python-mode "python-mode")
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
