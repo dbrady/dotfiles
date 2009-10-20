@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # String methods is a global variable, and captured before anybody
 # else has had the chance to monkeypatch anything. Look at the
 # $MONKEYPATCHES variable at the end of this file for how I use it.
@@ -12,6 +13,11 @@ require 'wirble'
 require "utility_belt"
 
 UtilityBelt.equip :all
+
+require 'boson'
+Boson.start
+require 'hirb'
+extend Hirb::Console
 
 # These are Wirble's Default Colors
 WIRBLE_DEFAULT_COLORS = {
