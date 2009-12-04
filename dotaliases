@@ -38,7 +38,8 @@ alias cdca='cd ~/lmp/core_api'
 alias cdc='cd ~/lmp/core_data'
 alias cdm='cd ~/lmp/market'
 
-alias cdcr='cd ~/pe/workspace/crimereports'
+alias cdcr='cd ~/pe/crimereports'
+alias cdcr2='cd ~/pe/crimereports2/backend/crimereports'
 
 # Applications in OSX
 alias 'firefox'='open -a Firefox'

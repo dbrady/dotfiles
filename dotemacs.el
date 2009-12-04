@@ -10,6 +10,12 @@
 
 ;;(load "essential")
 
+(require 'font-lock)
+
+;Allows syntax highlighting to work, among other things
+;(global-font-lock-mode 1)
+(global-set-key (kbd "\C-c C-c C-f") 'font-lock-mode)
+
 ; ----------------------------------------------------------------------
 ; CEDET
 ;; Load CEDET
@@ -1012,6 +1018,7 @@ do this for the whole buffer."
 ; global-visual-line-mode. Then ECB will play nice with Aquamacs. Or
 ; possibly vice-versa. Anyway it fixes it.
 ; 
+; M-x customize-variable
 ; global-visual-line-mode
 ; 
 ; Aquamacs 1.5 introduced global-visual-line-mode, which currently
@@ -1044,5 +1051,38 @@ do this for the whole buffer."
 (put 'downcase-region 'disabled nil)
 
 (require 'linum)
-(global-linum-mode)
+; linum crashes org-mode. Happily, org-mode overrides C-c l.
+(global-set-key "\C-c l" 'linum-mode)
+
+
+;; ----------------------------------------------------------------------
+;; Turn off all the crap on the aquamacs toolbar. This is commented
+;; out, should only be needed after an aquamacs install. I think
+;; Aquamacs 2 has a single menu item to do this. Aquamacs 1.9 forces
+;; you to use Menu:Options -> View -> Toolbar Items -> {item} for each
+;; item to be removed. With these commands pasted here, you can just
+;; C-x C-e them and they run right from the comments.
+;; 
+(defun toggle-toolbar-items ()
+	(interactive)
+	(toggle-toolbar-show--copy)
+	(toggle-toolbar-show--cut)
+	(toggle-toolbar-show--help)
+	(toggle-toolbar-show--new-file)
+	(toggle-toolbar-show--open-file)
+	(toggle-toolbar-show--paste)
+	(toggle-toolbar-show--recent-files)
+	(toggle-toolbar-show--redo)
+	(toggle-toolbar-show--revert-buffer)
+	(toggle-toolbar-show--save-buffer)
+	(toggle-toolbar-show--undo))
+
+;; (toggle-toolbar-items)
+
+;; These are already turned off, but here they are in case they are
+;; needed.
+;; (toggle-toolbar-show--aquamacs-print)
+;; (toggle-toolbar-show--customize)
+;; (toggle-toolbar-show--isearch-forward)
+;; (toggle-toolbar-show--write-file)
 
