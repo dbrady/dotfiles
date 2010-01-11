@@ -19,6 +19,14 @@ Boson.start
 require 'hirb'
 extend Hirb::Console
 
+# Hirb Docco is here: http://tagaholic.me/hirb/doc/index.html
+def disable_hirb; Hirb::View.disable; end
+def enable_hirb; Hirb::View.enable; end
+
+def global_vars
+  global_variables.sort.map { |e| [e, (eval e).inspect]}
+end
+
 # These are Wirble's Default Colors
 WIRBLE_DEFAULT_COLORS = {
   # delimiter colors

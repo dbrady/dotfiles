@@ -146,9 +146,9 @@
 
 (global-set-key "\M-g" 'goto-line)
 (setq-default c-basic-offset 2)
+(setq-default indent-tabs-mode nil)
 ;; SADNESS. Public Engines is of the devil. Tabs mode it is.
-;(setq-default indent-tabs-mode nil)
-(setq-default indent-tabs-mode t)
+;(setq-default indent-tabs-mode t)
 (setq default-tab-width 2)
 
 ;; Detect this OS and set keybindings accordings. Ideally this should
@@ -1048,10 +1048,11 @@ do this for the whole buffer."
 ; section rather than trying to fight it and keep this updated alla
 ; time.
 (put 'narrow-to-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
+(put 'downcase-region 'disabled t)
 
 (require 'linum)
 ; linum crashes org-mode. Happily, org-mode overrides C-c l.
+; org mode appears to have seized this all round. What gives?
 (global-set-key "\C-c l" 'linum-mode)
 
 
