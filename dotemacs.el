@@ -5,6 +5,7 @@
 (setq ini-directory (concat elisp-directory "/ini"))
 (setq load-path (cons ini-directory load-path))
 ; (add-to-list 'load-path ini-directory)
+(add-to-list 'load-path (concat package-directory "/abedra-dot-emacs"))
 
 (setq sentence-end-double-space 'nil)
 
