@@ -100,8 +100,8 @@ parse_git_branch() {
 # ALARM: master RED: next YELLOW: sprint CYAN: everybody else
 # export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(next)/\\033[31m(next)/' | sed -e 's/(sprint)/\\033[33m(sprint)/')\[\033[37m\]\[\033[0m\]\n$ "
 
-# ALARM: production RED: stage YELLOW: next CYAN: everybody else
-export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n∫ "
+# ALARM: production/master RED: stage YELLOW: next CYAN: everybody else
+export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n∫ "
 
 #export PS1="\[\]\u@\h\]:\w
 
