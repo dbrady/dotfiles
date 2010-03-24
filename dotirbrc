@@ -10,9 +10,9 @@ require "rubygems"
 require 'pp'
 require 'wirble'
 
-require "utility_belt"
+# require "utility_belt"
 
-UtilityBelt.equip :all
+# UtilityBelt.equip :all
 
 require 'boson'
 Boson.start
@@ -57,11 +57,12 @@ WIRBLE_DEFAULT_COLORS = {
 # this does not actually work. Research later.
 Wirble.init(:colors => { :symbol => :blue, :symbol_prefix => :blue }, :init_color => true)
 
-if ENV["RAILS_ENV"]
-  require 'dave_rails_hacks'
-  $: << File.expand_path(File.join("~", "/ruby/scrapbin/rails"))
-  require 'ar_ext'
-end
+# New in Rails 2.3! This crashes rails if it's loaded BEFORE rails. Idjits.
+# if ENV["RAILS_ENV"]
+#   require 'dave_rails_hacks'
+#   $: << File.expand_path(File.join("~", "/ruby/scrapbin/rails"))
+#   require 'ar_ext'
+# end
 
 # ----------------------------------------------------------------------
 # Object#local_methods

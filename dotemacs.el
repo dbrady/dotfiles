@@ -5,6 +5,7 @@
 (setq ini-directory (concat elisp-directory "/ini"))
 (setq load-path (cons ini-directory load-path))
 ; (add-to-list 'load-path ini-directory)
+(add-to-list 'load-path (concat package-directory "/abedra-dot-emacs"))
 
 (setq sentence-end-double-space 'nil)
 
@@ -147,8 +148,8 @@
 (global-set-key "\M-g" 'goto-line)
 (setq-default c-basic-offset 2)
 ;; SADNESS. Public Engines is of the devil. Tabs mode it is.
-;(setq-default indent-tabs-mode nil)
-(setq-default indent-tabs-mode t)
+(setq-default indent-tabs-mode nil)
+;(setq-default indent-tabs-mode t)
 (setq default-tab-width 2)
 
 ;; Detect this OS and set keybindings accordings. Ideally this should
