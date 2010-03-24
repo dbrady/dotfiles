@@ -40,6 +40,8 @@ alias cdm='cd ~/lmp/market'
 
 alias cdcr='cd ~/pe/crimereports'
 alias cdcr2='cd ~/pe/crimereports2/backend/crimereports'
+alias cdcr2dox='cd ~/pe/crimereports2/dox'
+alias cddox='cd ~/pe/dox'
 alias cdcc='cd ~/pe/crimereports2/flex/CommandCentral2'
 
 # Applications in OSX

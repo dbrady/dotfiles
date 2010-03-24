@@ -10,9 +10,9 @@ require "rubygems"
 require 'pp'
 require 'wirble'
 
-require "utility_belt"
+# require "utility_belt"
 
-UtilityBelt.equip :all
+# UtilityBelt.equip :all, :except => ['clipboard']
 
 require 'boson'
 Boson.start

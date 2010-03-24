@@ -541,6 +541,24 @@
 (global-set-key (kbd "\C-c @") 'insert-date)
 
 ;;----------------------------------------------------------------------
+;; insert-five-things
+;; Inserts an org-mode text snippet for "Five Things To Do Today".
+;; TODO: See about hooking Org-mode snippets.
+;; TODO: Refactor inserts to a loop?
+(defun insert-five-things ()
+  (interactive)
+  (insert "* " (format-time-string "%Y-%m-%d") "\n")
+  (insert "** Five Things To Do Today [0/5]\n")
+  (insert "- [ ] \n")
+  (insert "- [ ] \n")
+  (insert "- [ ] \n")
+  (insert "- [ ] \n")
+  (insert "- [ ] \n")
+  (previous-line)(previous-line)(previous-line)(previous-line)(previous-line)(end-of-line))
+;; TODO: this should be an org-mode-only hook
+(global-set-key (kbd "\C-c 5") 'insert-five-things)
+
+;;----------------------------------------------------------------------
 ;; comment-file
 ;; Adds a comment block at the top of the file
 ;;
@@ -880,6 +898,10 @@
 ; (global-font-lock-mode 1) 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 
+; TODO: try enabling linum-mode globally, then DISABLING it in org-mode?
+
+
+
 ; customizers
 (setq org-todo-keywords
        '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "BLOCKED(b)" "|" "DONE(d)" "ABANDONED(a)")))
@@ -917,91 +939,91 @@
 ;;                "~/Documents/GTD/privnotes.org")
 ;;       ))
 
-; ----------------------------------------------------------------------
-; ----------------------------------------------------------------------
-; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-; BEGIN ORG-MODE HACKS
-; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-; ----------------------------------------------------------------------
-; ----------------------------------------------------------------------
-; 
-; This next bit sets counters in org-mode headlines. You write [/] at
-; the end of the line, add some tasks, and when they are checked off
-; the headline is updated to end with, e.g. [4/6] or [0/3], etc.
-; 
-; This appears to be included in Emacs 23. Check this when aquamacs
-; upgrades.
-(defun wicked/org-update-checkbox-count (&optional all)
-  "Update the checkbox statistics in the current section.
-This will find all statistic cookies like [57%] and [6/12] and update
-them with the current numbers.  With optional prefix argument ALL,
-do this for the whole buffer."
-  (interactive "P")
-  (save-excursion
-    (let* ((buffer-invisibility-spec (org-inhibit-invisibility))
-	   (beg (condition-case nil
-		    (progn (outline-back-to-heading) (point))
-		  (error (point-min))))
-	   (end (move-marker
-		 (make-marker)
-		 (progn (or (outline-get-next-sibling) ;; (1)
-			    (goto-char (point-max)))
-			(point))))
-	   (re "\\(\\[[0-9]*%\\]\\)\\|\\(\\[[0-9]*/[0-9]*\\]\\)")
-	   (re-box
-	    "^[ \t]*\\(*+\\|[-+*]\\|[0-9]+[.)]\\) +\\(\\[[- X]\\]\\)")
-	   b1 e1 f1 c-on c-off lim (cstat 0))
-      (when all
-	(goto-char (point-min))
-	(or (outline-get-next-sibling) (goto-char (point-max))) ;; (2)
-	(setq beg (point) end (point-max)))
-      (goto-char beg)
-      (while (re-search-forward re end t)
-	(setq cstat (1+ cstat)
-	      b1 (match-beginning 0)
-	      e1 (match-end 0)
-	      f1 (match-beginning 1)
-	      lim (cond
-		   ((org-on-heading-p)
-		    (or (outline-get-next-sibling) ;; (3)
-			(goto-char (point-max)))
-		    (point))
-		   ((org-at-item-p) (org-end-of-item) (point))
-		   (t nil))
-	      c-on 0 c-off 0)
-	(goto-char e1)
-	(when lim
-	  (while (re-search-forward re-box lim t)
-	    (if (member (match-string 2) '("[ ]" "[-]"))
-		(setq c-off (1+ c-off))
-	      (setq c-on (1+ c-on))))
-	  (goto-char b1)
-	  (insert (if f1
-		      (format "[%d%%]" (/ (* 100 c-on)
-					  (max 1 (+ c-on c-off))))
-		    (format "[%d/%d]" c-on (+ c-on c-off))))
-	  (and (looking-at "\\[.*?\\]")
-	       (replace-match ""))))
-      (when (interactive-p)
-	(message "Checkbox statistics updated %s (%d places)"
-		 (if all "in entire file" "in current outline entry")
-		 cstat)))))
+;; ; ----------------------------------------------------------------------
+;; ; ----------------------------------------------------------------------
+;; ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;; ; BEGIN ORG-MODE HACKS
+;; ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;; ; ----------------------------------------------------------------------
+;; ; ----------------------------------------------------------------------
+;; ; 
+;; ; This next bit sets counters in org-mode headlines. You write [/] at
+;; ; the end of the line, add some tasks, and when they are checked off
+;; ; the headline is updated to end with, e.g. [4/6] or [0/3], etc.
+;; ; 
+;; ; This appears to be included in Emacs 23. Check this when aquamacs
+;; ; upgrades.
+;; (defun wicked/org-update-checkbox-count (&optional all)
+;;   "Update the checkbox statistics in the current section.
+;; This will find all statistic cookies like [57%] and [6/12] and update
+;; them with the current numbers.  With optional prefix argument ALL,
+;; do this for the whole buffer."
+;;   (interactive "P")
+;;   (save-excursion
+;;     (let* ((buffer-invisibility-spec (org-inhibit-invisibility))
+;; 	   (beg (condition-case nil
+;; 		    (progn (outline-back-to-heading) (point))
+;; 		  (error (point-min))))
+;; 	   (end (move-marker
+;; 		 (make-marker)
+;; 		 (progn (or (outline-get-next-sibling) ;; (1)
+;; 			    (goto-char (point-max)))
+;; 			(point))))
+;; 	   (re "\\(\\[[0-9]*%\\]\\)\\|\\(\\[[0-9]*/[0-9]*\\]\\)")
+;; 	   (re-box
+;; 	    "^[ \t]*\\(*+\\|[-+*]\\|[0-9]+[.)]\\) +\\(\\[[- X]\\]\\)")
+;; 	   b1 e1 f1 c-on c-off lim (cstat 0))
+;;       (when all
+;; 	(goto-char (point-min))
+;; 	(or (outline-get-next-sibling) (goto-char (point-max))) ;; (2)
+;; 	(setq beg (point) end (point-max)))
+;;       (goto-char beg)
+;;       (while (re-search-forward re end t)
+;; 	(setq cstat (1+ cstat)
+;; 	      b1 (match-beginning 0)
+;; 	      e1 (match-end 0)
+;; 	      f1 (match-beginning 1)
+;; 	      lim (cond
+;; 		   ((org-on-heading-p)
+;; 		    (or (outline-get-next-sibling) ;; (3)
+;; 			(goto-char (point-max)))
+;; 		    (point))
+;; 		   ((org-at-item-p) (org-end-of-item) (point))
+;; 		   (t nil))
+;; 	      c-on 0 c-off 0)
+;; 	(goto-char e1)
+;; 	(when lim
+;; 	  (while (re-search-forward re-box lim t)
+;; 	    (if (member (match-string 2) '("[ ]" "[-]"))
+;; 		(setq c-off (1+ c-off))
+;; 	      (setq c-on (1+ c-on))))
+;; 	  (goto-char b1)
+;; 	  (insert (if f1
+;; 		      (format "[%d%%]" (/ (* 100 c-on)
+;; 					  (max 1 (+ c-on c-off))))
+;; 		    (format "[%d/%d]" c-on (+ c-on c-off))))
+;; 	  (and (looking-at "\\[.*?\\]")
+;; 	       (replace-match ""))))
+;;       (when (interactive-p)
+;; 	(message "Checkbox statistics updated %s (%d places)"
+;; 		 (if all "in entire file" "in current outline entry")
+;; 		 cstat)))))
 
-(defadvice org-update-checkbox-count (around wicked activate)
-  "Fix the built-in checkbox count to understand headlines."
-  (setq ad-return-value
-	(wicked/org-update-checkbox-count (ad-get-arg 1))))
+;; (defadvice org-update-checkbox-count (around wicked activate)
+;;   "Fix the built-in checkbox count to understand headlines."
+;;   (setq ad-return-value
+;; 	(wicked/org-update-checkbox-count (ad-get-arg 1))))
 
-(defun wc ()
-  (interactive)
-  (message "Word count: %s" (how-many "\\w+" (point-min) (point-max))))
-; ----------------------------------------------------------------------
-; ----------------------------------------------------------------------
-; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-; BEGIN ORG-MODE HACKS
-; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-; ----------------------------------------------------------------------
-; ----------------------------------------------------------------------
+;; (defun wc ()
+;;   (interactive)
+;;   (message "Word count: %s" (how-many "\\w+" (point-min) (point-max))))
+;; ; ----------------------------------------------------------------------
+;; ; ----------------------------------------------------------------------
+;; ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;; ; BEGIN ORG-MODE HACKS
+;; ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;; ; ----------------------------------------------------------------------
+;; ; ----------------------------------------------------------------------
 
 
 ; From Scotty Moon: Here's how to add new key bindings to existing mode.
@@ -1056,9 +1078,22 @@ do this for the whole buffer."
 (put 'downcase-region 'disabled t)
 
 (require 'linum)
+; DO NOT ENABLE LINUM MODE GLOBALLY!
 ; linum crashes org-mode. Happily, org-mode overrides C-c l.
 ; org mode appears to have seized this all round. What gives?
 (global-set-key "\C-c l" 'linum-mode)
+
+; ok to use mode hooks to auto-enable linum-mode, though
+(defun enable-linum-mode ()
+  (linum-mode t))
+(add-hook 'c-mode-hook 'enable-linum-mode)
+(add-hook 'emacs-lisp-mode-hook 'enable-linum-mode)
+(add-hook 'lisp-mode-hook 'enable-linum-mode)
+(add-hook 'nxml-mode-hook 'enable-linum-mode)
+(add-hook 'ruby-mode-hook 'enable-linum-mode)
+(add-hook 'text-mode-hook 'enable-linum-mode)
+(add-hook 'xml-mode-hook 'enable-linum-mode)
+(add-hook 'yaml-mode-hook 'enable-linum-mode)
 
 
 ;; ----------------------------------------------------------------------
@@ -1092,3 +1127,9 @@ do this for the whole buffer."
 ;; (toggle-toolbar-show--isearch-forward)
 ;; (toggle-toolbar-show--write-file)
 
+
+(put 'set-goal-column 'disabled nil)
+
+;; ----------------------------------------------------------------------
+;; mediawiki mode!
+(require 'mediawiki)

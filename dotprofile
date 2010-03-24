@@ -65,7 +65,7 @@ IN="\[\033[0m\]"
 export PS1="$NM[ $HI\u $HII\h $SI\w$NM ] $IN"
 
 
-export GEMDIR=$(gem environment gemdir)
+export GEMDIR=$(gem environment gemdir)/gems
 
 # ImageMagick-6.3.9
 #export MAGICK_HOME="/Library/ImageMagick"
