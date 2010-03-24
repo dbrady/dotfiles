@@ -147,8 +147,8 @@
 
 (global-set-key "\M-g" 'goto-line)
 (setq-default c-basic-offset 2)
-;; SADNESS. Public Engines is of the devil. Tabs mode it is.
 (setq-default indent-tabs-mode nil)
+;; SADNESS. Public Engines is of the devil. Tabs mode it is.
 ;(setq-default indent-tabs-mode t)
 (setq default-tab-width 2)
 
@@ -881,6 +881,11 @@
 ; (global-font-lock-mode 1) 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 
+; customizers
+(setq org-todo-keywords
+       '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "BLOCKED(b)" "|" "DONE(d)" "ABANDONED(a)")))
+
+(setq org-startup-folded nil)
 
 ; ----------------------------------------------------------------------
 ; remember
@@ -1049,10 +1054,11 @@ do this for the whole buffer."
 ; section rather than trying to fight it and keep this updated alla
 ; time.
 (put 'narrow-to-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
+(put 'downcase-region 'disabled t)
 
 (require 'linum)
 ; linum crashes org-mode. Happily, org-mode overrides C-c l.
+; org mode appears to have seized this all round. What gives?
 (global-set-key "\C-c l" 'linum-mode)
 
 

@@ -40,6 +40,7 @@ alias cdm='cd ~/lmp/market'
 
 alias cdcr='cd ~/pe/crimereports'
 alias cdcr2='cd ~/pe/crimereports2/backend/crimereports'
+alias cdcc='cd ~/pe/crimereports2/flex/CommandCentral2'
 
 # Applications in OSX
 alias 'firefox'='open -a Firefox'
@@ -53,3 +54,4 @@ alias 'aq'='aquamacs'
 alias zf=~/pe/zend/bin/zf.sh
 alias acr='apachectl configtest && sudo apachectl restart'
 alias cdcr2='cd ~/pe/crimereports2/backend/crimereports/'
+alias gpa='git poosh origin && git poosh monkey && git poosh pemonkey'
