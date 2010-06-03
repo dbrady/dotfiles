@@ -13,7 +13,7 @@ export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
 # export ANT_HOME='/Developer/Java/ant'
 
 # DANGER DANGER DANGER - Do not just slap paths in here willy-nilly. If it's a path to something outside of ~, it should probably go in /etc/paths.d!
-export PATH=~/bin:$PATH:/usr/local/pgsql/bin
+export PATH=~/bin:~/pebin:$PATH:/bin:/usr/local/mysql/bin:/usr/local/sbin:/Library/PostgreSQL/8.4/bin/
 
 # Search the ls manpage for "CLICOLOR" and "color designators for an
 # explanation of this goodness.
@@ -101,7 +101,7 @@ parse_git_branch() {
 # export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(next)/\\033[31m(next)/' | sed -e 's/(sprint)/\\033[33m(sprint)/')\[\033[37m\]\[\033[0m\]\n$ "
 
 # ALARM: production/master RED: stage YELLOW: next CYAN: everybody else
-export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n∫ "
+export PS1="\D{%H:%M:%S} \[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n∫ "
 
 #export PS1="\[\]\u@\h\]:\w
 
@@ -138,5 +138,9 @@ export MANPATH=/opt/local/share/man:$MANPATH
 PATH="/Library/Frameworks/Python.framework/Versions/2.6/bin:${PATH}"
 export PATH
 
+if [[ -e /Users/dbrady/.aliases ]] ; then source /Users/dbrady/.aliases ; fi
+if [[ -e /Users/dbrady/.private ]] ; then source /Users/dbrady/.private ; fi
+
 # Load RVM
 if [[ -s /Users/dbrady/.rvm/scripts/rvm ]] ; then source /Users/dbrady/.rvm/scripts/rvm ; fi
+

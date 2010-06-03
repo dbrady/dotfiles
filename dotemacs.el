@@ -1134,3 +1134,50 @@
 ;; ----------------------------------------------------------------------
 ;; mediawiki mode!
 (require 'mediawiki)
+
+;; ----------------------------------------------------------------------
+;; refactoring-split-temporary-variable
+;; Given:
+;; - Region around an expression; (ideally: point in a line with an
+;;   expression that could then be extracted?)
+;;
+;; Do:
+;; - Prompt for temporary variable name
+;; - TODO: For statically typed langs, prompt for variable type, or
+;;   perhaps accept a space in the variable name?
+;; - Cut region
+;; - insert temporary variable name
+;; - go up a line and insert variable = yank expression
+;;
+;; Example:
+;;    extrapolate(find_shapes())
+;; # region around "find_shapes()"
+;; # temporary-variable-name: shapes
+;; # =>
+;;    shapes = find_shapes
+;;    extrapolate(shapes)
+
+;; ----------------------------------------------------------------------
+;; refactoring-inline-temporary-variable
+;; Given:
+;; - Point on a line declaring a temporary variable
+;; 
+;; Do:
+;; - Parse the line, expecting [vartype] temp_var = expression
+;; - Expand region to full current scope
+;; - Replace temp_var with expression in region
+;; - Delete the original line
+;; 
+;; Example:
+;;    shapes = find_shapes()
+;;    extrapolate(shapes)
+;;    log_data(shapes)
+;; # Point is on shapes = find_shapes() line
+;; # refactoring-inline-temporary-variable
+;; # =>
+;;    extrapolate(find_shapes())
+;;    log_data(find_shapes())
+
+
+(add-hook 'find-file-hooks '(lambda () (highlight-lines-matching-regexp "\\(FIXME\\|TODO\\|BUG\\):" 'hi-yellow-b)))
+
