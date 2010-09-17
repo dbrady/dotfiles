@@ -547,6 +547,24 @@
 (global-set-key (kbd "\C-c @") 'insert-date)
 
 ;;----------------------------------------------------------------------
+;; insert-five-things
+;; Inserts an org-mode text snippet for "Five Things To Do Today".
+;; TODO: See about hooking Org-mode snippets.
+;; TODO: Refactor inserts to a loop?
+(defun insert-five-things ()
+  (interactive)
+  (insert "* " (format-time-string "%Y-%m-%d") "\n")
+  (insert "** Five Things To Do Today [0/5]\n")
+  (insert "- [ ] \n")
+  (insert "- [ ] \n")
+  (insert "- [ ] \n")
+  (insert "- [ ] \n")
+  (insert "- [ ] \n")
+  (previous-line)(previous-line)(previous-line)(previous-line)(previous-line)(end-of-line))
+;; TODO: this should be an org-mode-only hook
+(global-set-key (kbd "\C-c 5") 'insert-five-things)
+
+;;----------------------------------------------------------------------
 ;; comment-file
 ;; Adds a comment block at the top of the file
 ;;
@@ -895,6 +913,10 @@
 ; (global-font-lock-mode 1) 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 
+; TODO: try enabling linum-mode globally, then DISABLING it in org-mode?
+
+
+
 ; customizers
 (setq org-todo-keywords
        '((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "BLOCKED(b)" "|" "DONE(d)" "ABANDONED(a)")))
@@ -1092,9 +1114,22 @@ do this for the whole buffer."
 (put 'downcase-region 'disabled t)
 
 (require 'linum)
+; DO NOT ENABLE LINUM MODE GLOBALLY!
 ; linum crashes org-mode. Happily, org-mode overrides C-c l.
 ; org mode appears to have seized this all round. What gives?
 (global-set-key "\C-c l" 'linum-mode)
+
+; ok to use mode hooks to auto-enable linum-mode, though
+(defun enable-linum-mode ()
+  (linum-mode t))
+(add-hook 'c-mode-hook 'enable-linum-mode)
+(add-hook 'emacs-lisp-mode-hook 'enable-linum-mode)
+(add-hook 'lisp-mode-hook 'enable-linum-mode)
+(add-hook 'nxml-mode-hook 'enable-linum-mode)
+(add-hook 'ruby-mode-hook 'enable-linum-mode)
+(add-hook 'text-mode-hook 'enable-linum-mode)
+(add-hook 'xml-mode-hook 'enable-linum-mode)
+(add-hook 'yaml-mode-hook 'enable-linum-mode)
 
 
 ;; ----------------------------------------------------------------------
@@ -1131,7 +1166,6 @@ do this for the whole buffer."
 
 (put 'set-goal-column 'disabled nil)
 
-
 ;; ----------------------------------------------------------------------
 ;; Experimental -- code from Tim Harper to add checkbox to org-mode
 ;; when hitting M-enter in a checklist
@@ -1153,3 +1187,54 @@ do this for the whole buffer."
 
 
 ;; 1:59 err.. auto-load org-mode
+
+;; ----------------------------------------------------------------------
+;; mediawiki mode!
+(require 'mediawiki)
+
+;; ----------------------------------------------------------------------
+;; refactoring-split-temporary-variable
+;; Given:
+;; - Region around an expression; (ideally: point in a line with an
+;;   expression that could then be extracted?)
+;;
+;; Do:
+;; - Prompt for temporary variable name
+;; - TODO: For statically typed langs, prompt for variable type, or
+;;   perhaps accept a space in the variable name?
+;; - Cut region
+;; - insert temporary variable name
+;; - go up a line and insert variable = yank expression
+;;
+;; Example:
+;;    extrapolate(find_shapes())
+;; # region around "find_shapes()"
+;; # temporary-variable-name: shapes
+;; # =>
+;;    shapes = find_shapes
+;;    extrapolate(shapes)
+
+;; ----------------------------------------------------------------------
+;; refactoring-inline-temporary-variable
+;; Given:
+;; - Point on a line declaring a temporary variable
+;; 
+;; Do:
+;; - Parse the line, expecting [vartype] temp_var = expression
+;; - Expand region to full current scope
+;; - Replace temp_var with expression in region
+;; - Delete the original line
+;; 
+;; Example:
+;;    shapes = find_shapes()
+;;    extrapolate(shapes)
+;;    log_data(shapes)
+;; # Point is on shapes = find_shapes() line
+;; # refactoring-inline-temporary-variable
+;; # =>
+;;    extrapolate(find_shapes())
+;;    log_data(find_shapes())
+
+
+(add-hook 'find-file-hooks '(lambda () (highlight-lines-matching-regexp "\\(FIXME\\|TODO\\|BUG\\):" 'hi-yellow-b)))
+

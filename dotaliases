@@ -4,6 +4,7 @@
 alias ls="ls -G"
 alias ll="ls -l"
 alias 'top'='top -o cpu'
+alias 't'='tree -ChL 1'
 
 # Programming crap
 alias findrb='find . -name "*.rb" -print0 | xargs -0 grep -Hn'
@@ -23,10 +24,10 @@ alias gsu="echo 'git submodule update' && git submodule update"
 alias cpd="cap production deploy"
 
 # Navigation crap
-alias cdlg='cd ~/lmp/leadgen'
 alias cddr='cd ~/devel/ruby'
-alias cdds='cd ~/lmp/degreesearch'
 alias cdsr='cd ~/esp/src/shinyreports'
+alias cdlg='cd ~/lmp/leadgen'
+alias cdds='cd ~/lmp/degreesearch'
 alias cdi='cd ~/devel/insectpod/work_area'
 alias cdgem='cd /Library/Ruby/Gems/1.8/gems'
 alias cdz='cd ~/lmp/zuul'
@@ -42,6 +43,9 @@ alias cdtd='cd ~/Documents/Adobe\ Flash\ Builder\ 4/flash_tdtest'
 alias cdcr='cd ~/pe/crimereports'
 alias cdcr2='cd ~/pe/cr2rails'
 alias cdcc2='cd ~/pe/cr2flex'
+alias cdcr2dox='cd ~/pe/cr2dox'
+alias cddox='cd ~/pe/dox'
+alias cdcc='cd ~/pe/cr2flex/CommandCentral2'
 
 # Applications in OSX
 alias 'firefox'='open -a Firefox'
@@ -55,5 +59,5 @@ alias 'aq'='aquamacs'
 # command aliases
 alias zf=~/pe/zend/bin/zf.sh
 alias acr='apachectl configtest && sudo apachectl restart'
-alias gpa='echo "git poosh origin && git poosh monkey && git poosh pemonkey" && git poosh origin && git poosh monkey && git poosh pemonkey'
 alias 'aqm'='aqmigration'
+alias 'rc'='rake cucumber'

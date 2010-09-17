@@ -11,8 +11,11 @@ require 'pp'
 require 'wirble'
 
 # require "utility_belt"
-
 # UtilityBelt.equip :all
+
+# This will work once I... um... write the code to support except
+# OH, AND I put clipboard into a beltpack.
+# UtilityBelt.equip :all, :except => ['clipboard']
 
 require 'boson'
 Boson.start
