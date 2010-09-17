@@ -14,11 +14,11 @@ alias as='autospec'
 alias sc="script/console"
 alias sss="script/spec_server"
 
-alias gpmm="git push monkey master"
-alias gpom="git push origin master"
-alias gst="git status"
-alias gsi="git submodule init"
-alias gsu="git submodule update"
+alias gpmm="echo 'git push monkey master' && git push monkey master"
+alias gpom="echo 'git push origin master' && git push origin master"
+alias gst="echo 'git status' && git status"
+alias gsi="echo 'git submodule init' && git submodule init"
+alias gsu="echo 'git submodule update' && git submodule update"
 
 alias cpd="cap production deploy"
 
@@ -27,7 +27,7 @@ alias cdlg='cd ~/lmp/leadgen'
 alias cddr='cd ~/devel/ruby'
 alias cdds='cd ~/lmp/degreesearch'
 alias cdsr='cd ~/esp/src/shinyreports'
-alias cdi='cd ~/images/insectpod/unpublished'
+alias cdi='cd ~/devel/insectpod/work_area'
 alias cdgem='cd /Library/Ruby/Gems/1.8/gems'
 alias cdz='cd ~/lmp/zuul'
 alias cdt='cd ~/Documents/todo'
@@ -37,21 +37,23 @@ alias cdam='cd ~/lmp/api_mapper'
 alias cdca='cd ~/lmp/core_api'
 alias cdc='cd ~/lmp/core_data'
 alias cdm='cd ~/lmp/market'
+alias cdtd='cd ~/Documents/Adobe\ Flash\ Builder\ 4/flash_tdtest'
 
 alias cdcr='cd ~/pe/crimereports'
-alias cdcr2='cd ~/pe/crimereports2/backend/crimereports'
-alias cdcc='cd ~/pe/crimereports2/flex/CommandCentral2'
+alias cdcr2='cd ~/pe/cr2rails'
+alias cdcc2='cd ~/pe/cr2flex'
 
 # Applications in OSX
 alias 'firefox'='open -a Firefox'
 alias 'safari'='open -a Safari'
-#alias 'graphviz'='open -a GraphViz'
-alias 'shoes'='open -a Shoes'
+alias 'ps4'='open -a "Adobe Photoshop CS4"'
+alias 'ps5'='open -a "Adobe Photoshop CS5"'
+alias 'ps'='open -a "Adobe Photoshop CS5"'
 
 alias 'aq'='aquamacs'
 
 # command aliases
 alias zf=~/pe/zend/bin/zf.sh
 alias acr='apachectl configtest && sudo apachectl restart'
-alias cdcr2='cd ~/pe/crimereports2/backend/crimereports/'
-alias gpa='git poosh origin && git poosh monkey && git poosh pemonkey'
+alias gpa='echo "git poosh origin && git poosh monkey && git poosh pemonkey" && git poosh origin && git poosh monkey && git poosh pemonkey'
+alias 'aqm'='aqmigration'

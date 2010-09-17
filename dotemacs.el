@@ -347,7 +347,12 @@
   (setq working-for "Lead Media Partners LLC")
   (setq copyright-since "2007"))
 
-(working-for-lmp)
+(defun working-for-pe()
+  (interactive)
+  (setq working-for "Public Engines Inc")
+  (setq copyright-since "2010"))
+
+(working-for-pe)
 
 ; Graciously provided by ams on irc.freenode.net:#emacs
 ; Returns starting point of match if found, else nil
@@ -671,7 +676,12 @@
 ;; (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
 (autoload 'actionscript-mode "actionscript-mode" t)
-(add-to-list 'auto-mode-alist '("\\.as\\'" . actionscript-mode))
+
+(setq auto-mode-alist (append (list
+ '("\\.as\\'"   . actionscript-mode)
+ '("\\.\\(xml\\|xsl\\|rng\\|xhtml\\|mxml\\)\\'" . nxml-mode)
+ ;; add more modes here
+ ) auto-mode-alist))
 
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . html-mode))
@@ -696,6 +706,10 @@
           '(lambda ()
              (inf-ruby-keys)
              ))
+
+;; modes that I want linum-mode active in
+(add-hook 'ruby-mode-hook '(lambda () (linum-mode)))
+(add-hook 'feature-mode-hook '(lambda () (linum-mode)))
 
 ;; You need to fill in the variables, but once done, this runs
 ;; script/console on the targeted host and application when you run
@@ -996,6 +1010,27 @@ do this for the whole buffer."
 (defun wc ()
   (interactive)
   (message "Word count: %s" (how-many "\\w+" (point-min) (point-max))))
+
+;; Stolen from Steve Yegge's .emacs file
+(defun swap-windows ()
+  "If you have 2 windows, it swaps them."
+  (interactive)
+  (cond ((/= (count-windows) 2)
+         (message "You need exactly 2 windows to do this."))
+        (t
+         (let* ((w1 (first (window-list)))
+                (w2 (second (window-list)))
+                (b1 (window-buffer w1))
+                (b2 (window-buffer w2))
+                (s1 (window-start w1))
+                (s2 (window-start w2)))
+           (set-window-buffer w1 b2)
+           (set-window-buffer w2 b1)
+           (set-window-start w1 s2)
+           (set-window-start w2 s1))))
+  (other-window 1))
+
+
 ; ----------------------------------------------------------------------
 ; ----------------------------------------------------------------------
 ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1093,3 +1128,28 @@ do this for the whole buffer."
 ;; (toggle-toolbar-show--isearch-forward)
 ;; (toggle-toolbar-show--write-file)
 
+
+(put 'set-goal-column 'disabled nil)
+
+
+;; ----------------------------------------------------------------------
+;; Experimental -- code from Tim Harper to add checkbox to org-mode
+;; when hitting M-enter in a checklist
+
+(defadvice org-insert-item (before org-insert-item-autocheckbox activate)
+  (save-excursion
+    (org-beginning-of-item)
+    (when (org-at-item-checkbox-p)
+      (ad-set-args 0 '(checkbox)))))
+
+;;if you auto-load emacs... this will patch org-mode after it loads:
+(eval-after-load "org-mode"
+  '(defadvice org-insert-item (before org-insert-item-autocheckbox activate)
+     (save-excursion
+       (when (org-at-item-p)
+         (org-beginning-of-item)
+         (when (org-at-item-checkbox-p)
+           (ad-set-args 0 '(checkbox)))))))
+
+
+;; 1:59 err.. auto-load org-mode
