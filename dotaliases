@@ -52,7 +52,6 @@ alias 'firefox'='open -a Firefox'
 alias 'safari'='open -a Safari'
 alias 'ps4'='open -a "Adobe Photoshop CS4"'
 alias 'ps5'='open -a "Adobe Photoshop CS5"'
-alias 'ps'='open -a "Adobe Photoshop CS5"'
 
 alias 'aq'='aquamacs'
 

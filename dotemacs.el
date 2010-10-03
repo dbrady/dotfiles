@@ -147,9 +147,8 @@
 
 (global-set-key "\M-g" 'goto-line)
 (setq-default c-basic-offset 2)
-(setq-default indent-tabs-mode nil)
-;; SADNESS. Public Engines is of the devil. Tabs mode it is.
-;(setq-default indent-tabs-mode t)
+;(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode t)
 (setq default-tab-width 2)
 
 ;; Detect this OS and set keybindings accordings. Ideally this should
@@ -728,6 +727,7 @@
 ;; modes that I want linum-mode active in
 (add-hook 'ruby-mode-hook '(lambda () (linum-mode)))
 (add-hook 'feature-mode-hook '(lambda () (linum-mode)))
+(add-hook 'java-mode-hook '(lambda () (linum-mode)))
 
 ;; You need to fill in the variables, but once done, this runs
 ;; script/console on the targeted host and application when you run
@@ -976,53 +976,53 @@ do this for the whole buffer."
   (interactive "P")
   (save-excursion
     (let* ((buffer-invisibility-spec (org-inhibit-invisibility))
-	   (beg (condition-case nil
-		    (progn (outline-back-to-heading) (point))
-		  (error (point-min))))
-	   (end (move-marker
-		 (make-marker)
-		 (progn (or (outline-get-next-sibling) ;; (1)
-			    (goto-char (point-max)))
-			(point))))
-	   (re "\\(\\[[0-9]*%\\]\\)\\|\\(\\[[0-9]*/[0-9]*\\]\\)")
-	   (re-box
-	    "^[ \t]*\\(*+\\|[-+*]\\|[0-9]+[.)]\\) +\\(\\[[- X]\\]\\)")
-	   b1 e1 f1 c-on c-off lim (cstat 0))
+           (beg (condition-case nil
+                    (progn (outline-back-to-heading) (point))
+                  (error (point-min))))
+           (end (move-marker
+                 (make-marker)
+                 (progn (or (outline-get-next-sibling) ;; (1)
+                            (goto-char (point-max)))
+                        (point))))
+           (re "\\(\\[[0-9]*%\\]\\)\\|\\(\\[[0-9]*/[0-9]*\\]\\)")
+           (re-box
+            "^[ \t]*\\(*+\\|[-+*]\\|[0-9]+[.)]\\) +\\(\\[[- X]\\]\\)")
+           b1 e1 f1 c-on c-off lim (cstat 0))
       (when all
-	(goto-char (point-min))
-	(or (outline-get-next-sibling) (goto-char (point-max))) ;; (2)
-	(setq beg (point) end (point-max)))
+        (goto-char (point-min))
+        (or (outline-get-next-sibling) (goto-char (point-max))) ;; (2)
+        (setq beg (point) end (point-max)))
       (goto-char beg)
       (while (re-search-forward re end t)
-	(setq cstat (1+ cstat)
-	      b1 (match-beginning 0)
-	      e1 (match-end 0)
-	      f1 (match-beginning 1)
-	      lim (cond
-		   ((org-on-heading-p)
-		    (or (outline-get-next-sibling) ;; (3)
-			(goto-char (point-max)))
-		    (point))
-		   ((org-at-item-p) (org-end-of-item) (point))
-		   (t nil))
-	      c-on 0 c-off 0)
-	(goto-char e1)
-	(when lim
-	  (while (re-search-forward re-box lim t)
-	    (if (member (match-string 2) '("[ ]" "[-]"))
-		(setq c-off (1+ c-off))
-	      (setq c-on (1+ c-on))))
-	  (goto-char b1)
-	  (insert (if f1
-		      (format "[%d%%]" (/ (* 100 c-on)
-					  (max 1 (+ c-on c-off))))
-		    (format "[%d/%d]" c-on (+ c-on c-off))))
-	  (and (looking-at "\\[.*?\\]")
-	       (replace-match ""))))
+        (setq cstat (1+ cstat)
+              b1 (match-beginning 0)
+              e1 (match-end 0)
+              f1 (match-beginning 1)
+              lim (cond
+                   ((org-on-heading-p)
+                    (or (outline-get-next-sibling) ;; (3)
+                        (goto-char (point-max)))
+                    (point))
+                   ((org-at-item-p) (org-end-of-item) (point))
+                   (t nil))
+              c-on 0 c-off 0)
+        (goto-char e1)
+        (when lim
+          (while (re-search-forward re-box lim t)
+            (if (member (match-string 2) '("[ ]" "[-]"))
+                (setq c-off (1+ c-off))
+              (setq c-on (1+ c-on))))
+          (goto-char b1)
+          (insert (if f1
+                      (format "[%d%%]" (/ (* 100 c-on)
+                                          (max 1 (+ c-on c-off))))
+                    (format "[%d/%d]" c-on (+ c-on c-off))))
+          (and (looking-at "\\[.*?\\]")
+               (replace-match ""))))
       (when (interactive-p)
-	(message "Checkbox statistics updated %s (%d places)"
-		 (if all "in entire file" "in current outline entry")
-		 cstat)))))
+        (message "Checkbox statistics updated %s (%d places)"
+                 (if all "in entire file" "in current outline entry")
+                 cstat)))))
 
 (defadvice org-update-checkbox-count (around wicked activate)
   "Fix the built-in checkbox count to understand headlines."
@@ -1234,6 +1234,66 @@ do this for the whole buffer."
 ;; # =>
 ;;    extrapolate(find_shapes())
 ;;    log_data(find_shapes())
+
+
+;; ----------------------------------------------------------------------
+;; camelcase-region
+;; Given a region of text in snake_case format, changes it to camelCase.
+(defun camelcase-region (start end)
+  "Changes region from snake_case to camelCase"
+  (interactive "r")
+  (save-restriction (narrow-to-region start end)
+                    (goto-char (point-min))
+                    (while (re-search-forward "_\\(.\\)" nil t)
+                      (replace-match (upcase (match-string 1))))))
+
+;; ----------------------------------------------------------------------
+;; cadged largely from http://xahlee.org/emacs/elisp_idioms.html:
+;; 
+(defun camelcase-word-or-region ()
+  "Changes word or region from snake_case to camelCase"
+  (interactive)
+  (let (pos1 pos2 bds)
+    (if (and transient-mark-mode mark-active)
+        (setq pos1 (region-beginning) pos2 (region-end))
+      (progn
+        (setq bds (bounds-of-thing-at-point 'symbol))
+        (setq pos1 (car bds) pos2 (cdr bds))))
+    (camelcase-region pos1 pos2)))
+
+;; ----------------------------------------------------------------------
+;; snakecase-region
+;; Given a region of text in camelCase format, changes it to snake_case.
+(defun snakecase-region (start end)
+  "Changes region from camelCase to snake_case"
+  (interactive "r")
+  (save-restriction (narrow-to-region start end)
+                    (goto-char (point-min))
+                    (while (re-search-forward "_\\(.\\)" nil t)
+                      (replace-match (upcase (match-string 1))))))
+
+;; ----------------------------------------------------------------------
+;; Given a region of text in camelCase format, changes it to snake_case.
+;; 
+(defun snakecase-word-or-region ()
+  "Changes word or region from camelCase to snake_case"
+  (interactive)
+  (let (pos1 pos2 bds)
+    (if (and transient-mark-mode mark-active)
+        (setq pos1 (region-beginning) pos2 (region-end))
+      (progn
+        (setq bds (bounds-of-thing-at-point 'symbol))
+        (setq pos1 (car bds) pos2 (cdr bds))))
+    (snakecase-region pos1 pos2)))
+
+
+
+;; ----------------------------------------------------------------------
+;; refactoring-change-variable-to-java-case
+;; ((select-symbol-at-pt)
+;;  (narrow-to-region)
+;;  (replace-regexp "_\(.\)" "\,(upcase \1)")
+;;  (widen))
 
 
 (add-hook 'find-file-hooks '(lambda () (highlight-lines-matching-regexp "\\(FIXME\\|TODO\\|BUG\\):" 'hi-yellow-b)))

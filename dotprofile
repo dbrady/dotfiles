@@ -129,3 +129,4 @@ export PATH
 # put MY bin first, THEN homebrew, THEN ports.
 export PATH=~/bin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin:/Library/PostgreSQL/8.4/bin/
 
+export ANDROID_SDK_ROOT=/usr/local/Cellar/android-sdk/r7
