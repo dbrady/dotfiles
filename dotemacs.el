@@ -724,11 +724,6 @@
              (inf-ruby-keys)
              ))
 
-;; modes that I want linum-mode active in
-(add-hook 'ruby-mode-hook '(lambda () (linum-mode)))
-(add-hook 'feature-mode-hook '(lambda () (linum-mode)))
-(add-hook 'java-mode-hook '(lambda () (linum-mode)))
-
 ;; You need to fill in the variables, but once done, this runs
 ;; script/console on the targeted host and application when you run
 ;; inf-ruby.
@@ -1124,13 +1119,14 @@ do this for the whole buffer."
   (linum-mode t))
 (add-hook 'c-mode-hook 'enable-linum-mode)
 (add-hook 'emacs-lisp-mode-hook 'enable-linum-mode)
+(add-hook 'feature-mode-hook 'enable-linum-mode)
+(add-hook 'java-mode-hook 'enable-linum-mode)
 (add-hook 'lisp-mode-hook 'enable-linum-mode)
 (add-hook 'nxml-mode-hook 'enable-linum-mode)
 (add-hook 'ruby-mode-hook 'enable-linum-mode)
 (add-hook 'text-mode-hook 'enable-linum-mode)
 (add-hook 'xml-mode-hook 'enable-linum-mode)
 (add-hook 'yaml-mode-hook 'enable-linum-mode)
-
 
 ;; ----------------------------------------------------------------------
 ;; Turn off all the crap on the aquamacs toolbar. This is commented
