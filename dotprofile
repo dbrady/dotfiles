@@ -119,27 +119,16 @@ include_if_exists ~/.private
 
 export RUBYOPT=rubygems
 
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-export MANPATH=/opt/local/share/man:$MANPATH
-
-PATH="/Library/Frameworks/Python.framework/Versions/2.6/bin:${PATH}"
-export PATH
-
 # DANGER DANGER DANGER - Do not just slap paths in here willy-nilly. If it's a path to something outside of ~, it should probably go in /etc/paths.d!
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export PATH="/Library/Frameworks/Python.framework/Versions/2.6/bin:${PATH}"
 # put MY bin first, THEN homebrew, THEN ports.
-export PATH=~/bin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin:/Library/PostgreSQL/8.4/bin/
+export PATH=~/bin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin
+export MANPATH=/opt/local/share/man:$MANPATH
 
 export ANDROID_SDK_ROOT=/usr/local/Cellar/android-sdk/r7
 
 # Load RVM
 if [[ -s /Users/dbrady/.rvm/scripts/rvm ]] ; then source /Users/dbrady/.rvm/scripts/rvm ; fi
 
-
-##
-# Your previous /Users/dbrady/.profile file was backed up as /Users/dbrady/.profile.macports-saved_2010-12-14_at_16:20:43
-##
-
-# MacPorts Installer addition on 2010-12-14_at_16:20:43: adding an appropriate PATH variable for use with MacPorts.
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-# Finished adapting your PATH environment variable for use with MacPorts.
 
