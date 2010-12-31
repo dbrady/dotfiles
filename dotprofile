@@ -1,19 +1,12 @@
-#
-# Your previous .profile  (if any) is saved as .profile.mpsaved
-# Setting the path for MacPorts.
-
-export EDITOR=/usr/bin/emacs
-export CVSEDITOR=/usr/bin/emacs
-export SVN_EDITOR=/usr/bin/emacs
+export EDITOR=`which emacs`
+export CVSEDITOR=`which emacs`
+export SVN_EDITOR=`which emacs`
 export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
 
 # Supposedly this can be found in the Developer Tools that came with
 # my Mac. That's the theory, at any rate; in practice it's a load of
 # dingo's bicycles.
 # export ANT_HOME='/Developer/Java/ant'
-
-# DANGER DANGER DANGER - Do not just slap paths in here willy-nilly. If it's a path to something outside of ~, it should probably go in /etc/paths.d!
-export PATH=~/bin:~/pebin:$PATH:/bin:/usr/local/mysql/bin:/usr/local/sbin:/Library/PostgreSQL/8.4/bin/
 
 # Search the ls manpage for "CLICOLOR" and "color designators for an
 # explanation of this goodness.
@@ -103,7 +96,13 @@ parse_git_branch() {
 # ALARM: production/master RED: stage YELLOW: next CYAN: everybody else
 export PS1="\D{%H:%M:%S} \[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n∫ "
 
+# Same as above but with $ instead of ∫
+# export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n$ "
+
+
 #export PS1="\[\]\u@\h\]:\w
+
+export HISTFILESIZE=10000
 
 include_if_exists() {
    if [ -e $1 ]; then
@@ -115,32 +114,32 @@ include_if_exists ~/.aliases
 include_if_exists ~/.bash_completions
 include_if_exists ~/.git-completion.bash
 include_if_exists ~/bin/dbnames.sh
+include_if_exists ~/.nav
+include_if_exists ~/.private
 
 export RUBYOPT=rubygems
 
-
-##
-# Your previous /Users/dbrady/.profile file was backed up as /Users/dbrady/.profile.macports-saved_2009-08-08_at_21:37:57
-##
-
-# MacPorts Installer addition on 2009-08-08_at_21:37:57: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-# Finished adapting your PATH environment variable for use with MacPorts.
-
-
-# MacPorts Installer addition on 2009-08-08_at_21:37:57: adding an appropriate MANPATH variable for use with MacPorts.
 export MANPATH=/opt/local/share/man:$MANPATH
-# Finished adapting your MANPATH environment variable for use with MacPorts.
 
-
-# Setting PATH for MacPython 2.6
-# The orginal version is saved in .profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/2.6/bin:${PATH}"
 export PATH
 
-if [[ -e /Users/dbrady/.aliases ]] ; then source /Users/dbrady/.aliases ; fi
-if [[ -e /Users/dbrady/.private ]] ; then source /Users/dbrady/.private ; fi
+# DANGER DANGER DANGER - Do not just slap paths in here willy-nilly. If it's a path to something outside of ~, it should probably go in /etc/paths.d!
+# put MY bin first, THEN homebrew, THEN ports.
+export PATH=~/bin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin:/Library/PostgreSQL/8.4/bin/
+
+export ANDROID_SDK_ROOT=/usr/local/Cellar/android-sdk/r7
 
 # Load RVM
 if [[ -s /Users/dbrady/.rvm/scripts/rvm ]] ; then source /Users/dbrady/.rvm/scripts/rvm ; fi
+
+
+##
+# Your previous /Users/dbrady/.profile file was backed up as /Users/dbrady/.profile.macports-saved_2010-12-14_at_16:20:43
+##
+
+# MacPorts Installer addition on 2010-12-14_at_16:20:43: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
 

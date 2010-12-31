@@ -1,0 +1,13 @@
+set wrap
+set visualbell
+set nobackup
+set nowritebackup
+set directory=$HOME/.vim/tmp//,.
+set incsearch
+set hlsearch
+set number
+set hidden
+set softtabstop=2
+set wildmode=list:longest
+set ruler
+set laststatus=2

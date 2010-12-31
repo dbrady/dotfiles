@@ -147,9 +147,8 @@
 
 (global-set-key "\M-g" 'goto-line)
 (setq-default c-basic-offset 2)
-(setq-default indent-tabs-mode nil)
-;; SADNESS. Public Engines is of the devil. Tabs mode it is.
-;(setq-default indent-tabs-mode t)
+;(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode t)
 (setq default-tab-width 2)
 
 ;; Detect this OS and set keybindings accordings. Ideally this should
@@ -347,7 +346,12 @@
   (setq working-for "Lead Media Partners LLC")
   (setq copyright-since "2007"))
 
-(working-for-lmp)
+(defun working-for-pe()
+  (interactive)
+  (setq working-for "Public Engines Inc")
+  (setq copyright-since "2010"))
+
+(working-for-pe)
 
 ; Graciously provided by ams on irc.freenode.net:#emacs
 ; Returns starting point of match if found, else nil
@@ -660,6 +664,8 @@
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
 
+(add-to-list 'auto-mode-alist '("\\.ny\\'" . lisp-mode))
+
 ; Macros to make Cwyckoff's life a tiny bit easier
 (defun insert-hashrocket ()
   (interactive)
@@ -689,7 +695,12 @@
 ;; (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
 (autoload 'actionscript-mode "actionscript-mode" t)
-(add-to-list 'auto-mode-alist '("\\.as\\'" . actionscript-mode))
+
+(setq auto-mode-alist (append (list
+ '("\\.as\\'"   . actionscript-mode)
+ '("\\.\\(xml\\|xsl\\|rng\\|xhtml\\|mxml\\)\\'" . nxml-mode)
+ ;; add more modes here
+ ) auto-mode-alist))
 
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . html-mode))
@@ -799,7 +810,7 @@
 
 (global-set-key [(control meta x)] 'ido-execute)
 
-(require 'textmate)
+;(require 'textmate)
 
 
 ;; Screw you, Aquamacs. aquamacs-backward-kill-word fails about 70% of
@@ -893,6 +904,7 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\C-c\C-t" 'orgtbl-mode)
 
 ; org-mode depends on global-font-lock-mode, which is turned on
 ; elsewhere, but let's enforce it for org-mode buffers anyway:
@@ -940,91 +952,112 @@
 ;;                "~/Documents/GTD/privnotes.org")
 ;;       ))
 
-;; ; ----------------------------------------------------------------------
-;; ; ----------------------------------------------------------------------
-;; ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;; ; BEGIN ORG-MODE HACKS
-;; ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;; ; ----------------------------------------------------------------------
-;; ; ----------------------------------------------------------------------
-;; ; 
-;; ; This next bit sets counters in org-mode headlines. You write [/] at
-;; ; the end of the line, add some tasks, and when they are checked off
-;; ; the headline is updated to end with, e.g. [4/6] or [0/3], etc.
-;; ; 
-;; ; This appears to be included in Emacs 23. Check this when aquamacs
-;; ; upgrades.
-;; (defun wicked/org-update-checkbox-count (&optional all)
-;;   "Update the checkbox statistics in the current section.
-;; This will find all statistic cookies like [57%] and [6/12] and update
-;; them with the current numbers.  With optional prefix argument ALL,
-;; do this for the whole buffer."
-;;   (interactive "P")
-;;   (save-excursion
-;;     (let* ((buffer-invisibility-spec (org-inhibit-invisibility))
-;; 	   (beg (condition-case nil
-;; 		    (progn (outline-back-to-heading) (point))
-;; 		  (error (point-min))))
-;; 	   (end (move-marker
-;; 		 (make-marker)
-;; 		 (progn (or (outline-get-next-sibling) ;; (1)
-;; 			    (goto-char (point-max)))
-;; 			(point))))
-;; 	   (re "\\(\\[[0-9]*%\\]\\)\\|\\(\\[[0-9]*/[0-9]*\\]\\)")
-;; 	   (re-box
-;; 	    "^[ \t]*\\(*+\\|[-+*]\\|[0-9]+[.)]\\) +\\(\\[[- X]\\]\\)")
-;; 	   b1 e1 f1 c-on c-off lim (cstat 0))
-;;       (when all
-;; 	(goto-char (point-min))
-;; 	(or (outline-get-next-sibling) (goto-char (point-max))) ;; (2)
-;; 	(setq beg (point) end (point-max)))
-;;       (goto-char beg)
-;;       (while (re-search-forward re end t)
-;; 	(setq cstat (1+ cstat)
-;; 	      b1 (match-beginning 0)
-;; 	      e1 (match-end 0)
-;; 	      f1 (match-beginning 1)
-;; 	      lim (cond
-;; 		   ((org-on-heading-p)
-;; 		    (or (outline-get-next-sibling) ;; (3)
-;; 			(goto-char (point-max)))
-;; 		    (point))
-;; 		   ((org-at-item-p) (org-end-of-item) (point))
-;; 		   (t nil))
-;; 	      c-on 0 c-off 0)
-;; 	(goto-char e1)
-;; 	(when lim
-;; 	  (while (re-search-forward re-box lim t)
-;; 	    (if (member (match-string 2) '("[ ]" "[-]"))
-;; 		(setq c-off (1+ c-off))
-;; 	      (setq c-on (1+ c-on))))
-;; 	  (goto-char b1)
-;; 	  (insert (if f1
-;; 		      (format "[%d%%]" (/ (* 100 c-on)
-;; 					  (max 1 (+ c-on c-off))))
-;; 		    (format "[%d/%d]" c-on (+ c-on c-off))))
-;; 	  (and (looking-at "\\[.*?\\]")
-;; 	       (replace-match ""))))
-;;       (when (interactive-p)
-;; 	(message "Checkbox statistics updated %s (%d places)"
-;; 		 (if all "in entire file" "in current outline entry")
-;; 		 cstat)))))
+; ----------------------------------------------------------------------
+; ----------------------------------------------------------------------
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+; BEGIN ORG-MODE HACKS
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+; ----------------------------------------------------------------------
+; ----------------------------------------------------------------------
+; 
+; This next bit sets counters in org-mode headlines. You write [/] at
+; the end of the line, add some tasks, and when they are checked off
+; the headline is updated to end with, e.g. [4/6] or [0/3], etc.
+; 
+; This appears to be included in Emacs 23. Check this when aquamacs
+; upgrades.
+(defun wicked/org-update-checkbox-count (&optional all)
+  "Update the checkbox statistics in the current section.
+This will find all statistic cookies like [57%] and [6/12] and update
+them with the current numbers.  With optional prefix argument ALL,
+do this for the whole buffer."
+  (interactive "P")
+  (save-excursion
+    (let* ((buffer-invisibility-spec (org-inhibit-invisibility))
+           (beg (condition-case nil
+                    (progn (outline-back-to-heading) (point))
+                  (error (point-min))))
+           (end (move-marker
+                 (make-marker)
+                 (progn (or (outline-get-next-sibling) ;; (1)
+                            (goto-char (point-max)))
+                        (point))))
+           (re "\\(\\[[0-9]*%\\]\\)\\|\\(\\[[0-9]*/[0-9]*\\]\\)")
+           (re-box
+            "^[ \t]*\\(*+\\|[-+*]\\|[0-9]+[.)]\\) +\\(\\[[- X]\\]\\)")
+           b1 e1 f1 c-on c-off lim (cstat 0))
+      (when all
+        (goto-char (point-min))
+        (or (outline-get-next-sibling) (goto-char (point-max))) ;; (2)
+        (setq beg (point) end (point-max)))
+      (goto-char beg)
+      (while (re-search-forward re end t)
+        (setq cstat (1+ cstat)
+              b1 (match-beginning 0)
+              e1 (match-end 0)
+              f1 (match-beginning 1)
+              lim (cond
+                   ((org-on-heading-p)
+                    (or (outline-get-next-sibling) ;; (3)
+                        (goto-char (point-max)))
+                    (point))
+                   ((org-at-item-p) (org-end-of-item) (point))
+                   (t nil))
+              c-on 0 c-off 0)
+        (goto-char e1)
+        (when lim
+          (while (re-search-forward re-box lim t)
+            (if (member (match-string 2) '("[ ]" "[-]"))
+                (setq c-off (1+ c-off))
+              (setq c-on (1+ c-on))))
+          (goto-char b1)
+          (insert (if f1
+                      (format "[%d%%]" (/ (* 100 c-on)
+                                          (max 1 (+ c-on c-off))))
+                    (format "[%d/%d]" c-on (+ c-on c-off))))
+          (and (looking-at "\\[.*?\\]")
+               (replace-match ""))))
+      (when (interactive-p)
+        (message "Checkbox statistics updated %s (%d places)"
+                 (if all "in entire file" "in current outline entry")
+                 cstat)))))
 
-;; (defadvice org-update-checkbox-count (around wicked activate)
-;;   "Fix the built-in checkbox count to understand headlines."
-;;   (setq ad-return-value
-;; 	(wicked/org-update-checkbox-count (ad-get-arg 1))))
+(defadvice org-update-checkbox-count (around wicked activate)
+  "Fix the built-in checkbox count to understand headlines."
+  (setq ad-return-value
+	(wicked/org-update-checkbox-count (ad-get-arg 1))))
 
-;; (defun wc ()
-;;   (interactive)
-;;   (message "Word count: %s" (how-many "\\w+" (point-min) (point-max))))
-;; ; ----------------------------------------------------------------------
-;; ; ----------------------------------------------------------------------
-;; ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;; ; BEGIN ORG-MODE HACKS
-;; ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;; ; ----------------------------------------------------------------------
-;; ; ----------------------------------------------------------------------
+(defun wc ()
+  (interactive)
+  (message "Word count: %s" (how-many "\\w+" (point-min) (point-max))))
+
+;; Stolen from Steve Yegge's .emacs file
+(defun swap-windows ()
+  "If you have 2 windows, it swaps them."
+  (interactive)
+  (cond ((/= (count-windows) 2)
+         (message "You need exactly 2 windows to do this."))
+        (t
+         (let* ((w1 (first (window-list)))
+                (w2 (second (window-list)))
+                (b1 (window-buffer w1))
+                (b2 (window-buffer w2))
+                (s1 (window-start w1))
+                (s2 (window-start w2)))
+           (set-window-buffer w1 b2)
+           (set-window-buffer w2 b1)
+           (set-window-start w1 s2)
+           (set-window-start w2 s1))))
+  (other-window 1))
+
+
+; ----------------------------------------------------------------------
+; ----------------------------------------------------------------------
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+; BEGIN ORG-MODE HACKS
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+; ----------------------------------------------------------------------
+; ----------------------------------------------------------------------
 
 
 ; From Scotty Moon: Here's how to add new key bindings to existing mode.
@@ -1089,13 +1122,14 @@
   (linum-mode t))
 (add-hook 'c-mode-hook 'enable-linum-mode)
 (add-hook 'emacs-lisp-mode-hook 'enable-linum-mode)
+(add-hook 'feature-mode-hook 'enable-linum-mode)
+(add-hook 'java-mode-hook 'enable-linum-mode)
 (add-hook 'lisp-mode-hook 'enable-linum-mode)
 (add-hook 'nxml-mode-hook 'enable-linum-mode)
 (add-hook 'ruby-mode-hook 'enable-linum-mode)
 (add-hook 'text-mode-hook 'enable-linum-mode)
 (add-hook 'xml-mode-hook 'enable-linum-mode)
 (add-hook 'yaml-mode-hook 'enable-linum-mode)
-
 
 ;; ----------------------------------------------------------------------
 ;; Turn off all the crap on the aquamacs toolbar. This is commented
@@ -1129,7 +1163,27 @@
 ;; (toggle-toolbar-show--write-file)
 
 
-(put 'set-goal-column 'disabled nil)
+;; ----------------------------------------------------------------------
+;; Experimental -- code from Tim Harper to add checkbox to org-mode
+;; when hitting M-enter in a checklist
+
+(defadvice org-insert-item (before org-insert-item-autocheckbox activate)
+  (save-excursion
+    (org-beginning-of-item)
+    (when (org-at-item-checkbox-p)
+      (ad-set-args 0 '(checkbox)))))
+
+;;if you auto-load emacs... this will patch org-mode after it loads:
+(eval-after-load "org-mode"
+  '(defadvice org-insert-item (before org-insert-item-autocheckbox activate)
+     (save-excursion
+       (when (org-at-item-p)
+         (org-beginning-of-item)
+         (when (org-at-item-checkbox-p)
+           (ad-set-args 0 '(checkbox)))))))
+
+
+;; 1:59 err.. auto-load org-mode
 
 ;; ----------------------------------------------------------------------
 ;; mediawiki mode!
@@ -1177,6 +1231,66 @@
 ;; # =>
 ;;    extrapolate(find_shapes())
 ;;    log_data(find_shapes())
+
+
+;; ----------------------------------------------------------------------
+;; camelcase-region
+;; Given a region of text in snake_case format, changes it to camelCase.
+(defun camelcase-region (start end)
+  "Changes region from snake_case to camelCase"
+  (interactive "r")
+  (save-restriction (narrow-to-region start end)
+                    (goto-char (point-min))
+                    (while (re-search-forward "_\\(.\\)" nil t)
+                      (replace-match (upcase (match-string 1))))))
+
+;; ----------------------------------------------------------------------
+;; cadged largely from http://xahlee.org/emacs/elisp_idioms.html:
+;; 
+(defun camelcase-word-or-region ()
+  "Changes word or region from snake_case to camelCase"
+  (interactive)
+  (let (pos1 pos2 bds)
+    (if (and transient-mark-mode mark-active)
+        (setq pos1 (region-beginning) pos2 (region-end))
+      (progn
+        (setq bds (bounds-of-thing-at-point 'symbol))
+        (setq pos1 (car bds) pos2 (cdr bds))))
+    (camelcase-region pos1 pos2)))
+
+;; ----------------------------------------------------------------------
+;; snakecase-region
+;; Given a region of text in camelCase format, changes it to snake_case.
+(defun snakecase-region (start end)
+  "Changes region from camelCase to snake_case"
+  (interactive "r")
+  (save-restriction (narrow-to-region start end)
+                    (goto-char (point-min))
+                    (while (re-search-forward "_\\(.\\)" nil t)
+                      (replace-match (upcase (match-string 1))))))
+
+;; ----------------------------------------------------------------------
+;; Given a region of text in camelCase format, changes it to snake_case.
+;; 
+(defun snakecase-word-or-region ()
+  "Changes word or region from camelCase to snake_case"
+  (interactive)
+  (let (pos1 pos2 bds)
+    (if (and transient-mark-mode mark-active)
+        (setq pos1 (region-beginning) pos2 (region-end))
+      (progn
+        (setq bds (bounds-of-thing-at-point 'symbol))
+        (setq pos1 (car bds) pos2 (cdr bds))))
+    (snakecase-region pos1 pos2)))
+
+
+
+;; ----------------------------------------------------------------------
+;; refactoring-change-variable-to-java-case
+;; ((select-symbol-at-pt)
+;;  (narrow-to-region)
+;;  (replace-regexp "_\(.\)" "\,(upcase \1)")
+;;  (widen))
 
 
 (add-hook 'find-file-hooks '(lambda () (highlight-lines-matching-regexp "\\(FIXME\\|TODO\\|BUG\\):" 'hi-yellow-b)))

@@ -5,6 +5,15 @@ alias ls="ls -G"
 alias ll="ls -l"
 alias 'top'='top -o cpu'
 alias 't'='tree -ChL 1'
+alias 'up'='cd ..'
+alias 'up2'='cd ../..'
+alias 'up3'='cd ../../..'
+alias 'up4'='cd ../../../..'
+alias 'up5'='cd ../../../../..'
+alias 'up6'='cd ../../../../../..'
+alias 'up7'='cd ../../../../../../..'
+alias 'up8'='cd ../../../../../../../..'
+alias 'up9'='cd ../../../../../../../../..'
 
 # Programming crap
 alias findrb='find . -name "*.rb" -print0 | xargs -0 grep -Hn'
@@ -15,32 +24,20 @@ alias as='autospec'
 alias sc="script/console"
 alias sss="script/spec_server"
 
-alias gpmm="git push monkey master"
-alias gpom="git push origin master"
-alias gst="git status"
-alias gsi="git submodule init"
-alias gsu="git submodule update"
+alias gpmm="echo 'git push monkey master' && git push monkey master"
+alias gpom="echo 'git push origin master' && git push origin master"
+alias gst="echo 'git status' && git status"
+alias gsi="echo 'git submodule init' && git submodule init"
+alias gsu="echo 'git submodule update' && git submodule update"
 
 alias cpd="cap production deploy"
 
 # Navigation crap
-alias cdlg='cd ~/lmp/leadgen'
-alias cddr='cd ~/devel/ruby'
-alias cdds='cd ~/lmp/degreesearch'
-alias cdsr='cd ~/esp/src/shinyreports'
-alias cdi='cd ~/images/insectpod/unpublished'
-alias cdgem='cd /Library/Ruby/Gems/1.8/gems'
-alias cdz='cd ~/lmp/zuul'
-alias cdt='cd ~/Documents/todo'
-alias cdtr='cd ~/lmp/transporter'
-alias cdtc='cd ~/lmp/transporter_config'
-alias cdam='cd ~/lmp/api_mapper'
-alias cdca='cd ~/lmp/core_api'
-alias cdc='cd ~/lmp/core_data'
-alias cdm='cd ~/lmp/market'
+# has been moved to dotnav, for privacy. (My fs tree contains client names.)
 
 alias cdcr='cd ~/pe/crimereports'
 alias cdcr2='cd ~/pe/cr2rails'
+alias cdcc2='cd ~/pe/cr2flex'
 alias cdcr2dox='cd ~/pe/cr2dox'
 alias cddox='cd ~/pe/dox'
 alias cdcc='cd ~/pe/cr2flex/CommandCentral2'
@@ -48,14 +45,14 @@ alias cdcc='cd ~/pe/cr2flex/CommandCentral2'
 # Applications in OSX
 alias 'firefox'='open -a Firefox'
 alias 'safari'='open -a Safari'
-#alias 'graphviz'='open -a GraphViz'
-alias 'shoes'='open -a Shoes'
+alias 'ps4'='open -a "Adobe Photoshop CS4"'
+alias 'ps5'='open -a "Adobe Photoshop CS5"'
+alias 'qt'='open -a "QuickTime Player"'
 
 alias 'aq'='aquamacs'
 
 # command aliases
 alias zf=~/pe/zend/bin/zf.sh
 alias acr='apachectl configtest && sudo apachectl restart'
-alias gpa='git poosh origin && git poosh monkey && git poosh pemonkey'
-alias geese='mysql -h dev-db02 -u geese_master -pgeese_dev_55 -D geese_cr2dev'
+alias 'aqm'='aqmigration'
 alias 'rc'='rake cucumber'
