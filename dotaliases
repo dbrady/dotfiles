@@ -5,6 +5,7 @@ alias ls="ls -G"
 alias ll="ls -l"
 alias 'top'='top -o cpu'
 alias 't'='tree -ChL 1'
+alias 'up'='cd ..'
 alias 'up2'='cd ../..'
 alias 'up3'='cd ../../..'
 alias 'up4'='cd ../../../..'
@@ -32,22 +33,7 @@ alias gsu="echo 'git submodule update' && git submodule update"
 alias cpd="cap production deploy"
 
 # Navigation crap
-alias cddr='cd ~/devel/ruby'
-alias cdsr='cd ~/esp/src/shinyreports'
-alias cdlg='cd ~/lmp/leadgen'
-alias cdds='cd ~/lmp/degreesearch'
-alias cdi='cd ~/devel/insectpod/work_area'
-alias cdgem='cd $(gem environment gemdir)/gems'
-alias cdz='cd ~/lmp/zuul'
-alias cdt='cd ~/Documents/todo'
-alias cdtr='cd ~/lmp/transporter'
-alias cdtc='cd ~/lmp/transporter_config'
-alias cdam='cd ~/lmp/api_mapper'
-alias cdca='cd ~/lmp/core_api'
-alias cdc='cd ~/lmp/core_data'
-alias cdm='cd ~/lmp/market'
-alias cdtd='cd ~/Documents/Adobe\ Flash\ Builder\ 4/flash_tdtest'
-alias cdcm='cd ~/surgeworks/mixer'
+# has been moved to dotnav, for privacy. (My fs tree contains client names.)
 
 alias cdcr='cd ~/pe/crimereports'
 alias cdcr2='cd ~/pe/cr2rails'
