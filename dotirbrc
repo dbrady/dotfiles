@@ -174,3 +174,18 @@ class Object; include Toggleable; end
 # utility_belt, and all the other superfriends have jammed into my
 # object.
 $MONKEYPATCHES = ("bar".methods - $string_methods).sort
+
+# Temp convenience hack for SW/CM
+def sectime(time)
+  m = time / 60.0
+  s = time - (m.floor*60)
+  "%f (%d:%09.6f)" % [time, m, s]
+end
+
+def bars2time(bpm, bars)
+  (60.0 / bpm) * bars * 4
+end
+
+def time2bars(bpm, time)
+  bpm * time / 240.0
+end

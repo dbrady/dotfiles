@@ -664,6 +664,8 @@
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
 
+(add-to-list 'auto-mode-alist '("\\.ny\\'" . lisp-mode))
+
 ; Macros to make Cwyckoff's life a tiny bit easier
 (defun insert-hashrocket ()
   (interactive)
@@ -902,6 +904,7 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+(global-set-key "\C-c\C-t" 'orgtbl-mode)
 
 ; org-mode depends on global-font-lock-mode, which is turned on
 ; elsewhere, but let's enforce it for org-mode buffers anyway:
@@ -1159,8 +1162,6 @@ do this for the whole buffer."
 ;; (toggle-toolbar-show--isearch-forward)
 ;; (toggle-toolbar-show--write-file)
 
-
-(put 'set-goal-column 'disabled nil)
 
 ;; ----------------------------------------------------------------------
 ;; Experimental -- code from Tim Harper to add checkbox to org-mode
