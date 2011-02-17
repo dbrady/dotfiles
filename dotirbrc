@@ -1,10 +1,14 @@
 #!/usr/bin/env ruby
 # String methods is a global variable, and captured before anybody
-# else has had the chance to monkeypatch anything. Look at the
-# $MONKEYPATCHES variable at the end of this file for how I use it.
+# else has had the chance to monkeypatch anything. Kernel.methods
+# returns all globally defined methods, same deal. Later on, do a
+# Kernel.methods-$kernel_methods to see what global methods have been
+# added, and use "foo".methods - $string_methods to see what
+# monkeypatches have been added.
+$kernel_methods = Kernel.methods
 $string_methods = "foo".methods
 
-$: << File.expand_path(File.join("~", "/devel/lib"))
+$: << File.expand_path("~/devel/lib")
   
 require "rubygems"
 require 'pp'
@@ -169,12 +173,6 @@ class Object; include Toggleable; end
 [ Hash, String, Array ].each {|c| c.send :include, Toggleable }
 
 
-# Save off extension methods. Now in irb I can do "puts foo.methods -
-# $EXM" and not have to see all the methods that irb, wirble,
-# utility_belt, and all the other superfriends have jammed into my
-# object.
-$MONKEYPATCHES = ("bar".methods - $string_methods).sort
-
 # Temp convenience hack for SW/CM
 def sectime(time)
   m = time / 60.0
@@ -189,3 +187,19 @@ end
 def time2bars(bpm, time)
   bpm * time / 240.0
 end
+
+class Symbol
+  unless public_method_defined? :to_proc
+    def to_proc
+      Proc.new { |*args| args.shift.__send__(self, *args) }
+    end
+  end
+end
+
+begin
+  require 'looksee/shortcuts'
+rescue LoadError => e
+  $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
+end
+
+
