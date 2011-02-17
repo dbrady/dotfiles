@@ -7,15 +7,7 @@
 ; (add-to-list 'load-path ini-directory)
 (add-to-list 'load-path (concat package-directory "/abedra-dot-emacs"))
 
-(setq sentence-end-double-space 'nil)
-
 ;;(load "essential")
-
-(require 'font-lock)
-
-;Allows syntax highlighting to work, among other things
-;(global-font-lock-mode 1)
-(global-set-key (kbd "\C-c C-c C-f") 'font-lock-mode)
 
 ; ----------------------------------------------------------------------
 ; CEDET
@@ -132,6 +124,29 @@
 ;; ================================================================================
 ;; dbrady-specific stuff
 
+;; ======================================================================
+;; UNIVERSAL SECTION
+;; ----------------------------------------------------------------------
+;; Hi. This is David Brady. If this is the only section in this .emacs
+;; file, this is my "overnight bag" for making emacs work the way I
+;; like on machines where I haven't had time to move in fully.
+;; 
+;; This section meant to be copied and pasted as an "emergency minimum"
+;; .emacs file to new servers where I don't have time to properly move
+;; in. Expect arbitrary OSes, emacs to be running from anywhere (could
+;; be in /usr/bin, /usr/local/bin, and on three occasions it has been
+;; trapped in ~/emacs/ because I didn't have root on the box--one time
+;; I didn't even have make tools and had to build it on a separate
+;; machine and upload the binaries to my home folder). 
+;; ----------------------------------------------------------------------
+(require 'font-lock)
+(transient-mark-mode 1)
+(setq sentence-end-double-space 'nil)
+
+;Allows syntax highlighting to work, among other things
+;(global-font-lock-mode 1)
+(global-set-key (kbd "\C-c C-c C-f") 'font-lock-mode)
+
 ;; Do civilized backup names.  Added by dbrady 2003-03-07, taken from
 ;; http://emacswiki.wikiwikiweb.de/cgi-bin/wiki.pl?BackupDirectory
 (setq
@@ -143,13 +158,25 @@
  kept-old-versions 2
  version-control t)          ; use versioned backups
 
-(setq semanticdb-default-save-directory "~/.saves/semantic.cache")
-
 (global-set-key "\M-g" 'goto-line)
 (setq-default c-basic-offset 2)
-;(setq-default indent-tabs-mode nil)
-(setq-default indent-tabs-mode t)
+(setq-default indent-tabs-mode nil)
+;(setq-default indent-tabs-mode t)
 (setq default-tab-width 2)
+
+;;----------------------------------------------------------------------
+;; column number mode - show current column number
+(column-number-mode t)
+
+;; ----------------------------------------------------------------------
+;; END UNIVERSAL SECTION
+;; ======================================================================
+
+; ----------------------------------------------------------------------
+; Use system trash can when deleting files
+(setq delete-by-moving-to-trash t)
+
+(setq semanticdb-default-save-directory "~/.saves/semantic.cache")
 
 ;; Detect this OS and set keybindings accordings. Ideally this should
 ;; depend on window settings, but I'm not sure how to make linux
@@ -325,10 +352,6 @@
 ;; lazy. Don't forget lazy. So I'm setting it globally for now.
 (global-set-key (kbd "\C-c C-c e") 'xsd-convert-sql-column-to-enumeration)
 
-
-;;----------------------------------------------------------------------
-;; column number mode - show current column number
-(column-number-mode t)
 
 ;; ...put cursor after the ) and eval with C-x, C-e
 (defvar working-for "Shiny Systems LLC" "*A string identifying who I'm working for. Used in the function comment-file.")
@@ -645,6 +668,10 @@
 (setq auto-mode-alist       
      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
 
+(autoload 'markdown-mode "markdown-mode")
+(setq auto-mode-alist
+			(cons '("\\.md\\'" . markdown-mode) auto-mode-alist))
+
 (autoload 'php-mode "php-mode" "PHP editing mode" t)
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
@@ -663,6 +690,7 @@
 (add-to-list 'auto-mode-alist '("\\.rxml\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\Vagrantfile\\'" . ruby-mode))
 
 (add-to-list 'auto-mode-alist '("\\.ny\\'" . lisp-mode))
 
@@ -1101,8 +1129,6 @@ do this for the whole buffer."
   (require 'tabbar)
   (tabbar-mode))
 
-(transient-mark-mode 1)
-
 ; ======================================================================
 ; Last but not least: automatic settings updates from emacs. It sticks
 ; them here at the end; Easier to just mark this section as emacs'
@@ -1110,26 +1136,6 @@ do this for the whole buffer."
 ; time.
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled t)
-
-(require 'linum)
-; DO NOT ENABLE LINUM MODE GLOBALLY!
-; linum crashes org-mode. Happily, org-mode overrides C-c l.
-; org mode appears to have seized this all round. What gives?
-(global-set-key "\C-c l" 'linum-mode)
-
-; ok to use mode hooks to auto-enable linum-mode, though
-(defun enable-linum-mode ()
-  (linum-mode t))
-(add-hook 'c-mode-hook 'enable-linum-mode)
-(add-hook 'emacs-lisp-mode-hook 'enable-linum-mode)
-(add-hook 'feature-mode-hook 'enable-linum-mode)
-(add-hook 'java-mode-hook 'enable-linum-mode)
-(add-hook 'lisp-mode-hook 'enable-linum-mode)
-(add-hook 'nxml-mode-hook 'enable-linum-mode)
-(add-hook 'ruby-mode-hook 'enable-linum-mode)
-(add-hook 'text-mode-hook 'enable-linum-mode)
-(add-hook 'xml-mode-hook 'enable-linum-mode)
-(add-hook 'yaml-mode-hook 'enable-linum-mode)
 
 ;; ----------------------------------------------------------------------
 ;; Turn off all the crap on the aquamacs toolbar. This is commented
@@ -1316,4 +1322,66 @@ do this for the whole buffer."
 
 
 (add-hook 'find-file-hooks '(lambda () (highlight-lines-matching-regexp "\\(FIXME\\|TODO\\|BUG\\):" 'hi-yellow-b)))
+
+; ----------------------------------------------------------------------
+; Experimental - code from @dotemacs on Twitter to delete current file
+(defun kill-current-buffer-and-delete-file (buf)
+	(interactive "b")
+	(delete-file (buffer-file-name))
+	(kill-buffer (buffer-name)))
+
+(add-hook 'after-save-hook
+  'executable-make-buffer-file-executable-if-script-p)
+
+; ----------------------------------------------------------------------
+; recentf tweaks
+;(require 'recentf)
+ 
+;; get rid of `find-file-read-only' and replace it with something
+;; more useful.
+; (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+ 
+;; enable recent files mode.
+;(recentf-mode t)
+
+(setq recentf-max-saved-items 50)
+ 
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file"
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
+
+; ----------------------------------------------------------------------
+; espresso-mode (for javascript)
+(autoload #'espresso-mode "espresso" "Start espresso-mode" t)
+(add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . espresso-mode))
+(add-hook 'espresso-mode-hook
+          '(lambda () (setq espresso-indent-level 2)))
+
+;;    (add-to-list 'auto-mode-alist '("\\.js\\'" . espresso-mode))
+;;    (autoload 'espresso-mode "espresso" nil t)
+
+(require 'linum)
+; DO NOT ENABLE LINUM MODE GLOBALLY!
+; linum crashes org-mode. Happily, org-mode overrides C-c l.
+; org mode appears to have seized this all round. What gives?
+(global-set-key "\C-c l" 'linum-mode)
+
+; ok to use mode hooks to auto-enable linum-mode, though
+(defun enable-linum-mode ()
+  (linum-mode t))
+(add-hook 'c-mode-hook 'enable-linum-mode)
+(add-hook 'emacs-lisp-mode-hook 'enable-linum-mode)
+(add-hook 'feature-mode-hook 'enable-linum-mode)
+(add-hook 'java-mode-hook 'enable-linum-mode)
+(add-hook 'espresso-mode-hook 'enable-linum-mode)
+(add-hook 'lisp-mode-hook 'enable-linum-mode)
+(add-hook 'nxml-mode-hook 'enable-linum-mode)
+(add-hook 'ruby-mode-hook 'enable-linum-mode)
+(add-hook 'text-mode-hook 'enable-linum-mode)
+(add-hook 'xml-mode-hook 'enable-linum-mode)
+(add-hook 'yaml-mode-hook 'enable-linum-mode)
 
