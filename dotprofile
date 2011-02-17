@@ -1,7 +1,9 @@
+#!/bin/sh
 export EDITOR=`which emacs`
 export CVSEDITOR=`which emacs`
 export SVN_EDITOR=`which emacs`
 export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
+export JSTESTDRIVER_HOME=~/devel/jsTestDriver/
 
 # Supposedly this can be found in the Developer Tools that came with
 # my Mac. That's the theory, at any rate; in practice it's a load of
@@ -87,14 +89,20 @@ parse_git_branch() {
 }
 #export PS1="\[\033[37m\]\u@\h\[\033[36m\] \w \033[33m\$(parse_git_branch)\[\033[37m\]\[\033[0m\]\n$ "
 
-# export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(next)/\\033[31m(next)/' | sed -e 's/(sprint)/\\033[33m(sprint)/')\[\033[37m\]\[\033[0m\]\n$ "
-#export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(next)/\\033[31m(next)/' | sed -e 's/(sprint)/\\033[33m(sprint)/')\[\033[37m\]\[\033[0m\]\n∫ "
+
+# REFACTOR ME PLEASE: This gobblygook mess returns git branches with
+# ANSI color codes. Can we extract this to a bash function to make a)
+# the PS1 definitiion more readable and b) the git branch colorizing
+# extractable? (I'd like to add rvm coloring as well.)
 
 # ALARM: master RED: next YELLOW: sprint CYAN: everybody else
 # export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(next)/\\033[31m(next)/' | sed -e 's/(sprint)/\\033[33m(sprint)/')\[\033[37m\]\[\033[0m\]\n$ "
 
 # ALARM: production/master RED: stage YELLOW: next CYAN: everybody else
-export PS1="\D{%H:%M:%S} \[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n∫ "
+# export PS1="\D{%H:%M:%S} \[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\] \n∫ "
+export PS1="\D{%H:%M:%S} \[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\] \n∫ "
+
+# `if [ "$(~/.rvm/bin/rvm-prompt)" != "" ]; then echo " $(~/.rvm/bin/rvm-prompt)"; fi`
 
 # Same as above but with $ instead of ∫
 # export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n$ "
