@@ -58,86 +58,57 @@ HII="\[\033[0;31m\]" #change this for letter colors
 SI="\[\033[0;33m\]" #this is for the current directory
 IN="\[\033[0m\]"
 
-export PS1="$NM[ $HI\u $HII\h $SI\w$NM ] $IN"
-
-
-export GEMDIR=$(gem environment gemdir)/gems
-
-# ImageMagick-6.3.9
-#export MAGICK_HOME="/Library/ImageMagick"
-#export DYLD_LIBRARY_PATH="/Library/ImageMagick/lib"
-
-# Sex up my bash prompt
-# REMOVED: Bash is retarded. Escape characters get counted in display columns.
-# If you try to do a C-a it looks like you've jumped to the middle of a line,
-# but caret is really at the head. Blech.
-# export PS1='\e[1;32m\u@\h\e[m:\e[0;32m\w\e[m\$ '
-# export PS1="\[\033[38m\]\u@\h\[\033[01;34m\] \w \[\033[31m\]\`ruby -e \"print (%x{git branch 2> /dev/null}.grep(/^\*/).first || '').gsub(/^\* (.+)$/, '(\1) ')\"\`\[\033[37m\]$\[\033[00m\] "
-
-
-# Sigh, I love this, but bash is retarded. The escape characters get counted as displayed columns. :-(
-# TODO: colorize branch based on name
-# master - white on red bg \033[1;37m\033[41m
-# next - red on normal \033[31m
-# sprint - yellow on normal \033[33m
-# others - green on normal \033[32m
-# cyan = \033[36m
-# 
-# Simple but inelegant fix: Use a multiline bash prompt. Make sure the
-# final line has no color codes on it, and it will track fine.
-parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-#export PS1="\[\033[37m\]\u@\h\[\033[36m\] \w \033[33m\$(parse_git_branch)\[\033[37m\]\[\033[0m\]\n$ "
-
-
-# REFACTOR ME PLEASE: This gobblygook mess returns git branches with
-# ANSI color codes. Can we extract this to a bash function to make a)
-# the PS1 definitiion more readable and b) the git branch colorizing
-# extractable? (I'd like to add rvm coloring as well.)
-
-# ALARM: master RED: next YELLOW: sprint CYAN: everybody else
-# export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(next)/\\033[31m(next)/' | sed -e 's/(sprint)/\\033[33m(sprint)/')\[\033[37m\]\[\033[0m\]\n$ "
-
-# ALARM: production/master RED: stage YELLOW: next CYAN: everybody else
-# export PS1="\D{%H:%M:%S} \[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\] \n∫ "
-export PS1="\D{%H:%M:%S} \[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\] \n∫ "
-
-# `if [ "$(~/.rvm/bin/rvm-prompt)" != "" ]; then echo " $(~/.rvm/bin/rvm-prompt)"; fi`
-
-# Same as above but with $ instead of ∫
-# export PS1="\[\033[37m\]\u@\h\[\033[32m\]:\w \$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\\033[36m(\1)/' | sed -e 's/(production)/\\033[1;37m\\033[41m(production)\\033[m/' | sed -e 's/(master)/\\033[1;37m\\033[41m(master)\\033[m/' | sed -e 's/(stage)/\\033[31m(stage)/' | sed -e 's/(next)/\\033[33m(next)/')\[\033[37m\]\[\033[0m\]\n$ "
-
-
-#export PS1="\[\]\u@\h\]:\w
 
 export HISTFILESIZE=10000
 
-include_if_exists() {
-   if [ -e $1 ]; then
-     . $1
-   fi
+source_files() 
+{
+  local file
+
+  for file in "$@" ; do
+
+    file=${file/\~\//$HOME\/} # Expand ~/
+
+    if [[ -s "${file}" ]] ; then
+      source "${file}"
+    else
+      if [[ ! -e "${file}" ]] ; then
+        printf "NOTICE: ${file} does not exist, not loading.\n"
+      else 
+        true # simply an empty file, no warning necessary.
+      fi
+    fi
+  done
+
+  return 0
 }
 
-include_if_exists ~/.aliases
-include_if_exists ~/.bash_completions
-include_if_exists ~/.git-completion.bash
-include_if_exists ~/bin/dbnames.sh
-include_if_exists ~/.nav
-include_if_exists ~/.private
+# Example usage:
+
+source_files ~/.aliases \
+  ~/.bash_completions \
+  ~/.git-completion.bash \
+  ~/.nav \
+  ~/.private \
+  ~/.rvm/contrib/ps1_functions
+
+if command -v ps1_set >/dev/null 2>&1 ; then
+    ps1_set --prompt ∫
+else
+    export PS1="!!! It's \D{%H} O'Clock! Time to install rvm to fix your prompt!\n$ "
+fi
 
 export RUBYOPT=rubygems
 
 # DANGER DANGER DANGER - Do not just slap paths in here willy-nilly. If it's a path to something outside of ~, it should probably go in /etc/paths.d!
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-export PATH="/Library/Frameworks/Python.framework/Versions/2.6/bin:${PATH}"
 # put MY bin first, THEN homebrew, THEN ports.
-export PATH=~/bin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin
+export PATH=~/bin:~/scratchbin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin
 export MANPATH=/opt/local/share/man:$MANPATH
 
 export ANDROID_SDK_ROOT=/usr/local/Cellar/android-sdk/r7
 
 # Load RVM
 if [[ -s /Users/dbrady/.rvm/scripts/rvm ]] ; then source /Users/dbrady/.rvm/scripts/rvm ; fi
-
+rvm default 1.9.2
 

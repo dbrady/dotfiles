@@ -572,7 +572,8 @@
 ;; comment-file
 ;; Adds a comment block at the top of the file
 ;;
-;; TODO - Figure out how to put this AFTER the <?php tag in a php file.
+;; TODO - Figure out how to put this AFTER the <?php tag in a php
+;; file.
 (defun comment-file ()
   (interactive)
   (beginning-of-buffer)
@@ -628,19 +629,6 @@
 (global-set-key (kbd "\C-c C-f") 'toggle-fullscreen)
 
 ;;----------------------------------------------------------------------
-;; toggle-quotes
-;; changes quotes around text at point from "str" to 'str' to :str
-;; if spaces exist in region, skips :str version
-(defun toggle-quotes ()
-  (interactive)
-  ;; expand region to find nearest enclosing quotes or symbol
-  ;; if quote-type is ", replace with '
-  ;; if quote-type is ' and no spaces, replace with :
-  ;; if quote-type is ' and spaces, replace with "
-  ;; if quote-type is :, replace with "
-  )
-
-;;----------------------------------------------------------------------
 ;; Other Modes I like to use...
 ;; ;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/icicles"))
 
@@ -658,7 +646,15 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . php-mode))
 (require 'php-mode)
-;(require 'php-electric)
+
+
+(add-hook 'php-mode-hook
+          (lambda()
+            (require 'php-electric)
+            (php-electric-mode t)
+            (setq c-basic-offset 4)
+            (indent-tabs-mode t)
+            ))
 
 (autoload 'python-mode "python-mode")
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
@@ -714,7 +710,6 @@
 (add-to-list 'load-path "~/.site-lisp/ruby-mode")
 
 (require 'ruby-mode)
-;;(require 'ruby-electric)
 
 (autoload 'run-ruby "inf-ruby"
   "Run an inferior Ruby process")
@@ -724,6 +719,22 @@
           '(lambda ()
              (inf-ruby-keys)
              ))
+
+(add-hook 'ruby-mode-hook
+      (lambda()
+        (add-hook 'local-write-file-hooks
+                  '(lambda()
+                     (save-excursion
+                       (untabify (point-min) (point-max))
+                       (delete-trailing-whitespace)
+                       )))
+        (set (make-local-variable 'indent-tabs-mode) 'nil)
+        (set (make-local-variable 'tab-width) 2)
+        (imenu-add-to-menubar "IMENU")
+        (define-key ruby-mode-map "\C-m" 'newline-and-indent) ;Not sure if this line is 100% right!
+        (require 'ruby-electric)
+        (ruby-electric-mode t)
+        ))
 
 ;; You need to fill in the variables, but once done, this runs
 ;; script/console on the targeted host and application when you run
@@ -1375,6 +1386,7 @@ do this for the whole buffer."
 (add-hook 'espresso-mode-hook 'enable-linum-mode)
 (add-hook 'lisp-mode-hook 'enable-linum-mode)
 (add-hook 'nxml-mode-hook 'enable-linum-mode)
+(add-hook 'php-mode-hook 'enable-linum-mode)
 (add-hook 'ruby-mode-hook 'enable-linum-mode)
 (add-hook 'text-mode-hook 'enable-linum-mode)
 (add-hook 'xml-mode-hook 'enable-linum-mode)
@@ -1463,4 +1475,45 @@ do this for the whole buffer."
                                  word)))
   (if (or (= arg -1) (= arg 2)) (textmate-case/toggle 1)))
 
-(global-set-key (kbd "\C-c C--") 'textmate-case/toggle)
+(defun textmate-case/toggle2 (arg)
+  "Toggles between camelCase and snake_case"
+  (interactive "p")
+  (let* ((bounds (bounds-of-thing-at-point 'symbol))
+         (word   (filter-buffer-substring (car bounds) (cdr bounds) t))
+         (target-case-format (cond ((textmate-case/snake_case-p word) 'camelCase)
+                                   ((textmate-case/camelCase-p word)  'snake_case))))
+    (insert
+     (textmate-case/convert-case target-case-format
+                                 word)))
+  (if (or (= arg -1) (= arg 2)) (textmate-case/toggle 1)))
+
+(global-set-key (kbd "\C-c C--") 'textmate-case/toggle2)
+
+;;----------------------------------------------------------------------
+;; toggle-quotes
+;; 
+;; changes quotes around text at point from "str" to 'str' to :str if
+;; spaces exist in region, uses :"str" (not sure how to handle this,
+;; because that means if we find '...', or "..." we need to check for
+;; a : prefix as well, because that means it's a symbol, not a string.
+(defun toggle-quotes ()
+  (interactive)
+  ;; expand region to find nearest enclosing quotes or symbol
+  ;; if quote-type is ", replace with '
+  ;; if quote-type is ' and no spaces, replace with :
+  ;; if quote-type is ' and spaces, replace with "
+  ;; if quote-type is :, replace with "
+  )
+
+
+(defun print-string-at-point ()
+  (interactive)
+  (let* ((bounds (bounds-of-thing-at-point 'string)))
+    (print bounds)))
+
+(defun run-vim ()
+  (interactive)
+  (eshell)
+  (switch-to-buffer "*eshell*")
+  (insert "vi")
+  (eshell-send-input))
