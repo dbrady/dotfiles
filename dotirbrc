@@ -197,7 +197,7 @@ class Symbol
 end
 
 begin
-  require 'looksee/shortcuts'
+  require 'looksee'
 rescue LoadError => e
   $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
 end
