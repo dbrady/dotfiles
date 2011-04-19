@@ -107,13 +107,6 @@
 (global-set-key "\M-A" 'ack)
 
 ; ----------------------------------------------------------------------
-; Emacs on Rails Stuff
-(require 'snippet)
-(require 'find-recursive)
-(setq load-path (cons "~/.elisp/packages/emacs-rails" load-path))
-(require 'rails)
-
-; ----------------------------------------------------------------------
 ;; ; Erlang Crap
 ;; (setq load-path (cons  "/opt/local/lib/erlang/lib/tools-2.6.4/emacs"
 ;;                        load-path))
@@ -537,17 +530,6 @@
 ;; Aquamacs doesn't put uncomment-region on any key, which seems dumb.
 ;; (global-set-key [?\M-\C-#] 'uncomment-region)
 
-; dbrady 2008-07-14: I don't like how these keep moving around. Plz
-; find permanent home for dem kthxbai. ALSO! I dun like C-c # b/c it's
-; Left-Control C, Right-Shift 3. It's a 4-keypress "X" where my hands
-; have to do a "/" pattern followed by a "\" pattern. Make sense? Try
-; typing it a few times. (Qwerty users: C-c in Dvorak is where your
-; C-i would be. Also, what are you doing in my .emacs file? Geroff! Go
-; on, git!)
-;; (global-set-key (kbd "\C-c /") 'comment-region)
-;; (global-set-key (kbd "\C-c C-c /") 'uncomment-region)
-(global-set-key (kbd "\C-c /") 'comment-dwim)
-
 ;; Bind C-c M-f to auto-fill-mode.
 (global-set-key (kbd "\C-c M-f") 'auto-fill-mode)
 
@@ -693,17 +675,6 @@
 (add-to-list 'auto-mode-alist '("\\Vagrantfile\\'" . ruby-mode))
 
 (add-to-list 'auto-mode-alist '("\\.ny\\'" . lisp-mode))
-
-; Macros to make Cwyckoff's life a tiny bit easier
-(defun insert-hashrocket ()
-  (interactive)
-  (insert " => "))
-(global-set-key "\C-c>" 'insert-hashrocket)
-
-;; This is wrong. Don't use global-set-key! Figure out how to add it to the rails keymap.
-(global-set-key "\C-c\C-c\C-l" 'rails-spec:run-this-spec)
-(global-set-key "\C-c\C-c\C-f" 'rails-spec:run-this-file)
-(global-set-key "\C-c\C-c\C-r" 'rails-spec:run-all)
 
 (load "cucumber-mode")
 
@@ -1138,19 +1109,24 @@ do this for the whole buffer."
 (put 'downcase-region 'disabled t)
 
 ;; ----------------------------------------------------------------------
-;; Turn off all the crap on the aquamacs toolbar. This is commented
-;; out, should only be needed after an aquamacs install. I think
-;; Aquamacs 2 has a single menu item to do this. Aquamacs 1.9 forces
-;; you to use Menu:Options -> View -> Toolbar Items -> {item} for each
-;; item to be removed. With these commands pasted here, you can just
-;; C-x C-e them and they run right from the comments.
+;; Turn off all the crap on the aquamacs toolbar. When the toolbar is
+;; empty, Aquamacs will make it disappear, giving you an extra 2-3
+;; lines of vertical text space. This is wrappered in a function,
+;; rather than a bare execute, because it's not idempotent. It should
+;; only be needed after an aquamacs install. I think Aquamacs 2 has a
+;; single menu item to do this. Aquamacs 1.9 forces you to use
+;; Menu:Options -> View -> Toolbar Items -> {item} for each item to be
+;; removed. With these commands pasted here, you can just C-x C-e the
+;; function and make all the toolbar items vanish. (If you have
+;; removed one by hand, this function will bring it back. Just C-xC-e
+;; the specific line to toggle it away again.)
 ;; 
 (defun toggle-toolbar-items ()
 	(interactive)
 	(toggle-toolbar-show--copy)
 	(toggle-toolbar-show--cut)
 	(toggle-toolbar-show--help)
-	(toggle-toolbar-show--new-file)
+	; (toggle-toolbar-show--new-file)
 	(toggle-toolbar-show--open-file)
 	(toggle-toolbar-show--paste)
 	(toggle-toolbar-show--recent-files)
@@ -1261,9 +1237,8 @@ do this for the whole buffer."
 ;;    log_data(find_shapes())
 
 
-;; ----------------------------------------------------------------------
-;; camelcase-region
-;; Given a region of text in snake_case format, changes it to camelCase.
+;; camelcase-region Given a region of text in snake_case format,
+;; changes it to camelCase.
 (defun camelcase-region (start end)
   "Changes region from snake_case to camelCase"
   (interactive "r")
@@ -1289,6 +1264,8 @@ do this for the whole buffer."
 ;; ----------------------------------------------------------------------
 ;; snakecase-region
 ;; Given a region of text in camelCase format, changes it to snake_case.
+;; 
+;; BUG: This is actually just a repeat of camelcase-region!
 (defun snakecase-region (start end)
   "Changes region from camelCase to snake_case"
   (interactive "r")
@@ -1299,7 +1276,6 @@ do this for the whole buffer."
 
 ;; ----------------------------------------------------------------------
 ;; Given a region of text in camelCase format, changes it to snake_case.
-;; 
 (defun snakecase-word-or-region ()
   "Changes word or region from camelCase to snake_case"
   (interactive)
@@ -1310,6 +1286,9 @@ do this for the whole buffer."
         (setq bds (bounds-of-thing-at-point 'symbol))
         (setq pos1 (car bds) pos2 (cdr bds))))
     (snakecase-region pos1 pos2)))
+
+(global-set-key (kbd "C-c C--") 'camelcase-word-or-region)
+(global-set-key (kbd "C-c C-_") 'snakecase-word-or-region)
 
 
 
@@ -1356,13 +1335,29 @@ do this for the whole buffer."
 ; ----------------------------------------------------------------------
 ; espresso-mode (for javascript)
 (autoload #'espresso-mode "espresso" "Start espresso-mode" t)
+(add-to-list 'auto-mode-alist '("\\.js.erb$" . espresso-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
 (add-to-list 'auto-mode-alist '("\\.json$" . espresso-mode))
-(add-hook 'espresso-mode-hook
-          '(lambda () (setq espresso-indent-level 2)))
 
-;;    (add-to-list 'auto-mode-alist '("\\.js\\'" . espresso-mode))
-;;    (autoload 'espresso-mode "espresso" nil t)
+(defun my-espresso-mode-hook ()
+  (setq espresso-indent-level 2)
+  (define-key espresso-mode-map "\C-c /" 'comment-dwim))
+(add-hook 'espresso-mode-hook 'my-espresso-mode-hook)
+
+
+; dbrady 2008-07-14: I don't like how these keep moving around. Plz
+; find permanent home for dem kthxbai. ALSO! I dun like C-c # b/c it's
+; Left-Control C, Right-Shift 3. It's a 4-keypress "X" where my hands
+; have to do a "/" pattern followed by a "\" pattern. Make sense? Try
+; typing it a few times. (Qwerty users: C-c in Dvorak is where your
+; C-i would be. Also, what are you doing in my .emacs file? Geroff! Go
+; on, git!)
+;; (global-set-key (kbd "\C-c /") 'comment-region)
+;; (global-set-key (kbd "\C-c C-c /") 'uncomment-region)
+(global-set-key (kbd "\C-c /") 'comment-dwim)
+
+
+
 
 (require 'linum)
 ; DO NOT ENABLE LINUM MODE GLOBALLY!
@@ -1386,6 +1381,16 @@ do this for the whole buffer."
 (add-hook 'yaml-mode-hook 'enable-linum-mode)
 
 
+;; ----------------------------------------------------------------------
+;; nodify-commas
+;; 
+;; In Node.js, the common idiom is to NOT leave hanging commas at the
+;; end of lines, but to begin the NEXT line with the comma. This is
+;; because JavaScript is very tetchy about commas. This macro searches
+;; for a comma at the end of a line and moves it to the beginning of
+;; the line following.
+(fset 'nodify-commas
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217848 115 101 97 114 99 104 45 102 tab 45 114 tab return 44 36 backspace 91 91 58 115 112 97 99 101 58 93 93 42 36 return backspace 14 1 134217837 44 32] 0 "%d")) arg)))
 
 ;; ======================================================================
 
