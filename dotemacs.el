@@ -433,7 +433,7 @@
   (beginning-of-line)
   (previous-line 2)
   (end-of-line)
-  (insert "\n" (safe-comment-start) "----------------------------------------------------------------------"))
+  (insert "\n" (safe-comment-start) "----------------------------------------------------------------------" (safe-comment-end) "\n"))
 
 ;;----------------------------------------------------------------------
 ;; insert-comment-nop
@@ -454,13 +454,13 @@
 ;; insert-comment-bar
 (defun insert-comment-bar ()
   (interactive)
-  (insert (safe-comment-start) "----------------------------------------------------------------------\n"))
+  (insert (safe-comment-start) "----------------------------------------------------------------------" (safe-comment-end) "\n"))
 
 ;;----------------------------------------------------------------------
 ;; insert-comment-bar-major
 (defun insert-comment-bar-major ()
   (interactive)
-  (insert (safe-comment-start) "======================================================================\n"))
+  (insert (safe-comment-start) "======================================================================" (safe-comment-end) "\n"))
 
 ;;----------------------------------------------------------------------
 ;; insert-danger-banner
@@ -634,9 +634,15 @@
 
 ;; ;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/rspec-mode"))
 
+(require 'coffee-mode)
+(add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
+(add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
+
 (autoload 'css-mode "css-mode")
 (setq auto-mode-alist       
      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+
+(require 'haml-mode)
 
 (autoload 'markdown-mode "markdown-mode")
 (setq auto-mode-alist
@@ -656,9 +662,29 @@
             (indent-tabs-mode t)
             ))
 
+(autoload 'csv-mode "csv-mode" "CSV editing mode" t)
+(add-to-list 'auto-mode-alist '("\\.csv\\'" . csv-mode))
+
+
 (autoload 'python-mode "python-mode")
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'auto-mode-alist '("\\.mp3\\'" . hexl-mode))
+
+;; this is a problem with rvm--the ruby moves around. Need some kind
+;; of rvm-mode that understands that ruby location changes based on
+;; buffer location...
+;; (setq exec-path (cons (expand-file-name "~/.gem/ruby/1.8/bin") exec-path))
+;(autoload 'scss-mode "scss-mode")
+(require 'scss-mode) ;; require so we can override scss-compile-at-save
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+(setq scss-compile-at-save nil)
+
+;; fix indentation in css/scss mode
+(setq cssm-indent-level 2)
+(setq cssm-newline-before-closing-bracket t)
+(setq cssm-indent-function #'cssm-c-style-indenter)
+(setq cssm-mirror-mode nil)
+
 
 ;; (load "ruby-mode.el") ; manually execute this line if you need to get at ruby-mode without an autoload
 (autoload 'ruby-mode "ruby-mode")
@@ -669,6 +695,9 @@
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\Vagrantfile\\'" . ruby-mode))
+
+(autoload 'textile-mode "textile-mode" "Textile editing mode" t)
+(add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
 
 (add-to-list 'auto-mode-alist '("\\.ny\\'" . lisp-mode))
 
@@ -920,9 +949,6 @@
 ; elsewhere, but let's enforce it for org-mode buffers anyway:
 ; (global-font-lock-mode 1) 
 (add-hook 'org-mode-hook 'turn-on-font-lock)
-
-; TODO: try enabling linum-mode globally, then DISABLING it in org-mode?
-
 
 
 ; customizers
@@ -1380,15 +1406,20 @@ do this for the whole buffer."
 (defun enable-linum-mode ()
   (linum-mode t))
 (add-hook 'c-mode-hook 'enable-linum-mode)
+;; (add-hook 'csv-mode-hook 'enable-linum-mode)
 (add-hook 'emacs-lisp-mode-hook 'enable-linum-mode)
+(add-hook 'coffee-mode-hook 'enable-linum-mode)
 (add-hook 'feature-mode-hook 'enable-linum-mode)
 (add-hook 'java-mode-hook 'enable-linum-mode)
 (add-hook 'espresso-mode-hook 'enable-linum-mode)
+(add-hook 'haml-mode-hook 'enable-linum-mode)
 (add-hook 'lisp-mode-hook 'enable-linum-mode)
 (add-hook 'nxml-mode-hook 'enable-linum-mode)
 (add-hook 'php-mode-hook 'enable-linum-mode)
 (add-hook 'ruby-mode-hook 'enable-linum-mode)
+(add-hook 'scss-mode-hook 'enable-linum-mode)
 (add-hook 'text-mode-hook 'enable-linum-mode)
+(add-hook 'textile-mode-hook 'enable-linum-mode)
 (add-hook 'xml-mode-hook 'enable-linum-mode)
 (add-hook 'yaml-mode-hook 'enable-linum-mode)
 
@@ -1487,7 +1518,8 @@ do this for the whole buffer."
                                  word)))
   (if (or (= arg -1) (= arg 2)) (textmate-case/toggle 1)))
 
-(global-set-key (kbd "\C-c C--") 'textmate-case/toggle2)
+;; (global-set-key (kbd "\C-c C--") 'textmate-case/toggle2)
+(global-set-key (kbd "\C-c C-_") 'textmate-case/toggle)
 
 ;;----------------------------------------------------------------------
 ;; toggle-quotes

@@ -106,9 +106,16 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export PATH=~/bin:~/scratchbin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin
 export MANPATH=/opt/local/share/man:$MANPATH
 
+# Android SDK
 export ANDROID_SDK_ROOT=/usr/local/Cellar/android-sdk/r7
 
-# Load RVM
+# export MAGLEV_OPTS='-MlogSexp -d -q'
+# export MAGLEV_OPTS='-MtraceLoad -MtraceGlobals -d -q'
+# export MAGLEV_OPTS='-d -q'
+export MAGLEV_HOME='/Users/dbrady/devel/maglev'
+export PATH=$PATH:$MAGLEV_HOME/bin
+
+# RVM
 if [[ -s /Users/dbrady/.rvm/scripts/rvm ]] ; then source /Users/dbrady/.rvm/scripts/rvm ; fi
 rvm default 1.9.2
 
