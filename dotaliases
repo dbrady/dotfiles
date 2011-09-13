@@ -24,13 +24,19 @@ alias ss='script/server'
 alias as='autospec'
 alias sc="script/console"
 alias sss="script/spec_server"
+alias tr='time rspec'
+alias trs='time rspec spec'
 
 alias gpmm="echo 'git push monkey master' && git push monkey master"
 alias gpom="echo 'git push origin master' && git push origin master"
 alias gst="echo 'git status' && git status"
 alias gsi="echo 'git submodule init' && git submodule init"
 alias gsu="echo 'git submodule update' && git submodule update"
-alias gf="git-flow feature"
+alias go='git checkout'
+
+alias gf='git flow'
+alias gff='git flow feature'
+alias gfr='git flow release'
 
 alias cpd="cap production deploy"
 
