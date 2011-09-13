@@ -30,6 +30,7 @@ alias gpom="echo 'git push origin master' && git push origin master"
 alias gst="echo 'git status' && git status"
 alias gsi="echo 'git submodule init' && git submodule init"
 alias gsu="echo 'git submodule update' && git submodule update"
+alias gf="git-flow feature"
 
 alias cpd="cap production deploy"
 
@@ -57,3 +58,5 @@ alias zf=~/pe/zend/bin/zf.sh
 alias acr='apachectl configtest && sudo apachectl restart'
 alias 'aqm'='aqmigration'
 alias 'rc'='rake cucumber'
+alias go='git checkout'
+alias gff='git flow feature'
