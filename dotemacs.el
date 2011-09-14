@@ -533,7 +533,6 @@
 ;; Bind C-c M-f to auto-fill-mode.
 (global-set-key (kbd "\C-c M-f") 'auto-fill-mode)
 
-
 ;;----------------------------------------------------------------------
 ;; comment-name-and-date
 ;; Inserts a comment string, login name, date, and a colon.
@@ -695,6 +694,7 @@
 (add-to-list 'auto-mode-alist '("\\.rake\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\Vagrantfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\Gemfile\\'" . ruby-mode))
 
 (autoload 'textile-mode "textile-mode" "Textile editing mode" t)
 (add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
@@ -728,6 +728,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . html-mode))
+
 
 ; ----------------------------------------------------------------------
 ; More ruby mode stuff
@@ -764,6 +765,12 @@
         (require 'ruby-electric)
         (ruby-electric-mode t)
         ))
+
+(add-hook 'html-mode-hook
+          (lambda()
+            ; disable auto-fill-mode. t ensures it's on, nil toggles it.
+            (auto-fill-mode t)
+            (auto-fill-mode)))
 
 ;; You need to fill in the variables, but once done, this runs
 ;; script/console on the targeted host and application when you run

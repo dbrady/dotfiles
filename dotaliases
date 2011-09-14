@@ -24,14 +24,13 @@ alias ss='script/server'
 alias as='autospec'
 alias sc="script/console"
 alias sss="script/spec_server"
-alias tr='time rspec'
-alias trs='time rspec spec'
 
 alias gpmm="echo 'git push monkey master' && git push monkey master"
 alias gpom="echo 'git push origin master' && git push origin master"
 alias gst="echo 'git status' && git status"
 alias gsi="echo 'git submodule init' && git submodule init"
 alias gsu="echo 'git submodule update' && git submodule update"
+alias gca="echo 'git commit -a' && git commit -a"
 alias go='git checkout'
 
 alias gf='git flow'
@@ -39,16 +38,6 @@ alias gff='git flow feature'
 alias gfr='git flow release'
 
 alias cpd="cap production deploy"
-
-# Navigation crap
-# has been moved to dotnav, for privacy. (My fs tree contains client names.)
-
-alias cdcr='cd ~/pe/crimereports'
-alias cdcr2='cd ~/pe/cr2rails'
-alias cdcc2='cd ~/pe/cr2flex'
-alias cdcr2dox='cd ~/pe/cr2dox'
-alias cddox='cd ~/pe/dox'
-alias cdcc='cd ~/pe/cr2flex/CommandCentral2'
 
 # Applications in OSX
 alias 'firefox'='open -a Firefox'
