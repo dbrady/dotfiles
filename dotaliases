@@ -24,7 +24,6 @@ alias ss='script/server'
 alias as='autospec'
 alias sc="script/console"
 alias sss="script/spec_server"
-alias tr='time rspec'
 alias trs='time rspec spec'
 
 alias gpmm="echo 'git push monkey master' && git push monkey master"
