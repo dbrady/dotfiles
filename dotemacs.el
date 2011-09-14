@@ -633,7 +633,8 @@
 
 ;; ;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/rspec-mode"))
 
-(require 'coffee-mode)
+(add-to-list 'load-path "~/.elisp/packages/coffee-mode")
+(autoload 'coffee-mode "coffee-mode")
 (add-to-list 'auto-mode-alist '("\\.coffee$" . coffee-mode))
 (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
 
@@ -641,7 +642,8 @@
 (setq auto-mode-alist       
      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
 
-(require 'haml-mode)
+(autoload 'haml-mode "haml-mode")
+(autoload 'sass-mode "sass-mode")
 
 (autoload 'markdown-mode "markdown-mode")
 (setq auto-mode-alist
@@ -653,13 +655,7 @@
 (require 'php-mode)
 
 
-(add-hook 'php-mode-hook
-          (lambda()
-            (require 'php-electric)
-            (php-electric-mode t)
-            (setq c-basic-offset 4)
-            (indent-tabs-mode t)
-            ))
+;        (define-key ruby-mode-map "\C-m" 'newline-and-indent) ;Not sure if this line is 100% right!
 
 (autoload 'csv-mode "csv-mode" "CSV editing mode" t)
 (add-to-list 'auto-mode-alist '("\\.csv\\'" . csv-mode))
@@ -695,6 +691,11 @@
 (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\Vagrantfile\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\Gemfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.haml\\'" . haml-mode))
+(add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))
+
+(autoload 'textile-mode "textile-mode")
+(add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
 
 (autoload 'textile-mode "textile-mode" "Textile editing mode" t)
 (add-to-list 'auto-mode-alist '("\\.textile\\'" . textile-mode))
@@ -729,6 +730,12 @@
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.rhtml\\'" . html-mode))
 
+
+; Turn off auto-fill in HTML mode!
+(add-hook 'html-mode-hook
+          '(lambda ()
+             (auto-fill-mode t)
+             (auto-fill-mode nil)))
 
 ; ----------------------------------------------------------------------
 ; More ruby mode stuff
@@ -1413,7 +1420,7 @@ do this for the whole buffer."
 (defun enable-linum-mode ()
   (linum-mode t))
 (add-hook 'c-mode-hook 'enable-linum-mode)
-;; (add-hook 'csv-mode-hook 'enable-linum-mode)
+(add-hook 'csv-mode-hook 'enable-linum-mode)
 (add-hook 'emacs-lisp-mode-hook 'enable-linum-mode)
 (add-hook 'coffee-mode-hook 'enable-linum-mode)
 (add-hook 'feature-mode-hook 'enable-linum-mode)
@@ -1424,7 +1431,9 @@ do this for the whole buffer."
 (add-hook 'nxml-mode-hook 'enable-linum-mode)
 (add-hook 'php-mode-hook 'enable-linum-mode)
 (add-hook 'ruby-mode-hook 'enable-linum-mode)
+(add-hook 'sass-mode-hook 'enable-linum-mode)
 (add-hook 'scss-mode-hook 'enable-linum-mode)
+(add-hook 'sh-mode-hook 'enable-linum-mode)
 (add-hook 'text-mode-hook 'enable-linum-mode)
 (add-hook 'textile-mode-hook 'enable-linum-mode)
 (add-hook 'xml-mode-hook 'enable-linum-mode)
@@ -1556,3 +1565,16 @@ do this for the whole buffer."
   (switch-to-buffer "*eshell*")
   (insert "vi")
   (eshell-send-input))
+
+;; (defun rails-remote-console ()
+;;   (interactive)
+;;   (run-ruby "ssh remotehost /apps/my-app/current/script/console"))
+
+(add-hook 'php-mode-hook
+          (lambda()
+            (require 'php-electric)
+            (php-electric-mode nil)
+            (setq c-basic-offset 4)
+            (indent-tabs-mode t)
+            (define-key php-mode-map "\C-cr" 'php-run-file)
+            ))

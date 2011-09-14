@@ -24,6 +24,7 @@ alias ss='script/server'
 alias as='autospec'
 alias sc="script/console"
 alias sss="script/spec_server"
+alias trs='time rspec spec'
 
 alias gpmm="echo 'git push monkey master' && git push monkey master"
 alias gpom="echo 'git push origin master' && git push origin master"
@@ -53,3 +54,5 @@ alias zf=~/pe/zend/bin/zf.sh
 alias acr='apachectl configtest && sudo apachectl restart'
 alias 'aqm'='aqmigration'
 alias 'rc'='rake cucumber'
+alias go='git checkout'
+alias gff='git flow feature'
