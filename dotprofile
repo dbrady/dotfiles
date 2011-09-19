@@ -130,3 +130,8 @@ rvm default 1.9.2
 alias x="exit"
 alias X="exit"
 
+if [[ -s ~/.current_project ]] ; then
+    source ~/.current_project
+fi
+
+#  source_files ~/.current_project
