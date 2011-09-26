@@ -126,3 +126,4 @@ rvm default 1.9.2
 alias x="exit"
 alias X="exit"
 
+source_files ~/.current_project
