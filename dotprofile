@@ -134,8 +134,4 @@ calc() { bc <<< "scale=5; $1";}
 alias x="echo Ctrl-D; say -v Bruce control dee; exit"
 alias X="echo Ctrl-D; say -v Bruce control dee; exit"
 
-if [[ -s ~/.current_project ]] ; then
-    source ~/.current_project
-fi
-
-#  source_files ~/.current_project
+source_files ~/.current_project
