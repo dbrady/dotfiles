@@ -2,7 +2,7 @@
 export EDITOR=$(echo `which emacs` -q)
 export GEMEDITOR=~/bin/aquamacs
 export CVSEDITOR=$(echo `which emacs` -q)
-export SVN_EDITOR=$(echo `which emacs` -q)
+export SVN_EDITOR=$(echo `which emacs` -q)-q
 export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
 export JSTESTDRIVER_HOME=~/devel/jsTestDriver/
 
@@ -123,11 +123,15 @@ export PATH=$PATH:$MAGLEV_HOME/bin
 [[ -s "/Users/dbrady/.rvm/scripts/rvm" ]] && source "/Users/dbrady/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 rvm default 1.9.2
 
-
+# Interface to calc. Use from prompt!
+# $ calc "sqrt(37)+(2^7/3)"
+# 48.74942
+calc() { bc <<< "scale=5; $1";}
 
 
 # giles was here
-alias X="say -v zarvox control dee &&  xit"
-alias x="say -v zarvox control dee &&  xit"
+# ...and then dave messed with him
+alias x="echo Ctrl-D; say -v Zarvox control dee; exit"
+alias X="echo Ctrl-D; say -v Zarvox control dee; exit"
 
 source_files ~/.current_project
