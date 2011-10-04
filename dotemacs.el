@@ -691,6 +691,7 @@
 (add-to-list 'auto-mode-alist '("\\.builder\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\Vagrantfile\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\Gemfile\\'" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\Guardfile\\'" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.haml\\'" . haml-mode))
 (add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))
 
@@ -1558,6 +1559,17 @@ do this for the whole buffer."
   (interactive)
   (let* ((bounds (bounds-of-thing-at-point 'string)))
     (print bounds)))
+
+;; ;; TODO: tabbar-close-other-tabs receives an event identifying the clicked tab.
+;; ;; FIXME: This hangs emacs, especially if any buffers need saving. Avoid using until I'm smarter.
+;; (defun reset-all-emacs-tabs ()
+;;   "Resets emacs by closing down all tabs: Switches to *scratch* and closes all other tabs"
+;;   (interactive)
+;;   (switch-to-buffer "*scratch*")
+;;   (bury-buffer)
+;;   (while (not (eq '*scratch*' (buffer-name)))
+;;     (kill-buffer (buffer-name))))
+
 
 (defun run-vim ()
   (interactive)

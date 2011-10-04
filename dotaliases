@@ -16,7 +16,8 @@ alias 'up8'='cd ../../../../../../../..'
 alias 'up9'='cd ../../../../../../../../..'
 
 # Programming crap
-alias b='bundle exec'
+alias b='bundle'
+alias be='bundle exec'
 alias findrb='find . -name "*.rb" -print0 | xargs -0 grep -Hn'
 alias finderb='find . -name "*.erb" -print0 | xargs -0 grep -Hn'
 alias findrhtml='find . -name "*.rhtml" -print0 | xargs -0 grep -Hn'

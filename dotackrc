@@ -1,4 +1,5 @@
 --type-set=puppet=.pp
---type-set=rails=.rb, .rhtml, .rjs, .rxml, .erb, .yml, .yaml, .css, .js, .html, .haml
+--type-set=rails=.rb, .rhtml, .rjs, .rxml, .erb, .yml, .yaml, .css, .js, .html, .haml, .coffee
 --type-set=haml=.haml
+--type-set=coffee=.coffee
 
