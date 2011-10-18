@@ -2,4 +2,4 @@
 --type-set=rails=.rb, .rhtml, .rjs, .rxml, .erb, .yml, .yaml, .css, .js, .html, .haml, .coffee
 --type-set=haml=.haml
 --type-set=coffee=.coffee
-
+--color-filename=green
