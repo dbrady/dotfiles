@@ -1352,6 +1352,7 @@ do this for the whole buffer."
 ;;  (widen))
 
 
+;; Note: This is unreadable in dark themes with white text. Need to find a way to set the face color to black of the highlighted line
 (add-hook 'find-file-hooks '(lambda () (highlight-lines-matching-regexp "\\(FIXME\\|TODO\\|BUG\\):" 'hi-yellow-b)))
 
 ; ----------------------------------------------------------------------
