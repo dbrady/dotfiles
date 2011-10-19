@@ -136,3 +136,12 @@ alias x="echo Ctrl-D; say -v Zarvox control dee; exit"
 alias X="echo Ctrl-D; say -v Zarvox control dee; exit"
 
 source_files ~/.current_project
+
+##
+# Your previous /Users/dbrady/.profile file was backed up as /Users/dbrady/.profile.macports-saved_2011-10-18_at_07:08:58
+##
+
+# MacPorts Installer addition on 2011-10-18_at_07:08:58: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
+
