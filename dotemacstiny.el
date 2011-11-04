@@ -17,3 +17,17 @@
 (setq-default indent-tabs-mode nil)
 (setq default-tab-width 2)
 
+;; ----------------------------------------------------------------------
+;; Try for clean github style commits:
+;; - First line should add warning highlight after 50 chars
+;; - Entire document should wrap at 72 chars
+;; - Lines should start with bullets (* or -)
+;; - Lines that wrap should wrap with
+;;   a hanging indent that does not
+;;   include the bullet
+(setq elisp-directory (expand-file-name "~/.elisp"))
+(setq package-directory (concat elisp-directory "/packages"))
+(setq load-path (cons package-directory load-path))
+(require 'column-marker)
+(column-marker-1 50)
+
