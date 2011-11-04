@@ -1490,10 +1490,10 @@ do this for the whole buffer."
 ;;----------------------------------------------------------------------
 ;; toggle-quotes
 ;; 
-;; changes quotes around text at point from "str" to 'str' to :str if
-;; spaces exist in region, uses :"str" (not sure how to handle this,
-;; because that means if we find '...', or "..." we need to check for
-;; a : prefix as well, because that means it's a symbol, not a string.
+;; changes quotes around text at point from "str" to 'str' to :str.
+;; Don't worry about handling spaces unless there is a region
+;; selected, in which case use the region rather than expanding
+;; thing-at-point.
 (defun toggle-quotes ()
   (interactive)
   ;; expand region to find nearest enclosing quotes or symbol
@@ -1502,7 +1502,6 @@ do this for the whole buffer."
   ;; if quote-type is ' and spaces, replace with "
   ;; if quote-type is :, replace with "
   )
-
 
 (defun print-string-at-point ()
   (interactive)
@@ -1539,3 +1538,5 @@ do this for the whole buffer."
             (indent-tabs-mode t)
             (define-key php-mode-map "\C-cr" 'php-run-file)
             ))
+
+(require 'column-marker)
