@@ -28,6 +28,18 @@
 (setq elisp-directory (expand-file-name "~/.elisp"))
 (setq package-directory (concat elisp-directory "/packages"))
 (setq load-path (cons package-directory load-path))
-(require 'column-marker)
-(column-marker-1 50)
+
+;; 2011-11-21:
+;;
+;; - I've tried adding column-marker and setting (column-marker-1 50)
+;;   but this does not work. Also neither toggling auto-fill-mode
+;;   globally nor toggling it as a fundamental-mode hook has any
+;;   effect. I *can* set the auto-fill-mode hotkey but can't make the
+;;   mode start automatically. Suspect the git commit wrapper is doing
+;;   something there.
+
+;; (require 'column-marker)
+;; (column-marker-1 50)
+
+(global-set-key (kbd "\C-c M-f") 'auto-fill-mode)
 
