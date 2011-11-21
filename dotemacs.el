@@ -41,7 +41,7 @@
 ; ----------------------------------------------------------------------
 ; ECB
 ; These lines are required for ECB
-; 
+;
 ; YOU PROBABLY DO NOT WANT TO CUSTOMIZE ECB OPTIONS IN HERE! Read the
 ; ECB info page, it has full docco on options customizable with
 ; customize-group/customize-option, AND A LIST of options that CANNOT
@@ -63,7 +63,7 @@
 
 ;(if (jw-check-file "/usr/local/share/emacs/site-lisp")
 ;    (add-to-load-path "/usr/local/share/emacs/site-lisp") )
-    
+
 
 ;;; Now load all the ini-xxx files in the initialization directory
 
@@ -123,14 +123,14 @@
 ;; Hi. This is David Brady. If this is the only section in this .emacs
 ;; file, this is my "overnight bag" for making emacs work the way I
 ;; like on machines where I haven't had time to move in fully.
-;; 
+;;
 ;; This section meant to be copied and pasted as an "emergency minimum"
 ;; .emacs file to new servers where I don't have time to properly move
 ;; in. Expect arbitrary OSes, emacs to be running from anywhere (could
 ;; be in /usr/bin, /usr/local/bin, and on three occasions it has been
 ;; trapped in ~/emacs/ because I didn't have root on the box--one time
 ;; I didn't even have make tools and had to build it on a separate
-;; machine and upload the binaries to my home folder). 
+;; machine and upload the binaries to my home folder).
 ;; ----------------------------------------------------------------------
 (require 'font-lock)
 (transient-mark-mode 1)
@@ -180,7 +180,7 @@
 ;; Actually, it's a bit trickier than this currently. I have blind
 ;; carbon emacs at the command-line that lacks all of the macosx
 ;; stuff, and so osxkeys doesn't work.
-;; 
+;;
 ;; TODO: FIX THIS. It's all smelly and poopy and stuff. The way I
 ;; currently use this is to map keys to the Command key versus the
 ;; LWindows key. This is KEYBOARD functionality, not operating-system
@@ -188,14 +188,14 @@
 ;; machine, your local keys (like Command!) might actually be
 ;; available on the remote system even though it doesn't have that
 ;; key.
-;; 
+;;
 ;; In other words, don't ask me for the window-system and give me back
 ;; a keyboard layout.
-;; 
+;;
 ;; NOTE TO SELF: IT IS AN ACCEPTABLE HACK to write a tiny config file
 ;; indicating the host os and keyboard mappings, e.g. Linux vs. Mac
 ;; vs. Windows and Command vs. LWindows.
-;; 
+;;
 ;; Since I care more about keyboard geometry than labeling (I always
 ;; map Command to WinKey rather than Ctrl, for example) I wonder if it
 ;; would hurt anything to just always map the Command and LWin keys on
@@ -215,11 +215,11 @@
 
 ;; ----------------------------------------------------------------------
 ;; cucumber-align-table
-;; 
+;;
 ;; With this region selected:
 ;;  | a | abcd | b |
 ;;  | aou | ab | ddddd |
-;; 
+;;
 ;; Spits out:
 ;;  | a   | abcd | b     |
 ;;  | aou | ab   | ddddd |
@@ -229,29 +229,29 @@
 
 ;; ----------------------------------------------------------------------
 ;; function: save-macro
-;; 
+;;
 ;; Taken from http://www.emacswiki.org/cgi-bin/wiki/KeyboardMacrosTricks
 ;; TODO: I don't want my macros saved at the end of .emacs.
-;; 
+;;
 ;; Study: This emits a much different macro version than the version I
 ;; get when I save a keyboard macro. Instead of simply fsetting the
 ;; keystrokes, it fsets a lambda that executes
 ;; kmacro-exec-ring-item. WAY weird! How does it work, and why is it
 ;; different?
-;; 
+;;
 ;; Refactor: change this to seek out an insert token in this file, and
 ;; insert before it.
-;; 
+;;
 ;; Refactor: (might be easier) create a file for macros and have this
 ;; function write them there. E.g. .elisp/dave_macros.el
-(defun save-macro (name)                  
+(defun save-macro (name)
   "save a macro. Take a name as argument and save the last defined macro under this name at the end of your .emacs"
-  (interactive "SName of the macro :") ; ask for the name of the macro    
-  (kmacro-name-last-macro name)      ; use this name for the macro    
-  (find-file "~/.emacs")             ; open the .emacs file 
+  (interactive "SName of the macro :") ; ask for the name of the macro
+  (kmacro-name-last-macro name)      ; use this name for the macro
+  (find-file "~/.emacs")             ; open the .emacs file
   (goto-char (point-max))            ; go to the end of the .emacs
   (newline)                          ; insert a newline
-  (insert-kbd-macro name)            ; copy the macro 
+  (insert-kbd-macro name)            ; copy the macro
   (newline)                          ; insert a newline
   (switch-to-buffer nil))            ; return to the initial buffer
 
@@ -262,7 +262,7 @@
 ;; - Find universal keybindings. I may not always be on a mac when I
 ;;   want to run this macro! (Okay to figure out how to bind the
 ;;   Windows key to be logically equivalent here.)
-;; 
+;;
 ;; This doesn't actually work, but it's a start.
 ;; (defun move-line-up
 ;;     (let (columns (- (point) (point-at-bol)))
@@ -276,10 +276,10 @@
 ;; just  fine, but A-S-p is being mapped to A-p, which inserts the
 ;; paragraph symbol. When I wrote this macro yesterday, A-S-p was
 ;; unmapped and undefined. What gives?
-(fset 'move-line-up 
+(fset 'move-line-up
    "\C-a\C-x\C-t\C-p\C-p")
 (if macosx-p
-    (global-set-key (vector  `(,osxkeys-command-key shift p)) 
+    (global-set-key (vector  `(,osxkeys-command-key shift p))
                     'move-line-up))
 
 ;; ----------------------------------------
@@ -290,7 +290,7 @@
 (fset 'move-line-down
    "\C-a\C-n\C-x\C-t\C-p")
 (if macosx-p
-    (global-set-key (vector  `(,osxkeys-command-key shift n)) 
+    (global-set-key (vector  `(,osxkeys-command-key shift n))
                     'move-line-down))
 
 ;; kill-line-and-replace-with-previous-yank
@@ -538,8 +538,8 @@
 ;; Inserts a comment string, login name, date, and a colon.
 ;; Example: // dbrady 2003-04-05:
 ;; TODO! If prefix-arg is present, include the time. So:
-;; C-c /        => ; dbrady 2008-06-08: 
-;; C-u C-c /    => ; dbrady 2008-06-08 13:51:25: 
+;; C-c /        => ; dbrady 2008-06-08:
+;; C-u C-c /    => ; dbrady 2008-06-08 13:51:25:
 (defun comment-name-and-date ()
   (interactive)
   (insert (safe-comment-start) user-login-name " " (format-time-string "%Y-%m-%d") ": " (safe-comment-end)))
@@ -639,7 +639,7 @@
 (add-to-list 'auto-mode-alist '("Cakefile" . coffee-mode))
 
 (autoload 'css-mode "css-mode")
-(setq auto-mode-alist       
+(setq auto-mode-alist
      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
 
 (autoload 'haml-mode "haml-mode")
@@ -784,7 +784,7 @@
 ;; script/console on the targeted host and application when you run
 ;; inf-ruby.
 
-;; 
+;;
 ;; (defun rails-remote-console ()
 ;;   (interactive)
 ;;   (run-ruby "ssh remotehost /apps/my-app/current/script/console"))
@@ -834,7 +834,7 @@
 ;; this conflicts with these Kubuntu-centric fonts.
 ;; ----------------------------------------------------------------------
 ;; Proportional font
-;; (set-default-font "lucidasans-10") 
+;; (set-default-font "lucidasans-10")
 
 ;; fixed-width font
 ;(set-default-font "lucidasanstypewriter-10")
@@ -907,11 +907,11 @@
 ;; This sets the option key to be alt/meta and the command key to be
 ;; the extra/super/meta/whatever key. It still doesn't release Cmd to
 ;; the OS, however. You can't Cmd-Q or Cmd-V*.
-;; 
+;;
 ;; * There is a menu option to enable CUA clipboard. This sets
 ;; Cmd-X,C,V to the clipboard keys, but STILL doesn't release the Cmd
 ;; keys. Bleh. Going back to Aquamacs for now.
-;; 
+;;
 ;; (setq mac-command-modifier 'alt
 ;;       mac-option-modifier 'meta)
 
@@ -942,9 +942,9 @@
 
 ; ----------------------------------------------------------------------
 ; org-mode
-; 
+;
 ; setup
-; 
+;
 ;; org-mode (manual install of latest overtop of standard (read: old)
 ;; org-mode that comes with Aquamacs
 (setq org-mode-directory (concat package-directory "/org-6.28e"))
@@ -952,7 +952,7 @@
 (setq load-path (cons (concat org-mode-directory "/contrib/lisp") load-path))
 (require 'org-install)
 
-; activation 
+; activation
 ;; The following lines are always needed.  Choose your own keys.
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
@@ -962,7 +962,7 @@
 
 ; org-mode depends on global-font-lock-mode, which is turned on
 ; elsewhere, but let's enforce it for org-mode buffers anyway:
-; (global-font-lock-mode 1) 
+; (global-font-lock-mode 1)
 (add-hook 'org-mode-hook 'turn-on-font-lock)
 
 
@@ -974,7 +974,7 @@
 
 ; ----------------------------------------------------------------------
 ; remember
-; 
+;
 ; Note - remember is included in Emacs 23. OK to remove this once
 ; Aquamacs catches up.
 ;; (add-to-list 'load-path (concat package-directory "/remember"))
@@ -996,10 +996,10 @@
 ;; (setq org-remember-templates
 ;;      '(("Todo" ?t "* TODO %? %^g\n %i\n " "~/Documents/GTD/newgtd.org" "Office")
 ;;       ("Journal" ?j "\n* %^{topic} %T \n%i%?\n" "~/Documents/GTD/journal.org")
-;;       ("Book" ?b "\n* %^{Book Title} %t :READING: \n%[~/Documents/GTD/booktemp.txt]\n" 
+;;       ("Book" ?b "\n* %^{Book Title} %t :READING: \n%[~/Documents/GTD/booktemp.txt]\n"
 ;;               "~/Documents/GTD/journal.org")
 ;;       ("Private" ?p "\n* %^{topic} %T \n%i%?\n" "~/Documents/GTD/privnotes.org")
-;;       ("Contact" ?c "\n* %^{Name} :CONTACT:\n%[~/Documents/GTD/contemp.txt]\n" 
+;;       ("Contact" ?c "\n* %^{Name} :CONTACT:\n%[~/Documents/GTD/contemp.txt]\n"
 ;;                "~/Documents/GTD/privnotes.org")
 ;;       ))
 
@@ -1010,11 +1010,11 @@
 ; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; ----------------------------------------------------------------------
 ; ----------------------------------------------------------------------
-; 
+;
 ; This next bit sets counters in org-mode headlines. You write [/] at
 ; the end of the line, add some tasks, and when they are checked off
 ; the headline is updated to end with, e.g. [4/6] or [0/3], etc.
-; 
+;
 ; This appears to be included in Emacs 23. Check this when aquamacs
 ; upgrades.
 (defun wicked/org-update-checkbox-count (&optional all)
@@ -1121,18 +1121,18 @@ do this for the whole buffer."
 
 ; ======================================================================
 ; LOOKING FOR SOMETHING?
-; 
+;
 ; Not .emacs settings, but you'll come looking here, so... hi.
-; 
+;
 ; ----------------------------------------------------------------------
 ; "jumping cursor" bug. Scrolling up and down with C-p/C-n, the cursor
 ; jumps whole blocks of text? You need to disable
 ; global-visual-line-mode. Then ECB will play nice with Aquamacs. Or
 ; possibly vice-versa. Anyway it fixes it.
-; 
+;
 ; M-x customize-variable
 ; global-visual-line-mode
-; 
+;
 ; Aquamacs 1.5 introduced global-visual-line-mode, which currently
 ; does not play well with semantic/ecb/rails-mode. Disable it by going
 ; to Options->Customize Emacs->Specific Option... and typing
@@ -1159,43 +1159,6 @@ do this for the whole buffer."
 ; time.
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled t)
-
-;; ----------------------------------------------------------------------
-;; Turn off all the crap on the aquamacs toolbar. When the toolbar is
-;; empty, Aquamacs will make it disappear, giving you an extra 2-3
-;; lines of vertical text space. This is wrappered in a function,
-;; rather than a bare execute, because it's not idempotent. It should
-;; only be needed after an aquamacs install. I think Aquamacs 2 has a
-;; single menu item to do this. Aquamacs 1.9 forces you to use
-;; Menu:Options -> View -> Toolbar Items -> {item} for each item to be
-;; removed. With these commands pasted here, you can just C-x C-e the
-;; function and make all the toolbar items vanish. (If you have
-;; removed one by hand, this function will bring it back. Just C-xC-e
-;; the specific line to toggle it away again.)
-;; 
-(defun toggle-toolbar-items ()
-	(interactive)
-	(toggle-toolbar-show--copy)
-	(toggle-toolbar-show--cut)
-	(toggle-toolbar-show--help)
-	; (toggle-toolbar-show--new-file)
-	(toggle-toolbar-show--open-file)
-	(toggle-toolbar-show--paste)
-	(toggle-toolbar-show--recent-files)
-	(toggle-toolbar-show--redo)
-	(toggle-toolbar-show--revert-buffer)
-	(toggle-toolbar-show--save-buffer)
-	(toggle-toolbar-show--undo))
-
-;; (toggle-toolbar-items)
-
-;; These are already turned off, but here they are in case they are
-;; needed.
-;; (toggle-toolbar-show--aquamacs-print)
-;; (toggle-toolbar-show--customize)
-;; (toggle-toolbar-show--isearch-forward)
-;; (toggle-toolbar-show--write-file)
-
 
 ;; ----------------------------------------------------------------------
 ;; Experimental -- code from Tim Harper to add checkbox to org-mode
@@ -1271,13 +1234,13 @@ do this for the whole buffer."
 ;; refactoring-inline-temporary-variable
 ;; Given:
 ;; - Point on a line declaring a temporary variable
-;; 
+;;
 ;; Do:
 ;; - Parse the line, expecting [vartype] temp_var = expression
 ;; - Expand region to full current scope
 ;; - Replace temp_var with expression in region
 ;; - Delete the original line
-;; 
+;;
 ;; Example:
 ;;    shapes = find_shapes()
 ;;    extrapolate(shapes)
@@ -1309,19 +1272,22 @@ do this for the whole buffer."
 (add-hook 'after-save-hook
   'executable-make-buffer-file-executable-if-script-p)
 
+(add-hook 'before-save-hook
+  'delete-trailing-whitespace)
+
 ; ----------------------------------------------------------------------
 ; recentf tweaks
 ;(require 'recentf)
- 
+
 ;; get rid of `find-file-read-only' and replace it with something
 ;; more useful.
 ; (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
- 
+
 ;; enable recent files mode.
 ;(recentf-mode t)
 
 (setq recentf-max-saved-items 50)
- 
+
 (defun ido-recentf-open ()
   "Use `ido-completing-read' to \\[find-file] a recent file"
   (interactive)
@@ -1388,7 +1354,7 @@ do this for the whole buffer."
 
 ;; ----------------------------------------------------------------------
 ;; nodify-commas
-;; 
+;;
 ;; In Node.js, the common idiom is to NOT leave hanging commas at the
 ;; end of lines, but to begin the NEXT line with the comma. This is
 ;; because JavaScript is very tetchy about commas. This macro searches
@@ -1489,7 +1455,7 @@ do this for the whole buffer."
 
 ;;----------------------------------------------------------------------
 ;; toggle-quotes
-;; 
+;;
 ;; changes quotes around text at point from "str" to 'str' to :str.
 ;; Don't worry about handling spaces unless there is a region
 ;; selected, in which case use the region rather than expanding
