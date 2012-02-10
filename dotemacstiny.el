@@ -1,3 +1,7 @@
+;; dotemacstiny.el - Tiny .emacs for fast-load of CLI emacs
+;; 1. Alias me to ~/.emacsitiny
+;; 2. in .bashrc or wherever, export EDITOR=$(echo `which emacs` -q -l ~/.emacstiny)
+;; 3. repeat for CSVEDITOR, SVN_EDITOR, etc
 (transient-mark-mode 1)
 (column-number-mode t)
 
