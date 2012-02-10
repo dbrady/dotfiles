@@ -153,6 +153,7 @@
 
 (global-set-key "\M-g" 'goto-line)
 (setq-default c-basic-offset 2)
+(setq-default sh-basic-offset 2)
 (setq-default indent-tabs-mode nil)
 ;(setq-default indent-tabs-mode t)
 (setq default-tab-width 2)
@@ -646,8 +647,8 @@
 (autoload 'sass-mode "sass-mode")
 
 (autoload 'markdown-mode "markdown-mode")
-(setq auto-mode-alist
-			(cons '("\\.md\\'" . markdown-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 
 (autoload 'php-mode "php-mode" "PHP editing mode" t)
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
@@ -816,28 +817,6 @@
 ;; (require 'rinari)
 ;; (setq auto-mode-alist (cons '("\\.rhtml\\'" . rhtml-mode) auto-mode-alist))
 
-(custom-set-variables
-  ;; custom-set-variables was added by Custom -- don't edit or cut/paste it!
-  ;; Your init file should contain only one such instance.
- )
-;; (custom-set-faces
-;;   ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
-;;   ;; Your init file should contain only one such instance.
-;;  '(default ((t (:stipple nil :background "#ffffff" :foreground "#000000" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "adobe-courier")))))
-
-
-;; ----------------------------------------------------------------------
-;; Set the default font for this session. This can go here in my
-;; universal .emacs file because emacs silently ignores this if it's
-;; not running under X.
-;; dbrady 2008-03-31: ...no longer true. Aquamacs Emacs has a GUI and
-;; this conflicts with these Kubuntu-centric fonts.
-;; ----------------------------------------------------------------------
-;; Proportional font
-;; (set-default-font "lucidasans-10")
-
-;; fixed-width font
-;(set-default-font "lucidasanstypewriter-10")
 
 ;; yaml mode
 (require 'yaml-mode)
@@ -863,17 +842,6 @@
 
 
 (global-set-key [(control meta x)] 'ido-execute)
-
-;(require 'textmate)
-
-
-;; Screw you, Aquamacs. aquamacs-backward-kill-word fails about 70% of
-;; the time, saying "The mark is not set now, so there is no
-;; region". I DON'T GIVE A CRAP ABOUT YOUR STUPID REGION, JUST DELETE
-;; THE FRICKIN' WORD ALREADY!
-
-;; Is this still broken? Trying to remove it for now.
-;; (global-set-key '[(meta backspace)] 'backward-kill-word)
 
 ;; ----------------------------------------------------------------------
 ;; git.el
@@ -1485,7 +1453,8 @@ do this for the whole buffer."
 ;;     (kill-buffer (buffer-name))))
 
 
-(defun run-vim ()
+;; Opens an eshell buffer and runs vi in it.
+(defun run-vi ()
   (interactive)
   (eshell)
   (switch-to-buffer "*eshell*")
@@ -1506,3 +1475,20 @@ do this for the whole buffer."
             ))
 
 (require 'column-marker)
+
+;; Find ruby18-style :symbol => value hashes and convert them to
+;; ruby-19 style symbol: value
+(defun convert-ruby18-hashes-to-ruby19 ()
+  (interactive)
+  (query-replace-regexp ":\\([[:alpha:]][A-Za-z_]*\\)\\([[:space:]]*\\)=>\\([[:space:]]*\\)" "\\1:\\2"))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t))
+;; (custom-set-faces
+;;   ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
+;;   ;; Your init file should contain only one such instance.
+;;  '(default ((t (:stipple nil :background "#ffffff" :foreground "#000000" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "adobe-courier")))))
