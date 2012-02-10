@@ -24,7 +24,7 @@ export JSTESTDRIVER_HOME=~/devel/jsTestDriver/
 # g: cyan                                         7.  character special
 # h: light grey                                   8.  executable with setuid bit set
 # A: bold black, usually shows up as dark grey    9.  executable with setgid bit set
-# B: bold red                                     10. directory writable to others, with sticky bit   
+# B: bold red                                     10. directory writable to others, with sticky bit
 # C: bold green                                   11. directory writable to others, without sticky bit
 # D: bold brown, usually shows up as yellow
 # E: bold blue
@@ -32,10 +32,10 @@ export JSTESTDRIVER_HOME=~/devel/jsTestDriver/
 # G: bold cyan
 # H: bold light grey; looks like bright white
 # x: default foreground or background
-# 
+#
 # The standard Mac OSX colors are: exfxcxdxbxegedabagacad
 #
-# TODO: export these to functions or scripts called light_bg or dark_bg, etc. 
+# TODO: export these to functions or scripts called light_bg or dark_bg, etc.
 export CLICOLOR=1
 # Standard colors look good on a white background
 export LSCOLORS=exfxcxdxbxegedabagacad
@@ -62,7 +62,7 @@ IN="\[\033[0m\]"
 
 export HISTFILESIZE=10000
 
-source_files() 
+source_files()
 {
   local file
 
@@ -75,7 +75,7 @@ source_files()
     else
       if [[ ! -e "${file}" ]] ; then
         printf "NOTICE: ${file} does not exist, not loading.\n"
-      else 
+      else
         true # simply an empty file, no warning necessary.
       fi
     fi
@@ -91,7 +91,8 @@ source_files ~/.aliases \
   ~/.git-completion.bash \
   ~/.nav \
   ~/.private \
-  ~/.rvm/contrib/ps1_functions
+  ~/.rvm/contrib/ps1_functions \
+  ~/.bash_functions
 
 # this must come after git-completion.bash has been sourced
 complete -o default -o nospace -F _git_checkout go
@@ -144,4 +145,3 @@ source_files ~/.current_project
 # MacPorts Installer addition on 2011-10-18_at_07:08:58: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
-

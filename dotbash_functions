@@ -1,0 +1,13 @@
+# ----------------------------------------------------------------------
+# makeline()
+#
+# 'makeline =' to make terminal width line. Or give 2nd arg count. By
+# default prints a line of #'s as wide as the terminal.
+#
+# Credit due to @climagic:
+# https://twitter.com/#!/climagic/status/168025763063406593
+#
+# Example:
+# $ makeline = 40
+# ========================================
+makeline(){ printf "%${2:-$COLUMNS}s\n" ""|tr " " ${1:-#}; }
