@@ -12,24 +12,23 @@ $: << File.expand_path("~/devel/lib")
 
 require "rubygems"
 require 'pp'
-require 'wirble'
 
-# require "utility_belt"
-# UtilityBelt.equip :all
+$got_wirble = false
+begin
+  require 'wirble'
+  $got_wirble = true
+rescue LoadError => e
+  $stderr.puts "~/.irbrc:#{__LINE__}: Could not initialize wirble: wirble gem not present in this gemset"
+end
 
-# This will work once I... um... write the code to support except
-# OH, AND I put clipboard into a beltpack.
-# UtilityBelt.equip :all, :except => ['clipboard']
-# UtilityBelt.equip(:command_history, :interactive_editor, :wirble)
+# require 'boson'
+# Boson.start
+# require 'hirb'
+# extend Hirb::Console
 
-require 'boson'
-Boson.start
-require 'hirb'
-extend Hirb::Console
-
-# Hirb Docco is here: http://tagaholic.me/hirb/doc/index.html
-def disable_hirb; Hirb::View.disable; end
-def enable_hirb; Hirb::View.enable; end
+# # Hirb Docco is here: http://tagaholic.me/hirb/doc/index.html
+# def disable_hirb; Hirb::View.disable; end
+# def enable_hirb; Hirb::View.enable; end
 
 def global_vars
   global_variables.sort.map { |e| [e, (eval e).inspect]}
@@ -70,8 +69,10 @@ WIRBLE_DEFAULT_COLORS = {
   :range              => :red,
 }
 
-# this does not actually work. Research later.
-Wirble.init(:colors => { :symbol => :blue, :symbol_prefix => :blue }, :init_color => true)
+if $got_wirble
+  Wirble.init
+  Wirble.colorize
+end
 
 # New in Rails 2.3! This crashes rails if it's loaded BEFORE rails. Idjits.
 # if ENV["RAILS_ENV"]
@@ -198,6 +199,8 @@ class Symbol
 end
 
 begin
+  # looksee is awesome. Adds gorgeous Object#ls method
+  # https://github.com/oggy/looksee
   require 'looksee'
 rescue LoadError => e
   $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
