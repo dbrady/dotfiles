@@ -16,8 +16,15 @@ alias 'up8'='cd ../../../../../../../..'
 alias 'up9'='cd ../../../../../../../../..'
 
 # Programming crap
+## Bundler
 alias b='bundle'
 alias be='bundle exec'
+alias bex='bundle exec'
+alias beg='bundle exec guard'
+alias ber='bundle exec rspec'
+alias bers='bundle exec rspec spec'
+
+## Misc Programming
 alias findrb='find . -name "*.rb" -print0 | xargs -0 grep -Hn'
 alias finderb='find . -name "*.erb" -print0 | xargs -0 grep -Hn'
 alias findrhtml='find . -name "*.rhtml" -print0 | xargs -0 grep -Hn'
@@ -26,6 +33,7 @@ alias as='autospec'
 alias sc="script/console"
 alias sss="script/spec_server"
 
+## Git
 alias gpmm="echo 'git push monkey master' && git push monkey master"
 alias gpom="echo 'git push origin master' && git push origin master"
 alias gst="echo 'git status' && git status"
