@@ -1,13 +1,120 @@
-;;; David Brady's Aquamacs Initialization File
+;;; David Brady's Emacs Initialization File
 
 (setq elisp-directory (expand-file-name "~/.elisp"))
 (setq package-directory (concat elisp-directory "/packages"))
 (setq ini-directory (concat elisp-directory "/ini"))
 (setq load-path (cons ini-directory load-path))
-; (add-to-list 'load-path ini-directory)
+(add-to-list 'load-path ini-directory)
+(add-to-list 'load-path package-directory)
 (add-to-list 'load-path (concat package-directory "/abedra-dot-emacs"))
 
 ;;(load "essential")
+
+;; ======================================================================
+;; Emacs 24 TODO: (Note: I've largely given up on emacs 24 and gone
+;; back to Aquamacs. Mostly due to scratch-buffer saving hassles.)
+;;
+;; [x] Make emacs open *scratch* at startup instead of the frickin'
+;;     splash screen.
+(setq inhibit-splash-screen t)
+;; [ ] When I run "open -a Emacs.app <file>", open it in a new tab in
+;;     the current window. Do not open a new window.
+
+;; [ ] Hide tool-bar by default
+
+;; [ ] Allow C-x C-s to save *scratch* to scratch buffer (w/o changing
+;;     buffer-name). I can think of one way to do it--globally change
+;;     C-x C-s to call a custom function like save-buffer-dwim that
+;;     checks the buffer name. If it's *scratch*, it invokes
+;;     save-persistent-scratch but if not it calls the regular
+;;     save-buffer. This seems hacky to change ALL of C-x C-s across
+;;     emacs, but I'm not sure emacs can hook a keybinding in a single
+;;     buffer, can it? I think it can only hook in a given mode, and
+;;     while *scratch* always starts out in lisp-interaction, it can
+;;     change modes and I wouldn't want to lose this functionality. If
+;;     it does become necessary to globally hook C-x C-s, can this be
+;;     done cleanly with a defadvice or similar?
+
+;; [ ] Make tabbar show ALL tabs in a single bar. Back in my terminal
+;;     days I loved how it kept .php files in a separate bar from .css
+;;     files but now I think of all my open buffers as a single thing.
+;;     The only possible exception I can think of might be to keep all
+;;     system buffers (*help*, *messages*, etc--but NOT *scratch*!) in
+;;     one tabbar and all my open buffers (plus *scratch*) in another.
+(require 'tabbar)
+(tabbar-mode 1)
+;; (defun tabbar-buffer-groups ()
+;;   "Return the list of group names the current buffer belongs to.
+;;  This function is a custom function for tabbar-mode's tabbar-buffer-groups.
+;;  This function group all buffers into 3 groups:
+;;  Those Dired, those user buffer, and those emacs buffer.
+;;  Emacs buffer are those starting with “*”."
+;;   (list
+;;    (cond
+;;     ((string-equal "*" (substring (buffer-name) 0 1))
+;;      '("Emacs Buffer")
+;;      )
+;;     ((eq major-mode 'dired-mode)
+;;      '("Dired")
+;;      )
+;;     (t
+;;      '("User Buffer")
+;;      )
+;;     ))) ;; from Xah Lee
+;; (setq tabbar-buffer-groups-function 'tabbar-buffer-groups)
+
+;; [ ] Fix recentf-mode
+
+;; [ ] Fix open-from-cli script
+
+;; [ ] Not sure this is even possible: Make Cmd-+ and Cmd-- enlarge
+;;     and reduce the face size in the current buffer. OK if it
+;;     enlarges for all buffers visiting that file or even all
+;;     buffers in that mode but ideally it should only enlarge for
+;;     the current buffer.
+
+;; End Emacs 24 Todo
+;; ======================================================================
+
+(defun length-of-line ()
+  "Returns length of the current line in characters"
+  (length (current-line-string)))
+
+(defun length-of-previous-line ()
+  "Returns length of line above point in characters"
+  (save-excursion
+    (previous-line)
+    (length-of-line)))
+
+(defun length-of-first-nonempty-line-above-point ()
+  "Returns length of first nonempty line abovee point in characters. Differs from length-of-line-dwim in that it does not consider the length of the current line."
+  (save-excursion
+    (previous-line)
+    (let ((len (length-of-line)))
+      (if (or
+           (> len 0)
+           (= (current-line) 1))
+          len
+        (length-of-first-nonempty-line-above-point)))))
+
+(defun length-of-line-dwim ()
+  "Returns length of the first nonempty line at or above point in characters."
+  (let ((len (length-of-line)))
+    (if (> len 0)
+        len
+      (length-of-first-nonempty-line-above-point))))
+
+(defun display-length-of-line ()
+  "Displays the length of the current line; if the current line is empty it displays the length of the line above point"
+  (interactive)
+  (save-excursion
+    (let ((len (length-of-line)))
+      (if (= len 0)
+          (message "Length of first nonempty line above point: %d" (length-of-line-dwim))
+        (message "Length of line: %d" (length-of-line-dwim))))))
+
+(global-set-key (kbd "\C-c C-l") 'display-length-of-line)
+
 
 ; ----------------------------------------------------------------------
 ; CEDET
@@ -46,8 +153,6 @@
 ; ECB info page, it has full docco on options customizable with
 ; customize-group/customize-option, AND A LIST of options that CANNOT
 ; BE CHANGED with setq!
-(add-to-list 'load-path (expand-file-name "~/.elisp/ini"))
-(add-to-list 'load-path (expand-file-name "~/.elisp/packages"))
 ;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/eieio-0.17"))
 ;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/speedbar-0.14beta4"))
 ;; (add-to-list 'load-path (expand-file-name "~/.elisp/packages/semantic-1.4.4"))
@@ -595,6 +700,14 @@
 ; not supply an argument to it it will reload the current
 ; buffer... but it will switch you to another buffer when it does
 ; it. All this function does is find-alt and then switch you back.
+;
+; TODO: This breaks down when you have multiple buffers containing the
+; same file basename, e.g. app/models/user.rb and spec/models/user.rb
+; because one of the buffers will have the buffername "user.rb (2)".
+; The buffer will be reloaded correctly but won't get switched to. Not
+; entirely sure why. Ideally it would be nice to be able to find a
+; buffer by the complete pathname it is visiting, as this would remain
+; constant and unique.
 (defun reload-buffer()
   (interactive)
   (let ((buffername (buffer-name)))
@@ -758,6 +871,12 @@
           '(lambda ()
              (inf-ruby-keys)
              ))
+
+(defun insert-lambda ()
+  (interactive)
+  (insert "λ"))
+(global-set-key (kbd "\C-c C-c C-l") 'insert-lambda)
+
 
 (add-hook 'ruby-mode-hook
       (lambda()
@@ -1069,6 +1188,17 @@ do this for the whole buffer."
            (set-window-start w2 s1))))
   (other-window 1))
 
+;; TODO: This defun needs a much better name!
+(defun split-window-right-last-buffer ()
+  "Splits window right, but instead of duplicating the current buffer, it opens the last buffer you visited before this one"
+  (interactive)
+  (cond ((/= (count-windows) 1)
+         (message "You need exactly 1 window open to do this."))
+        (t
+         (split-window-right)
+         (let* ((w2 (second (window-list)))
+                (b2 (second (buffer-list))))
+           (set-window-buffer w2 b2)))))
 
 ; ----------------------------------------------------------------------
 ; ----------------------------------------------------------------------
@@ -1115,10 +1245,6 @@ do this for the whole buffer."
 ;;   (print end))
 ;; (global-set-key "\C-c(" 'show-mark-begin)
 
-; Aquamacs defines tabbar-mode. Gnu Emacs 23 does not.
-(unless (fboundp 'tabbar-mode)
-  (require 'tabbar)
-  (tabbar-mode))
 
 ; ======================================================================
 ; Last but not least: automatic settings updates from emacs. It sticks
@@ -1245,14 +1371,10 @@ do this for the whole buffer."
 
 ; ----------------------------------------------------------------------
 ; recentf tweaks
-;(require 'recentf)
-
-;; get rid of `find-file-read-only' and replace it with something
-;; more useful.
-; (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+; (require 'recentf)
 
 ;; enable recent files mode.
-;(recentf-mode t)
+; (recentf-mode t)
 
 (setq recentf-max-saved-items 50)
 
@@ -1262,6 +1384,11 @@ do this for the whole buffer."
   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
       (message "Opening file...")
     (message "Aborting")))
+
+;; get rid of `find-file-read-only' and replace it with something
+;; more useful.
+; (global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+
 
 ; ----------------------------------------------------------------------
 ; espresso-mode (for javascript)
@@ -1487,8 +1614,26 @@ do this for the whole buffer."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(column-number-mode t))
+ '(column-number-mode t)
+ '(epg-gpg-program "/usr/local/bin/gpg"))
 ;; (custom-set-faces
 ;;   ;; custom-set-faces was added by Custom -- don't edit or cut/paste it!
 ;;   ;; Your init file should contain only one such instance.
 ;;  '(default ((t (:stipple nil :background "#ffffff" :foreground "#000000" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "adobe-courier")))))
+
+;; are we in aquamacs or carbon emacs?
+(defvar *aquamacs-p* (boundp 'aquamacs-version))
+
+(unless *aquamacs-p* ;; Aquamacs does this for us
+  (require 'persist-scratch-buffer))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; Dear Avdi, I FREAKING LOVE YOU, Love, Dave
+(winner-mode 1)
+
+(require 'tidy)
