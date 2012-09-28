@@ -97,7 +97,6 @@ source_files ~/.aliases \
 # this must come after git-completion.bash has been sourced
 complete -o default -o nospace -F _git_checkout go
 
-
 if command -v ps1_set >/dev/null 2>&1 ; then
     ps1_set --prompt ∫
 else
@@ -145,3 +144,8 @@ source_files ~/.current_project
 # MacPorts Installer addition on 2011-10-18_at_07:08:58: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
+
+# For some reason unbeknownst to me, emacs started from the CLI opens an XWindows version of emacs but with keyboard input still locked to the terminal.
+alias 'emacs'='emacs -nw'
+
+export OPSCODE_USER=ratgeyser
