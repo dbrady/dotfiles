@@ -47,3 +47,4 @@
 
 (global-set-key (kbd "\C-c M-f") 'auto-fill-mode)
 
+(add-hook 'fundamental-mode-hook 'turn-on-auto-fill)
