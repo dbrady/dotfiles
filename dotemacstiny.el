@@ -47,4 +47,10 @@
 
 (global-set-key (kbd "\C-c M-f") 'auto-fill-mode)
 
+;; this is meant to turn on autofill when the git commit editor starts
+;; emacs, but for some reason it's not engaging. I've also tried
+;; 'auto-fill-mode and a full-blown lambda to engage the mode, but
+;; none of them work, which makes me think that the
+;; fundamental-mode-hooks are not actually being run in that startup
+;; buffer.
 (add-hook 'fundamental-mode-hook 'turn-on-auto-fill)
