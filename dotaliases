@@ -23,6 +23,10 @@ alias bex='bundle exec'
 alias beg='bundle exec guard'
 alias ber='bundle exec rspec'
 alias bers='bundle exec rspec spec'
+alias brdm='bundle exec rake db:migrate'
+alias brtp='bundle exec rake db:test:prepare'
+
+alias rtp='rake db:test:prepare'
 
 ## Misc Programming
 alias findrb='find . -name "*.rb" -print0 | xargs -0 grep -Hn'
@@ -63,6 +67,10 @@ alias 'aqm'='aqmigration'
 alias 'rc'='rake cucumber'
 alias go='git checkout'
 alias gff='git flow feature'
+
+
+# how big is this terminal?
+alias 'xy'='echo ${COLUMNS}x${LINES}'
 
 # Note that to work, this requires an ./all_specs.sh script.
 alias hop_master_push='export TMP_CURRBRANCH=$(git-currentbranch) && git checkout master && echo "Hopping to master to merge, test and push..." && git merge $TMP_CURRBRANCH && echo "Pulling master from origin..." && git pull origin master && git merge origin/master && echo "Running all specs..." && ./all_specs.sh && echo "Pushing changes..." && git push origin master && echo "Hopping back to $TMP_CURRENTBRANCH" && git checkout $TMP_CURRBRANCH && export $TMP_CURRBRANCH='
