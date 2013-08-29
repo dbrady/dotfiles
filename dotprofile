@@ -108,7 +108,7 @@ export RUBYOPT=rubygems
 # DANGER DANGER DANGER - Do not just slap paths in here willy-nilly. If it's a path to something outside of ~, it should probably go in /etc/paths.d!
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # put MY bin first, THEN homebrew, THEN ports.
-export PATH=~/bin:~/scratchbin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin
+export PATH=~/private_bin:~/bin:~/scratchbin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin
 export MANPATH=/opt/local/share/man:$MANPATH
 
 # Android SDK
