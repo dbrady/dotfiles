@@ -1,9 +1,9 @@
 # .aliases - because my alias collection is way outta control
 
 # Useful aliases
-alias ls="ls -G"
-alias ll="ls -l"
-alias 'top'='top -o cpu'
+alias ls="ls -G --color=auto"
+alias ll="ls -l --color=auto"
+# alias 'top'='top -o cpu' # OSX
 alias 't'='tree -ChL 1'
 alias 'up'='cd ..'
 alias 'up2'='cd ../..'
@@ -22,6 +22,9 @@ alias be='bundle exec'
 alias bex='bundle exec'
 alias beg='bundle exec guard'
 alias ber='bundle exec rspec'
+alias bek='bundle exec rake'
+alias berk='bundle exec rake'
+alias bert='bundle exec rake test'
 alias bers='bundle exec rspec spec'
 alias brdm='bundle exec rake db:migrate'
 alias brtp='bundle exec rake db:test:prepare'
@@ -58,14 +61,10 @@ alias 'ps4'='open -a "Adobe Photoshop CS4"'
 alias 'ps5'='open -a "Adobe Photoshop CS5"'
 alias 'qt'='open -a "QuickTime Player"'
 
-alias 'aq'='aquamacs'
-
 # command aliases
 alias zf=~/pe/zend/bin/zf.sh
 alias acr='apachectl configtest && sudo apachectl restart'
-alias 'aqm'='aqmigration'
-alias 'rc'='rake cucumber'
-alias go='git checkout'
+alias rc='rake cucumber'
 alias gff='git flow feature'
 
 
@@ -74,4 +73,3 @@ alias 'xy'='echo ${COLUMNS}x${LINES}'
 
 # Note that to work, this requires an ./all_specs.sh script.
 alias hop_master_push='export TMP_CURRBRANCH=$(git-currentbranch) && git checkout master && echo "Hopping to master to merge, test and push..." && git merge $TMP_CURRBRANCH && echo "Pulling master from origin..." && git pull origin master && git merge origin/master && echo "Running all specs..." && ./all_specs.sh && echo "Pushing changes..." && git push origin master && echo "Hopping back to $TMP_CURRENTBRANCH" && git checkout $TMP_CURRBRANCH && export $TMP_CURRBRANCH='
-
