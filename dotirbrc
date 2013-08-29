@@ -13,22 +13,14 @@ $: << File.expand_path("~/devel/lib")
 require "rubygems"
 require 'pp'
 
-$got_wirble = false
+$got_hirb = false
 begin
-  require 'wirble'
-  $got_wirble = true
+  require 'hirb'
+  $got_hirb = true
+  Hirb.enable
 rescue LoadError => e
-  $stderr.puts "~/.irbrc:#{__LINE__}: Could not initialize wirble: wirble gem not present in this gemset"
+  $stderr.puts "~/.irbrc:#{__LINE__}: Could not initialize hirb: hirb gem not present in this gemset"
 end
-
-# require 'boson'
-# Boson.start
-# require 'hirb'
-# extend Hirb::Console
-
-# # Hirb Docco is here: http://tagaholic.me/hirb/doc/index.html
-# def disable_hirb; Hirb::View.disable; end
-# def enable_hirb; Hirb::View.enable; end
 
 def global_vars
   global_variables.sort.map { |e| [e, (eval e).inspect]}
@@ -73,13 +65,6 @@ if $got_wirble
   Wirble.init
   Wirble.colorize
 end
-
-# New in Rails 2.3! This crashes rails if it's loaded BEFORE rails. Idjits.
-# if ENV["RAILS_ENV"]
-#   require 'dave_rails_hacks'
-#   $: << File.expand_path(File.join("~", "/ruby/scrapbin/rails"))
-#   require 'ar_ext'
-# end
 
 # ----------------------------------------------------------------------
 # Object#local_methods
@@ -128,76 +113,6 @@ class Numeric
   include MetricSystemForDummies
 end
 
-# ----------------------------------------------------------------------
-# Toggleable
-#
-# Provides the morginally useful method "toggle_between". Sure, you
-# could just jam in the ternary operator and be done with it. But is
-# that really as elegant as "name.toggle_between "a", "b" ?
-#
-# No. No, it isn't.
-#
-# <b>Note:</b> If you want your custom class to include
-# toggle_between!, you must include this module AFTER you have defined
-# your replace method.
-module Toggleable
-  # If this object matches either argument, returns the other one.
-  #
-  #  "Bob".toggle_between("Bob", "Robert")
-  #  # => "Robert"
-  def toggle_between(a, b)
-    return b if self == a
-    return a if self == b
-    nil
-  end
-
-
-  # When toggleable is included in a class, it looks for a "replace"
-  # method. If it finds it, we add another method, toggle_between! to
-  # the class.
-  #
-  #  name = "Bob"
-  #  name.toggle_between! "Bob", "Robert"
-  #  name
-  #  # => "Robert"
-  def Toggleable.included(mod)
-    if mod.instance_methods.include? "replace"
-      mod.send :define_method, :toggle_between!, lambda {|a, b| self.replace toggle_between(a, b) }
-    end
-  end
-end
-
-# in my .irbrc: add the non-destructive toggle_between to everything
-class Object; include Toggleable; end
-
-# these classes in Ruby Core all have replace methods. Jack 'em up
-# with the sexier toggle_between! version.
-[ Hash, String, Array ].each {|c| c.send :include, Toggleable }
-
-
-# Temp convenience hack for SW/CM
-def sectime(time)
-  m = time / 60.0
-  s = time - (m.floor*60)
-  "%f (%d:%09.6f)" % [time, m, s]
-end
-
-def bars2time(bpm, bars)
-  (60.0 / bpm) * bars * 4
-end
-
-def time2bars(bpm, time)
-  bpm * time / 240.0
-end
-
-class Symbol
-  unless public_method_defined? :to_proc
-    def to_proc
-      Proc.new { |*args| args.shift.__send__(self, *args) }
-    end
-  end
-end
-
 begin
   # looksee is awesome. Adds gorgeous Object#ls method
   # https://github.com/oggy/looksee
@@ -205,5 +120,3 @@ begin
 rescue LoadError => e
   $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
 end
-
-
