@@ -17,36 +17,42 @@ alias 'up9'='cd ../../../../../../../../..'
 
 # Programming crap
 ## Bundler
-alias b='bundle'
-alias be='bundle exec'
-alias bex='bundle exec'
-alias beg='bundle exec guard'
-alias ber='bundle exec rspec'
-alias bek='bundle exec rake'
-alias berk='bundle exec rake'
-alias bert='bundle exec rake test'
-alias bers='bundle exec rspec spec'
-alias brdm='bundle exec rake db:migrate'
-alias brtp='bundle exec rake db:test:prepare'
+alias b='echo "bundle" && bundle'
+alias be='echo "bundle exec" && bundle exec'
+alias bex='echo "bundle exec" && bundle exec'
+alias beg='echo "bundle exec guard" && bundle exec guard'
+alias ber='echo "bundle exec rspec" && bundle exec rspec'
+alias tber='echo "time -p bundle exec rspec" && time -p bundle exec rspec'
+alias bek='echo "bundle exec rake" && bundle exec rake'
+alias berk='echo "bundle exec rake" && bundle exec rake'
+alias bert='echo "bundle exec rake test" && bundle exec rake test'
+alias bers='echo "bundle exec rails server" && bundle exec rails server'
+alias berc='echo "bundle exec rails console" && bundle exec rails console'
+alias brdm='echo "bundle exec rake db:migrate" && bundle exec rake db:migrate'
+alias brtp='echo "bundle exec rake db:test:prepare" && bundle exec rake db:test:prepare'
 
-alias rtp='rake db:test:prepare'
+alias rtp='echo "rake db:test:prepare" && rake db:test:prepare'
+
+
+## Ack
+# r)uby on r)ails ack
+alias rrack='echo "ack --ignore-dir=tmp/metric_fu --ignore-dir=log --ignore-dir=coverage" && ack --ignore-dir=tmp/metric_fu --ignore-dir=log --ignore-dir=coverage'
 
 ## Misc Programming
-alias findrb='find . -name "*.rb" -print0 | xargs -0 grep -Hn'
-alias finderb='find . -name "*.erb" -print0 | xargs -0 grep -Hn'
-alias findrhtml='find . -name "*.rhtml" -print0 | xargs -0 grep -Hn'
-alias ss='script/server'
-alias as='autospec'
-alias sc="script/console"
-alias sss="script/spec_server"
+alias findrb='echo "find . -name "*.rb" -print0 | xargs -0 grep -Hn" && find . -name "*.rb" -print0 | xargs -0 grep -Hn'
+alias finderb='echo "find . -name "*.erb" -print0 | xargs -0 grep -Hn" && find . -name "*.erb" -print0 | xargs -0 grep -Hn'
+alias findrhtml='echo "find . -name "*.rhtml" -print0 | xargs -0 grep -Hn" && find . -name "*.rhtml" -print0 | xargs -0 grep -Hn'
 
 ## Git
 alias gpmm="echo 'git push monkey master' && git push monkey master"
 alias gpom="echo 'git push origin master' && git push origin master"
 alias gst="echo 'git status' && git status"
+alias gws="echo 'git commit -m Whitespace' && git commit -m Whitespace"
+alias gbod='echo git commit -m "BOD `date +%F`" && git commit -m "BOD `date +%F`"'
 alias gsi="echo 'git submodule init' && git submodule init"
 alias gsu="echo 'git submodule update' && git submodule update"
 alias gca="echo 'git commit -a' && git commit -a"
+alias gsb="git branch | cut -c 3- | selecta | xargs git checkout"
 
 alias gf='git flow'
 alias gff='git flow feature'
@@ -60,6 +66,9 @@ alias 'safari'='open -a Safari'
 alias 'ps4'='open -a "Adobe Photoshop CS4"'
 alias 'ps5'='open -a "Adobe Photoshop CS5"'
 alias 'qt'='open -a "QuickTime Player"'
+
+# Open Finder on Linux
+alias 'xo'='xdg-open .'
 
 # command aliases
 alias zf=~/pe/zend/bin/zf.sh
