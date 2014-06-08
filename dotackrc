@@ -55,7 +55,7 @@
 --type-add=coffeescript:ext:coffee
 --type-add=cpp:ext:cpp,cc,cxx,m,hpp,hh,h,hxx
 --type-add=csharp:ext:cs
---type-add=css:ext:css
+--type-add=css:ext:css,scss,sass
 --type-add=dart:ext:dart
 --type-add=delphi:ext:pas,int,dfm,nfm,dof,dpk,dproj,groupproj,bdsgroup,bdsproj
 --type-add=elixir:ext:ex,exs
