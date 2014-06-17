@@ -1,9 +1,21 @@
 # .aliases - because my alias collection is way outta control
 
-# Useful aliases
-alias ls="ls -G --color=auto"
-alias ll="ls -l --color=auto"
-# alias 'top'='top -o cpu' # OSX
+
+case `uname -a | awk '{print $1}'` in
+    Linux)
+        alias ls="ls -G --color=auto"
+        alias ll="ls -l --color=auto"
+        ;;
+    Darwin)
+        alias ls="ls -G"
+        alias ll="ls -l"
+        alias 'top'='top -o cpu'
+        ;;
+    *)
+        echo 'I have no clue what OS this is. :-('
+        ;;
+esac
+
 alias 't'='tree -ChL 1'
 alias 'up'='cd ..'
 alias 'up2'='cd ../..'
@@ -15,11 +27,23 @@ alias 'up7'='cd ../../../../../../..'
 alias 'up8'='cd ../../../../../../../..'
 alias 'up9'='cd ../../../../../../../../..'
 
+function bexbe() {
+    echo "######  ####### #     #        #     ######  #######"
+    echo "#     # #        #   #          #    #     # #      "
+    echo "#     # #         # #            #   #     # #      "
+    echo "######  #####      #     #####    #  ######  #####  "
+    echo "#     # #         # #            #   #     # #      "
+    echo "#     # #        #   #          #    #     # #      "
+    echo "######  ####### #     #        #     ######  #######"
+    echo
+    echo GET OUT OF THE HABIT OF USING THIS, DAVE--YOU WANT "be" INSTEAD
+}
+
 # Programming crap
 ## Bundler
 alias b='echo "bundle" && bundle'
 alias be='echo "bundle exec" && bundle exec'
-alias bex='echo GET OUT OF THE HABIT OF USING THIS, DAVE--YOU WANT "be" INSTEAD'
+alias bex='bexbe'
 alias beg='echo "bundle exec guard" && bundle exec guard'
 alias ber='echo "bundle exec rspec" && bundle exec rspec'
 alias tber='echo "time -p bundle exec rspec" && time -p bundle exec rspec'
