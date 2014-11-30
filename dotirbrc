@@ -1,85 +1,5 @@
 #!/usr/bin/env ruby
-# String methods is a global variable, and captured before anybody
-# else has had the chance to monkeypatch anything. Kernel.methods
-# returns all globally defined methods, same deal. Later on, do a
-# Kernel.methods-$kernel_methods to see what global methods have been
-# added, and use "foo".methods - $string_methods to see what
-# monkeypatches have been added.
-$kernel_methods = Kernel.methods
-$string_methods = "foo".methods
-
-$: << File.expand_path("~/devel/lib")
-
-require "rubygems"
 require 'pp'
-
-$got_hirb = false
-begin
-  require 'hirb'
-  $got_hirb = true
-  Hirb.enable
-rescue LoadError => e
-  $stderr.puts "~/.irbrc:#{__LINE__}: Could not initialize hirb: hirb gem not present in this gemset"
-end
-
-def global_vars
-  global_variables.sort.map { |e| [e, (eval e).inspect]}
-end
-
-# These are Wirble's Default Colors
-WIRBLE_DEFAULT_COLORS = {
-  # delimiter colors
-  :comma              => :blue,
-  :refers             => :blue,
-
-  # container colors (hash and array)
-  :open_hash          => :green,
-  :close_hash         => :green,
-  :open_array         => :green,
-  :close_array        => :green,
-
-  # object colors
-  :open_object        => :light_red,
-  :object_class       => :white,
-  :object_addr_prefix => :blue,
-  :object_line_prefix => :blue,
-  :close_object       => :light_red,
-
-  # symbol colors
-  :symbol             => :yellow,
-  :symbol_prefix      => :yellow,
-
-  # string colors
-  :open_string        => :red,
-  :string             => :cyan,
-  :close_string       => :red,
-
-  # misc colors
-  :number             => :cyan,
-  :keyword            => :green,
-  :class              => :light_green,
-  :range              => :red,
-}
-
-if $got_wirble
-  Wirble.init
-  Wirble.colorize
-end
-
-# ----------------------------------------------------------------------
-# Object#local_methods
-class Object
-  def local_methods
-    (methods - Object.instance_methods).sort
-  end
-end
-
-# ----------------------------------------------------------------------
-# Log to STDOUT if in Rails
-if ENV.include?('RAILS_ENV') && !Object.const_defined?('RAILS_DEFAULT_LOGGER')
-  require 'logger'
-  RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
-end
 
 # ----------------------------------------------------------------------
 # Metric Conversions
@@ -120,3 +40,13 @@ begin
 rescue LoadError => e
   $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
 end
+
+require 'json'
+module JSON
+  def self.load_file(filename)
+    File.open(filename) do |io|
+      load io
+    end
+  end
+end
+$stderr.puts "So, doin' a lot of JSON work lately, eh? I just monkeypatched .load_file(filename) onto JSON for you. You're welcome."

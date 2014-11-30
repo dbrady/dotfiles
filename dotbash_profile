@@ -91,7 +91,7 @@ source_files ~/.aliases \
   ~/.git-completion.bash \
   ~/.nav \
   ~/.private \
-  ~/.rvm/contrib/ps1_functions \
+  ~/bin/ps1_functions \
   ~/.bash_functions
 
 # this must come after git-completion.bash has been sourced

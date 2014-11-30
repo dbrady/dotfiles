@@ -28,44 +28,45 @@ alias 'up8'='cd ../../../../../../../..'
 alias 'up9'='cd ../../../../../../../../..'
 
 function bexbe() {
-    echo "######  ####### #     #        #     ######  #######"
-    echo "#     # #        #   #          #    #     # #      "
-    echo "#     # #         # #            #   #     # #      "
-    echo "######  #####      #     #####    #  ######  #####  "
-    echo "#     # #         # #            #   #     # #      "
-    echo "#     # #        #   #          #    #     # #      "
-    echo "######  ####### #     #        #     ######  #######"
+    echo 
+    echo "_-_ _,,     ,- _~, - -    /\`             \\           _-_ _,,     ,- _~,"
+    echo "   -/  )   (' /| /   \\\\  /                \\             -/  )   (' /| /"
+    echo "  ~||_<   ((  ||/=    \\\\/                  \\\\          ~||_<   ((  ||/="
+    echo "   || \\\\  ((  ||     ==/\\==        <>-<>    >>          || \\\\  ((  ||  "
+    echo "   ,/--||  ( / |      / \\\\                 //           ,/--||  ( / |  "
+    echo "  _--_-'    -____- \\\\/   \\\\,              /            _--_-'    -____-"
+    echo " (                                       /            (                "
     echo
     echo GET OUT OF THE HABIT OF USING THIS, DAVE--YOU WANT "be" INSTEAD
 }
 
 # Programming crap
 ## Bundler
-alias b='echo "bundle" && bundle'
-alias be='echo "bundle exec" && bundle exec'
+alias b='bundle'
+alias be='bundle exec'
 alias bex='bexbe'
-alias beg='echo "bundle exec guard" && bundle exec guard'
-alias ber='echo "bundle exec rspec" && bundle exec rspec'
-alias tber='echo "time -p bundle exec rspec" && time -p bundle exec rspec'
-alias bek='echo "bundle exec rake" && bundle exec rake'
-alias berk='echo "bundle exec rake" && bundle exec rake'
-alias bert='echo "bundle exec rake test" && bundle exec rake test'
-alias bers='echo "bundle exec rails server" && bundle exec rails server'
-alias berc='echo "bundle exec rails console" && bundle exec rails console'
-alias brdm='echo "bundle exec rake db:migrate" && bundle exec rake db:migrate'
-alias brtp='echo "bundle exec rake db:test:prepare" && bundle exec rake db:test:prepare'
+alias beg='bundle exec guard'
+alias ber='bundle exec rspec'
+alias berf='bundle exec rspec -f d'
+alias bek='bundle exec rake'
+alias berk='bundle exec rake'
+# HAHAHA why haven't I thought of this 1000 times already
+alias bake='bundle exec rake'
+alias birb='bundle exec irb'
+alias bert='bundle exec rake test'
+alias bers='bundle exec rails server'
+alias berc='bundle exec rails console'
+alias brdm='bundle exec rake db:migrate'
+alias brtp='bundle exec rake db:test:prepare'
 
-alias rtp='echo "rake db:test:prepare" && rake db:test:prepare'
+alias rtp='rake db:test:prepare'
 
 
 ## Ack
 # r)uby on r)ails ack
-alias rrack='echo "ack --ignore-dir=tmp/metric_fu --ignore-dir=log --ignore-dir=coverage" && ack --ignore-dir=tmp/metric_fu --ignore-dir=log --ignore-dir=coverage'
+alias rrack='ack --ignore-dir=tmp/metric_fu --ignore-dir=log --ignore-dir=coverage'
 
 ## Misc Programming
-alias findrb='echo "find . -name "*.rb" -print0 | xargs -0 grep -Hn" && find . -name "*.rb" -print0 | xargs -0 grep -Hn'
-alias finderb='echo "find . -name "*.erb" -print0 | xargs -0 grep -Hn" && find . -name "*.erb" -print0 | xargs -0 grep -Hn'
-alias findrhtml='echo "find . -name "*.rhtml" -print0 | xargs -0 grep -Hn" && find . -name "*.rhtml" -print0 | xargs -0 grep -Hn'
 
 ## Git
 alias gpmm="echo 'git push monkey master' && git push monkey master"
