@@ -1,16 +1,12 @@
 #!/bin/sh
 export EDITOR=$(echo `which emacs` -q -l ~/.emacstiny)
-export GEMEDITOR=~/bin/aquamacs
+export GEMEDITOR=$(echo `which emacs`)
 export CVSEDITOR=$(echo `which emacs` -q -l ~/.emacstiny)
 export SVN_EDITOR=$(echo `which emacs` -q -l ~/.emacstiny)
 export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
-export JSTESTDRIVER_HOME=~/devel/jsTestDriver/
 
-# Supposedly this can be found in the Developer Tools that came with
-# my Mac. That's the theory, at any rate; in practice it's a load of
-# dingo's bicycles.
-# export ANT_HOME='/Developer/Java/ant'
 
+# === OSX Specific ======================================================
 # Search the ls manpage for "CLICOLOR" and "color designators for an
 # explanation of this goodness.
 
@@ -42,6 +38,7 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 
 # Swap blue/cyan for better visibility on dark bg
 #export LSCOLORS=gxfxcxdxbxegedabagacad
+# === OSX Specific ======================================================
 
 # Use less by default b/c search works better. But keep most inifile
 # here for tweaking.
@@ -61,6 +58,10 @@ IN="\[\033[0m\]"
 
 
 export HISTFILESIZE=10000
+
+# RVM - DANGER THIS IS OSX-Specific. Test on linux with $HOME instead?
+[[ -s "/Users/dbrady/.rvm/scripts/rvm" ]] && source "/Users/dbrady/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+rvm default 2.2.0
 
 source_files()
 {
@@ -92,9 +93,11 @@ source_files ~/.aliases \
   ~/.nav \
   ~/.private \
   ~/bin/ps1_functions \
-  ~/.bash_functions
+  ~/.bash_functions \
+  ~/.current_project
 
 # this must come after git-completion.bash has been sourced
+# turn on path completion for go
 complete -o default -o nospace -F _git_checkout go
 
 if command -v ps1_set >/dev/null 2>&1 ; then
@@ -103,49 +106,13 @@ else
     export PS1="!!! It's \D{%H} O'Clock! Time to install rvm to fix your prompt!\n$ "
 fi
 
-export RUBYOPT=rubygems
+export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-# DANGER DANGER DANGER - Do not just slap paths in here willy-nilly. If it's a path to something outside of ~, it should probably go in /etc/paths.d!
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-# put MY bin first, THEN homebrew, THEN ports.
-export PATH=~/private_bin:~/bin:~/scratchbin:~/private_bin:/bin:/usr/local/bin:/usr/local/sbin:$PATH:/usr/local/mysql/bin
+export PATH=~/private_bin:~/bin:/usr/local/bin:/usr/local/sbin:$PATH
 export MANPATH=/opt/local/share/man:$MANPATH
 
-# Android SDK
-export ANDROID_SDK_ROOT=/usr/local/Cellar/android-sdk/r7
-
-# export MAGLEV_OPTS='-MlogSexp -d -q'
-# export MAGLEV_OPTS='-MtraceLoad -MtraceGlobals -d -q'
-# export MAGLEV_OPTS='-d -q'
-export MAGLEV_HOME='/Users/dbrady/devel/maglev'
-export PATH=$PATH:$MAGLEV_HOME/bin
-
-# # RVM
-[[ -s "/Users/dbrady/.rvm/scripts/rvm" ]] && source "/Users/dbrady/.rvm/scripts/rvm"  # This loads RVM into a shell session.
-rvm default 1.9.3
-
-# Interface to calc. Use from prompt!
-# $ calc "sqrt(37)+(2^7/3)"
-# 48.74942
-calc() { bc <<< "scale=5; $1";}
-
-
-# giles was here
-# ...and then dave messed with him
-alias x="echo Ctrl-D; say -v Zarvox control dee; exit"
-alias X="echo Ctrl-D; say -v Zarvox control dee; exit"
-
-source_files ~/.current_project
-
-##
-# Your previous /Users/dbrady/.profile file was backed up as /Users/dbrady/.profile.macports-saved_2011-10-18_at_07:08:58
-##
-
-# MacPorts Installer addition on 2011-10-18_at_07:08:58: adding an appropriate PATH variable for use with MacPorts.
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-# Finished adapting your PATH environment variable for use with MacPorts.
-
 # For some reason unbeknownst to me, emacs started from the CLI opens an XWindows version of emacs but with keyboard input still locked to the terminal.
-alias 'emacs'='emacs -nw'
+# 2015-02-04 Is this dead code? Has no effect in OSX. Turn back on if linux still needs it.
+# alias 'emacs'='emacs -nw'
 
 export OPSCODE_USER=ratgeyser

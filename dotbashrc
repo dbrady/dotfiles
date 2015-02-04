@@ -113,6 +113,5 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=~/private_bin:~/cheese:~/bin:$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-. ~/.rvm/contrib/ps1_functions
-ps1_set $
+export PATH=~/private_bin:~/bin:$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
