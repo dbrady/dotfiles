@@ -1,4 +1,7 @@
 --ignore-ack-defaults
+--ignore-directory=is:tmp
+--ignore-directory=is:log
+--ignore-directory=is:coverage
 --ignore-directory=is:.bzr
 --ignore-directory=is:.cdv
 --ignore-directory=is:~.dep

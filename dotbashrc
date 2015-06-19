@@ -113,5 +113,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=~/private_bin:~/bin:$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
+source ~/.bash_profile
+ssh-add

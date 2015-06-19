@@ -35,6 +35,7 @@ export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
 export CLICOLOR=1
 # Standard colors look good on a white background
 export LSCOLORS=exfxcxdxbxegedabagacad
+export LS_COLORS=exfxcxdxbxegedabagacad
 
 # Swap blue/cyan for better visibility on dark bg
 #export LSCOLORS=gxfxcxdxbxegedabagacad
@@ -63,6 +64,18 @@ export HISTFILESIZE=10000
 [[ -s "/Users/dbrady/.rvm/scripts/rvm" ]] && source "/Users/dbrady/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 rvm default 2.2.0
 
+if [[ $PATH != *"private_bin"* ]]; then
+    export PATH=~/private_bin:$PATH
+fi
+
+if [[ $PATH != *"$HOME/bin"* ]]; then
+    export PATH=$HOME/bin:$PATH
+fi
+
+if [[ $PATH != *".rvm/bin"* ]]; then
+    export PATH=$HOME/.rvm/bin:$PATH
+fi
+
 source_files()
 {
   local file
@@ -86,7 +99,6 @@ source_files()
 }
 
 # Example usage:
-
 source_files ~/.aliases \
   ~/.bash_completions \
   ~/.git-completion.bash \
@@ -106,9 +118,6 @@ else
     export PS1="!!! It's \D{%H} O'Clock! Time to install rvm to fix your prompt!\n$ "
 fi
 
-export PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-
-export PATH=~/private_bin:~/bin:/usr/local/bin:/usr/local/sbin:$PATH
 export MANPATH=/opt/local/share/man:$MANPATH
 
 # For some reason unbeknownst to me, emacs started from the CLI opens an XWindows version of emacs but with keyboard input still locked to the terminal.
