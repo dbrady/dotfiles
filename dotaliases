@@ -12,7 +12,7 @@ case `uname -a | awk '{print $1}'` in
         alias 'top'='top -o cpu'
         ;;
     *)
-        echo 'I have no clue what OS this is. :-('
+        echo '~/.aliases cannot set ls/ll options: I have no clue what OS this is. :-('
         ;;
 esac
 
@@ -21,11 +21,6 @@ alias 'up'='cd ..'
 alias 'up2'='cd ../..'
 alias 'up3'='cd ../../..'
 alias 'up4'='cd ../../../..'
-alias 'up5'='cd ../../../../..'
-alias 'up6'='cd ../../../../../..'
-alias 'up7'='cd ../../../../../../..'
-alias 'up8'='cd ../../../../../../../..'
-alias 'up9'='cd ../../../../../../../../..'
 
 function bexbe() {
     echo
@@ -62,15 +57,7 @@ alias birb='bundle exec irb'
 alias bert='bundle exec rake test'
 alias bers='bundle exec rails server'
 alias berc='bundle exec rails console'
-alias brdm='bundle exec rake db:migrate'
-alias brtp='bundle exec rake db:test:prepare'
 
-alias rtp='rake db:test:prepare'
-
-
-## Ack
-# r)uby on r)ails ack
-alias rrack='ack --ignore-dir=tmp/metric_fu --ignore-dir=log --ignore-dir=coverage'
 
 ## Misc Programming
 
@@ -78,34 +65,13 @@ alias rrack='ack --ignore-dir=tmp/metric_fu --ignore-dir=log --ignore-dir=covera
 alias gpmm="echo 'git push monkey master' && git push monkey master"
 alias gpom="echo 'git push origin master' && git push origin master"
 alias gst="echo 'git status' && git status"
-alias gws="echo 'git commit -m Whitespace' && git commit -m Whitespace"
-alias gbod='echo git commit -m "BOD `date +%F`" && git commit -m "BOD `date +%F`"'
-alias gsi="echo 'git submodule init' && git submodule init"
-alias gsu="echo 'git submodule update' && git submodule update"
+alias gws="echo 'git commit -m whitespace' && git commit -m whitespace"
 alias gca="echo 'git commit -a' && git commit -a"
 alias gsb="git branch | cut -c 3- | selecta | xargs git checkout"
-
-alias gf='git flow'
-alias gff='git flow feature'
-alias gfr='git flow release'
-
-alias cpd="cap production deploy"
-
-# Applications in OSX
-alias 'firefox'='open -a Firefox'
-alias 'safari'='open -a Safari'
-alias 'ps4'='open -a "Adobe Photoshop CS4"'
-alias 'ps5'='open -a "Adobe Photoshop CS5"'
-alias 'qt'='open -a "QuickTime Player"'
 
 # Open Finder on Linux
 alias 'xo'='xdg-open .'
 
-# command aliases
-alias zf=~/pe/zend/bin/zf.sh
-alias acr='apachectl configtest && sudo apachectl restart'
-alias rc='rake cucumber'
-alias gff='git flow feature'
 # forgive me, heh
 alias 'fucking'='sudo'
 
@@ -115,5 +81,14 @@ alias 'xy'='echo ${COLUMNS}x${LINES}'
 # what's up with my dns?!?
 alias 'mydns'='cat /etc/resolv.conf | grep -vE "^#"'
 
+# 2015-08-29 dbrady: I'm removing this because it was highly specific to our LMP
+# workflow, and a) I no longer use it and b) that workflow has faded into the
+# mists of time as something we used to think was a best practice but now
+# abhor. The fact that I wrapped all this workflow mess into a single alias
+# (supported by an all_specs.sh script) is so nasty it's almost beautiful. I'm
+# leaving it here as a LOL/cringe at the antics I used to get up to with bash
+# and git. Hey, it's my .aliases file, I can blog here if I want.
+#
 # Note that to work, this requires an ./all_specs.sh script.
-alias hop_master_push='export TMP_CURRBRANCH=$(git-currentbranch) && git checkout master && echo "Hopping to master to merge, test and push..." && git merge $TMP_CURRBRANCH && echo "Pulling master from origin..." && git pull origin master && git merge origin/master && echo "Running all specs..." && ./all_specs.sh && echo "Pushing changes..." && git push origin master && echo "Hopping back to $TMP_CURRENTBRANCH" && git checkout $TMP_CURRBRANCH && export $TMP_CURRBRANCH='
+#
+# alias hop_master_push='export TMP_CURRBRANCH=$(git-currentbranch) && git checkout master && echo "Hopping to master to merge, test and push..." && git merge $TMP_CURRBRANCH && echo "Pulling master from origin..." && git pull origin master && git merge origin/master && echo "Running all specs..." && ./all_specs.sh && echo "Pushing changes..." && git push origin master && echo "Hopping back to $TMP_CURRENTBRANCH" && git checkout $TMP_CURRBRANCH && export $TMP_CURRBRANCH='
