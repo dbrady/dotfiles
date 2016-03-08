@@ -1,4 +1,6 @@
 #!/bin/sh
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
 export EDITOR=$(echo `which emacs` -q -l ~/.emacstiny)
 export GEMEDITOR=$(echo `which emacs`)
 export CVSEDITOR=$(echo `which emacs` -q -l ~/.emacstiny)
@@ -61,6 +63,7 @@ IN="\[\033[0m\]"
 export HISTFILESIZE=10000
 
 # RVM - DANGER THIS IS OSX-Specific. Test on linux with $HOME instead?
+
 [[ -s "/Users/dbrady/.rvm/scripts/rvm" ]] && source "/Users/dbrady/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 rvm default 2.2.0
 

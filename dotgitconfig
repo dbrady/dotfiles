@@ -1,0 +1,7 @@
+[core]
+	excludesfile = /Users/dbrady/.gitignore
+[push]
+	default = current
+[alias]
+	yolo = push -f
+	glog = log --all --pretty='format:%d %Cgreen%h%Creset %an - %s' --graph

@@ -50,3 +50,5 @@ module JSON
   end
 end
 $stderr.puts "So, doin' a lot of JSON work lately, eh? I just monkeypatched .load_file(filename) onto JSON for you. You're welcome."
+
+require '~/dotfiles/township'
