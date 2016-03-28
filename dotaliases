@@ -62,7 +62,6 @@ alias berc='bundle exec rails console'
 ## Misc Programming
 
 ## Git
-alias gpmm="echo 'git push monkey master' && git push monkey master"
 alias gpom="echo 'git push origin master' && git push origin master"
 alias gst="echo 'git status' && git status"
 alias gws="echo 'git commit -m whitespace' && git commit -m whitespace"
