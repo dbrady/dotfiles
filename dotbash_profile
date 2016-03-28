@@ -109,7 +109,7 @@ source_files ~/.aliases \
   ~/.private \
   ~/bin/ps1_functions \
   ~/.bash_functions \
-  ~/.current_project
+  ~/.current-project
 
 # this must come after git-completion.bash has been sourced
 # turn on path completion for go
