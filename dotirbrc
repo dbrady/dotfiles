@@ -41,14 +41,4 @@ rescue LoadError => e
   $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
 end
 
-require 'json'
-module JSON
-  def self.load_file(filename)
-    File.open(filename) do |io|
-      load io
-    end
-  end
-end
-$stderr.puts "So, doin' a lot of JSON work lately, eh? I just monkeypatched .load_file(filename) onto JSON for you. You're welcome."
-
-require '~/dotfiles/township'
+require "~/dotfiles/json_load_file"
