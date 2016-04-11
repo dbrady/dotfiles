@@ -52,6 +52,8 @@ alias berk='bundle exec rake'
 alias bake='bundle exec rake'
 # ...or this
 alias bails='bundle exec rails'
+# ...or this
+alias bap='bundle exec cap'
 
 alias birb='bundle exec irb'
 alias bert='bundle exec rake test'
