@@ -36,17 +36,18 @@ function bexbe() {
 }
 
 # Programming crap
-## Bundler
+
+## Bundler & binstubs - have to call out to ~/bin/{rspec,rake,rspec} now; they
+## check for a local binstub and run it; if not they run bundle exec _.
 alias b='bundle'
 alias be='bundle exec'
 alias bex='bexbe'
 alias beg='bundle exec guard'
 alias ber='bundle exec rspec'
+alias berp='bundle exec rspec -f p'
 alias berf='bundle exec rspec -f d'
 # same as berf but sounds even funnier
 alias berfd='bundle exec rspec -f d'
-alias bek='bundle exec rake'
-alias berk='bundle exec rake'
 
 # HAHAHA why haven't I thought of this 1000 times already
 alias bake='bundle exec rake'
@@ -54,17 +55,20 @@ alias bake='bundle exec rake'
 alias bails='bundle exec rails'
 # ...or this
 alias bap='bundle exec cap'
+# ...now I'm just being silly
+alias bun='bundle exec rails runner'
 
 alias birb='bundle exec irb'
 alias bert='bundle exec rake test'
 alias bers='bundle exec rails server'
 alias berc='bundle exec rails console'
 
-
 ## Misc Programming
 
 ## Git
 alias gpom="echo 'git push origin master' && git push origin master"
+# for DJ ;-)
+alias gs="echo 'git status' && git status"
 alias gst="echo 'git status' && git status"
 alias gws="echo 'git commit -m whitespace' && git commit -m whitespace"
 alias gca="echo 'git commit -a' && git commit -a"
