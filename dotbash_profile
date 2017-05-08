@@ -133,7 +133,7 @@ export MANPATH=/opt/local/share/man:$MANPATH
 
 # For some reason unbeknownst to me, emacs started from the CLI opens an XWindows version of emacs but with keyboard input still locked to the terminal.
 # 2015-02-04 Is this dead code? Has no effect in OSX. Turn back on if linux still needs it.
-alias 'emacs'='emacs -nw'
+# alias 'emacs'='emacs -nw'
 
 export OPSCODE_USER=ratgeyser
 
