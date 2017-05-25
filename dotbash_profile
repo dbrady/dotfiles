@@ -1,6 +1,6 @@
 #!/bin/sh
 export EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
-export GEMEDITOR=$(echo `which emacs`) -nw
+export GEMEDITOR=$(echo `which emacs` -nw)
 export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
@@ -59,7 +59,7 @@ IN="\[\033[0m\]"
 export HISTFILESIZE=10000
 
 # RVM - DANGER THIS IS OSX-Specific. Test on linux with $HOME instead?
-rvm default 2.2.0
+rvm default 2.4.0
 
 if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
@@ -117,14 +117,13 @@ source_files ~/.aliases \
 complete -o default -o nospace -F _git_checkout go
 
 if command -v ps1_set >/dev/null 2>&1 ; then
-    # ps1_set --prompt ∫
-    # For my CMM work machine
-    ps1_set --prompt "💊­"
-    export PS2=💊💊­
-
-    # For my MBAir named "poo"
-    # ps1_set --prompt "💊­"
-    # ps1_set --prompt "💩 "
+    if [ `hostname` == "poo.local" ]; then
+        ps1_set --prompt "💩 "
+        export PS2=💩💩
+    else
+        ps1_set --prompt "💊­"
+        export PS2=💊💊­
+    fi
 else
     export PS1="!!! It's \D{%H} O'Clock! Time to install rvm to fix your prompt!\n$ "
 fi
