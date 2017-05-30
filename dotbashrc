@@ -119,3 +119,5 @@ fi
 
 source ~/.bash_profile
 ssh-add
+
+echo .bashrc loaded.
