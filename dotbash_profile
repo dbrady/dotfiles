@@ -59,7 +59,7 @@ IN="\[\033[0m\]"
 export HISTFILESIZE=10000
 
 # RVM - DANGER THIS IS OSX-Specific. Test on linux with $HOME instead?
-rvm default 2.4.0
+rvm default 2.2.2
 
 if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
@@ -68,7 +68,7 @@ fi
 # CMM-specific stuffs - if more than this path needs to be here, please make a
 # .cmm file and source_files() it
 if [[ $PATH != *"cmm/bin"* ]]; then
-    export PATH=~/cmm/bin:$PATH
+    export PATH=~/cmm/private_bin:~/cmm/bin:$PATH
 fi
 
 if [[ $PATH != *"$HOME/bin"* ]]; then
@@ -150,3 +150,7 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 echo .profile loaded.
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash
