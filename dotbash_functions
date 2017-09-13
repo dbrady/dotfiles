@@ -1,4 +1,12 @@
 # ----------------------------------------------------------------------
+# tssh()
+#
+# Clever hack from John Marks -- when in tmate, tssh will put the
+# tmate_ssh key into the OSX clipboard
+# ----------------------------------------------------------------------
+tssh() { tmate display -p '#{tmate_ssh}' | pbcopy; }
+
+# ----------------------------------------------------------------------
 # makeline()
 #
 # 'makeline =' to make terminal width line. Or give 2nd arg count. By
@@ -10,9 +18,7 @@
 # Example:
 # $ makeline = 40
 # ========================================
-makeline(){ printf "%${2:-$COLUMNS}s\n" ""|tr " " ${1:-#}; }
-
-
+makeline() { printf "%${2:-$COLUMNS}s\n" ""|tr " " ${1:-#}; }
 
 # ========================================
 # Interface to calc. Use from prompt!
@@ -20,3 +26,13 @@ makeline(){ printf "%${2:-$COLUMNS}s\n" ""|tr " " ${1:-#}; }
 # 48.74942
 # ========================================
 calc() { bc <<< "scale=5; $1";}
+
+# ----------------------------------------------------------------------
+# rspec_alot()
+#
+# stolen from Dave Shah - do I need to tweak this to bundle exec or
+# bin/rspec?
+# ----------------------------------------------------------------------
+function rspec_alot() {
+  for i in `seq $1` ; do rspec $2 ; [[ ! $? = 0 ]] && break ; done
+}
