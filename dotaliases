@@ -5,6 +5,7 @@ case `uname -a | awk '{print $1}'` in
     Linux)
         alias ls="ls -G --color=auto"
         alias ll="ls -l --color=auto"
+        alias emacs="emacs -nw"
         ;;
     Darwin)
         alias ls="ls -G"
