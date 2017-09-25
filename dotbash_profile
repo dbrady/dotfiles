@@ -58,9 +58,6 @@ IN="\[\033[0m\]"
 
 export HISTFILESIZE=10000
 
-# RVM - DANGER THIS IS OSX-Specific. Test on linux with $HOME instead?
-rvm default 2.2.2
-
 if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
@@ -136,9 +133,14 @@ export MANPATH=/opt/local/share/man:$MANPATH
 
 export OPSCODE_USER=ratgeyser
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# Is this my work machine?
+if [ `hostname` = "CMMC02V81NYG8WL" ]; then
+    rvm default 2.2.2
+fi
 
 # Setup ssh agent
 ssh-add -L &> /dev/null
