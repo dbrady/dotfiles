@@ -4,7 +4,10 @@
 # Clever hack from John Marks -- when in tmate, tssh will put the
 # tmate_ssh key into the OSX clipboard
 # ----------------------------------------------------------------------
-tssh() { tmate display -p '#{tmate_ssh}' | pbcopy; }
+tssh() {
+  echo "tmate display -p '#{tmate_ssh}' | pbcopy;"
+  tmate display -p '#{tmate_ssh}' | pbcopy;
+}
 
 # ----------------------------------------------------------------------
 # makeline()
