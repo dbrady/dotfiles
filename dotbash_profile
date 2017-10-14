@@ -58,19 +58,6 @@ IN="\[\033[0m\]"
 
 export HISTFILESIZE=10000
 
-# RVM - DANGER THIS IS OSX-Specific. Test on linux with $HOME instead?
-case `uname -a | awk '{print $1}'` in
-    Linux)
-        source /etc/profile.d/rvm.sh
-        ;;
-    Darwin)
-        rvm default 2.2.2
-        ;;
-    *)
-        echo '~/.bash_profile has no clue what OS this is; not setting rvm defaults.'
-        ;;
-esac
-
 if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
@@ -150,9 +137,26 @@ export MANPATH=/opt/local/share/man:$MANPATH
 
 export OPSCODE_USER=ratgeyser
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# Is this my work machine?
+if [ `hostname` = "CMMC02V81NYG8WL" ]; then
+    rvm default 2.2.2
+else
+    case `uname -a | awk '{print $1}'` in
+        Linux)
+            source /etc/profile.d/rvm.sh
+            ;;
+        Darwin)
+            echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. NOT setting rvm defaults."
+            ;;
+        *)
+            echo '~/.bash_profile has no clue what OS this is; not setting rvm defaults.'
+            ;;
+    esac
+fi
 
 # Setup ssh agent
 ssh-add -L &> /dev/null
