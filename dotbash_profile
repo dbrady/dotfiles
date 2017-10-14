@@ -131,9 +131,9 @@ if command -v ps1_set >/dev/null 2>&1 ; then
         ps1_set --prompt "💩 "
         export PS2=💩💩
     elif [ `hostname` == "poot" ]; then
-        # ps1_set --prompt "☠️­"
-        # export PS2=☠️☠️­
-        ps1_set --prompt "$"
+        ps1_set --prompt "💨"
+        export PS2=💨💨­
+        # ps1_set --prompt "$"
     else
         ps1_set --prompt "💊­"
         export PS2=💊💊­
