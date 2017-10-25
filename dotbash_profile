@@ -172,3 +172,7 @@ echo .profile loaded.
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
+
+
+# for mtr
+export PATH=$PATH:/usr/local/sbin
