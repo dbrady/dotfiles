@@ -103,7 +103,7 @@ source_files ~/.aliases \
   ~/bin/ps1_functions \
   ~/.bash_functions \
   ~/.current-project \
-  ~/.current-project-2
+  ~/.hue.conf
 
 # this must come after git-completion.bash has been sourced
 # turn on path completion for go
@@ -118,8 +118,9 @@ if command -v ps1_set >/dev/null 2>&1 ; then
         ps1_set --prompt "💩 "
         export PS2=💩💩
     elif [ `hostname` == "poot" ]; then
-        ps1_set --prompt "💨"
-        export PS2=💨💨­
+#        ps1_set --prompt "💨­"
+        ps1_set --prompt "💨 "
+        export PS2="💨💨 "
         # ps1_set --prompt "$"
     else
         ps1_set --prompt "💊­"
