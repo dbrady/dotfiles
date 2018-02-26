@@ -3,5 +3,5 @@
 [push]
 	default = current
 [alias]
-	yolo = push -f
+	yolo = push --force-with-lease
 	glog = log --all --pretty='format:%d %Cgreen%h%Creset %an - %s' --graph
