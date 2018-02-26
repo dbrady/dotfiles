@@ -168,7 +168,6 @@ fi
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-echo .profile loaded.
 
 . $HOME/.asdf/asdf.sh
 
@@ -177,3 +176,10 @@ echo .profile loaded.
 
 # for mtr
 export PATH=$PATH:/usr/local/sbin
+
+# capybara-webkit needs quicktime 5.5, which is the last version of QT to support webkit bindings
+# get it with brew install qt@5.5
+export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
+
+# dbrady says: I don't care what your installer thinks, *THIS* is the last line of the dang file
+echo .profile loaded.
