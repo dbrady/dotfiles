@@ -185,6 +185,13 @@ if [ `uname -s` == "OSX" ]; then
 
     . $HOME/.asdf/asdf.sh
     . $HOME/.asdf/completions/asdf.bash
+
+    # capybara-webkit needs quicktime 5.5, which is the last version of QT to support webkit bindings
+    # get it with brew install qt@5.5
+    export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
+
+    # for mtr (OSX)
+    export PATH=$PATH:/usr/local/sbin
 fi
 
 # Linux-specific randomness

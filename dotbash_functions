@@ -1,3 +1,4 @@
+#!/bin/bash
 # ----------------------------------------------------------------------
 # tssh()
 #
@@ -5,8 +6,13 @@
 # tmate_ssh key into the OSX clipboard
 # ----------------------------------------------------------------------
 tssh() {
-  echo "tmate display -p '#{tmate_ssh}' | pbcopy;"
-  tmate display -p '#{tmate_ssh}' | pbcopy;
+    echo "tmate display -p '#{tmate_ssh}'"
+    tmate display -p '#{tmate_ssh}'
+
+    echo "tmate display -p '#{tmate_ssh}' | pbcopy;"
+    tmate display -p '#{tmate_ssh}' | pbcopy;
+
+    echo "copied to clipboard."
 }
 
 # ----------------------------------------------------------------------

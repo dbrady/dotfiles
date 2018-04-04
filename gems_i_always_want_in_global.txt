@@ -3,6 +3,7 @@ coderay
 colorize
 columnize
 dicks
+faraday
 figlet
 json
 lolcat
@@ -10,6 +11,7 @@ nyan
 rack
 rake
 serve
+term-ansicolor
 text-table
 thin
 trollop
