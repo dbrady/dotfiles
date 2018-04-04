@@ -94,12 +94,13 @@ source_files()
 
     if [[ -s "${file}" ]] ; then
       source "${file}"
-    else
-      if [[ ! -e "${file}" ]] ; then
-        printf "NOTICE: ${file} does not exist, not loading.\n"
-      else
-        true # simply an empty file, no warning necessary.
-      fi
+    # else
+    #     # I found this useful for debugging, now it's just noisy
+    #   if [[ ! -e "${file}" ]] ; then
+    #     printf "NOTICE: ${file} does not exist, not loading.\n"
+    #   else
+    #     true # simply an empty file, no warning necessary.
+    #   fi
     fi
   done
 
@@ -172,7 +173,8 @@ else
 fi
 
 # Setup ssh agent
-ssh-add -L &> /dev/null
+# ssh-add -L &> /dev/null
+ssh-add -L >/dev/null 2>&1
 if [ $? -eq 1 ]; then
     ssh-add
 fi
