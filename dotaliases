@@ -44,8 +44,11 @@ alias beg='bundle exec guard'
 alias ber='bundle exec rspec'
 alias berp='bundle exec rspec -f p'
 alias berf='bundle exec rspec -f d'
-# same as berf but sounds even funnier
-alias berfd='bundle exec rspec -f d'
+# TODO: Let's see which of these two gains traction faster in my brain
+# ...or at all. Dear Future me: I wrote these on 2018-09-10. If they're
+# still here and you're not using them, yank 'em. --Past Me
+alias berfo='bundle exec rspec -f d --order=defined'
+alias berfod='bundle exec rspec -f d --order=defined'
 
 # HAHAHA why haven't I thought of this 1000 times already
 alias bake='bundle exec rake'
