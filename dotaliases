@@ -17,6 +17,23 @@ case `uname -a | awk '{print $1}'` in
         ;;
 esac
 
+# Technically this lets you write a line of syntactically invalid bash,
+# e.g. 'program1 && program2 && singstatus' looks like it should short-circuit
+# all the way out if program1 or program2 fails, but singstatus conceals a "||
+# singfail" so it WILL capture the tail end of the short-circuit. This also
+# means this alias does not play well with things that chain after it.
+#
+# Just be aware there is (black) magic here.
+alias 'singstatus'='singpass || singfail'
+# raveX works like singX but also triggers the ci status light
+alias 'ravestatus'='ravepass || ravefail'
+
+# This requires exit-with-status somewhere in the executable path, the entire
+# body of which should be "exit $1" (after the obligatory shebang). In my ~/bin
+# repo, there is a version of exit-with-status with a LOT of comments explaining
+# that this alias is also necessary.
+alias 'redostatus'='exit-with-status $?'
+
 alias 't'='tree -ChL 1'
 alias 'up'='cd ..'
 alias 'up2'='cd ../..'
@@ -44,6 +61,7 @@ alias beg='bundle exec guard'
 alias ber='bundle exec rspec'
 alias berp='bundle exec rspec -f p'
 alias berf='bundle exec rspec -f d'
+alias berfd='echo USE berf INSTEAD'
 # TODO: Let's see which of these two gains traction faster in my brain
 # ...or at all. Dear Future me: I wrote these on 2018-09-10. If they're
 # still here and you're not using them, yank 'em. --Past Me
