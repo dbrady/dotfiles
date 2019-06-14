@@ -11,6 +11,7 @@ nyan
 rack
 rake
 serve
+optimist
 term-ansicolor
 text-table
 thin

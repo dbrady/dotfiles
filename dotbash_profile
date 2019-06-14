@@ -151,13 +151,13 @@ export MANPATH=/opt/local/share/man:$MANPATH
 
 export OPSCODE_USER=ratgeyser
 
-export PATH="$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
-
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # Is this my work machine?
 if [ `hostname` = "CMMC02V81NYG8WL" ]; then
-    rvm default 2.2.2
+    # rvm default 2.2.2
+    # rvm default 2.2.9
+    rvm default 2.4.3
 else
     case `uname -a | awk '{print $1}'` in
         Linux)
@@ -181,7 +181,7 @@ if [ $? -eq 1 ]; then
 fi
 
 # OSX-specific randomness
-if [ `uname -s` == "OSX" ]; then
+if [ `uname -s` == "Darwin" ]; then
     test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
     [ -f ~/.fzf.bash ] && source ~/.fzf.bash
@@ -202,3 +202,6 @@ if [ `uname -s` == "Linux" ]; then
     export FLEX_HOME=/home/dbrady/devel/flex_sdk_4_6/
     export PATH=$PATH:$FLEX_HOME/bin
 fi
+
+# rvm whines if it's not at head of path
+export PATH="$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
