@@ -170,6 +170,7 @@ else
             echo '~/.bash_profile has no clue what OS this is; not setting rvm defaults.'
             ;;
     esac
+    rvm default 2.5.1
 fi
 
 # Setup ssh agent
