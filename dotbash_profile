@@ -116,7 +116,8 @@ source_files ~/.aliases \
   ~/bin/ps1_functions \
   ~/.bash_functions \
   ~/.current-project \
-  ~/.hue.conf
+  ~/.hue.conf \
+  ~/.platform-dev
 
 # this must come after git-completion.bash has been sourced
 # turn on path completion for go
@@ -154,10 +155,10 @@ export OPSCODE_USER=ratgeyser
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # Is this my work machine?
-if [ `hostname` = "CMMC02V81NYG8WL" ]; then
+if [ `hostname` = "CMMC02Z22VKLVCH" ]; then
     # rvm default 2.2.2
     # rvm default 2.2.9
-    rvm default 2.4.3
+    rvm default 2.4.6
 else
     case `uname -a | awk '{print $1}'` in
         Linux)
@@ -185,9 +186,6 @@ if [ `uname -s` == "Darwin" ]; then
     test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
     [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-    . $HOME/.asdf/asdf.sh
-    . $HOME/.asdf/completions/asdf.bash
 
     # capybara-webkit needs quicktime 5.5, which is the last version of QT to support webkit bindings
     # get it with brew install qt@5.5
