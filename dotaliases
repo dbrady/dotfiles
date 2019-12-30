@@ -69,16 +69,16 @@ alias berfo='bundle exec rspec -f d --order=defined'
 alias berfod='bundle exec rspec -f d --order=defined'
 
 # HAHAHA why haven't I thought of this 1000 times already
-alias bake='bundle exec rake'
+alias bake='time bundle exec rake'
 # ...or this
-alias bails='bundle exec rails'
+alias bails='time bundle exec rails'
 # ...or this
-alias bap='bundle exec cap'
+alias bap='time bundle exec cap'
 # ...now I'm just being silly
-alias bun='bundle exec rails runner'
+alias bun='time bundle exec rails runner'
 
 alias birb='bundle exec irb'
-alias bert='bundle exec rake test'
+alias bert='time bundle exec rake test'
 alias bers='bundle exec rails server'
 alias berc='bundle exec rails console'
 
