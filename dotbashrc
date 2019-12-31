@@ -120,3 +120,4 @@ fi
 
 source ~/.bash_profile
 ssh-add >/dev/null 2>&1
+export REQUESTS_CA_BUNDLE=/private/tmp/CMMCERTROOT-CA.pem
