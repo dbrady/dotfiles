@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export PLATFORM_DEV=$HOME/dev
+shovel() ( $PLATFORM_DEV/script/run shovel "$@"; )
+alias de='docker exec -e COLUMNS="$(tput cols)" -e LINES="$(tput lines)" -ti'
+alias dps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Command}}\t{{.Image}}"'
+
+# zsh completion - investigate for bash?
+# export PLATFORM_DEV=$HOME/platform/dev # change to match your local dev directory
+# fpath=($PLATFORM_DEV/misc/completion/ $fpath)
+# autoload -U compinit && compinit
