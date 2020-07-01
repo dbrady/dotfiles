@@ -154,7 +154,14 @@ export OPSCODE_USER=ratgeyser
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
-# Is this my work machine?
+# Is this my CMM work machine?
+#
+# (Legacy, kept for shape-of-code reference. Discussion: normally I favor "delete this and
+# if I need it I'll get it out of source control" but I'm only in here once every 1-2
+# years, and only to make shallow edits to maintain this for a new
+# situation. Likely that if I ever need this again, I won't remember if even
+# existed. Try living with this dead code and if it bugs, delete it.)
+#
 if [ `hostname` = "CMMC02Z22VKLVCH" ]; then
     # rvm default 2.2.2
     # rvm default 2.2.9
@@ -171,7 +178,7 @@ else
             echo '~/.bash_profile has no clue what OS this is; not setting rvm defaults.'
             ;;
     esac
-    rvm default 2.5.1
+    rvm default 2.6.6
 fi
 
 # Setup ssh agent
