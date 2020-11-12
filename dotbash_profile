@@ -182,17 +182,19 @@ else
 fi
 
 # Setup ssh agent
+# New OSX tmphax
 # ssh-add -L &> /dev/null
-ssh-add -L >/dev/null 2>&1
-if [ $? -eq 1 ]; then
-    ssh-add
-fi
+#ssh-add -L >/dev/null 2>&1
+#if [ $? -eq 1 ]; then
+#    ssh-add
+#fi
 
 # OSX-specific randomness
 if [ `uname -s` == "Darwin" ]; then
     test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    # for homebrew
+    export PATH=$PATH:/usr/local/homebrew/bin
 
     # capybara-webkit needs quicktime 5.5, which is the last version of QT to support webkit bindings
     # get it with brew install qt@5.5
