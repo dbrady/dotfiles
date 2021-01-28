@@ -127,6 +127,7 @@ source_files ~/.aliases \
 # the syringe (U+1F489, 💉 )
 complete -o default -o nospace -F _git_checkout go
 
+# PS1 EMOJIS
 if command -v ps1_set >/dev/null 2>&1 ; then
     if [ `hostname` == "poo.local" ]; then
         ps1_set --prompt "💩 "
@@ -136,9 +137,12 @@ if command -v ps1_set >/dev/null 2>&1 ; then
         ps1_set --prompt "💨 "
         export PS2="💨💨 "
         # ps1_set --prompt "$"
-    else
+    elif [ `hostname` == "CMMVMOSX045" ]; then
         ps1_set --prompt "💊­"
         export PS2=💊💊­
+    else
+        ps1_set --prompt "🎸"
+        export PS2=🎶🎵
     fi
 else
     export PS1="!!! It's \D{%H} O'Clock! Time to install rvm to fix your prompt!\n$ "
