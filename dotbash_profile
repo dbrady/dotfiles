@@ -84,6 +84,11 @@ if [[ $PATH != *"$HOME/bin"* ]]; then
     export PATH=$HOME/bin:$PATH
 fi
 
+# postgres Acima (dev version)
+if [[ $PATH != *"/usr/local/opt/postgresql@13/bin"* ]]; then
+    export PATH="/usr/local/opt/postgresql@13/bin:$PATH"
+fi
+
 source_files()
 {
   local file
@@ -140,6 +145,9 @@ if command -v ps1_set >/dev/null 2>&1 ; then
     elif [ `hostname` == "CMMVMOSX045" ]; then
         ps1_set --prompt "💊­"
         export PS2=💊💊­
+    elif [ `hostname` == "Mac0825Pro.local" ]; then
+        ps1_set --prompt "💳"
+        export PS2=💳💳
     else
         ps1_set --prompt "🎸"
         export PS2=🎶🎵
@@ -182,7 +190,7 @@ else
             echo '~/.bash_profile has no clue what OS this is; not setting rvm defaults.'
             ;;
     esac
-    rvm default 2.6.6
+    rvm default 2.6.5
 fi
 
 # Setup ssh agent
@@ -212,5 +220,10 @@ if [ `uname -s` == "Linux" ]; then
     export PATH=$PATH:$FLEX_HOME/bin
 fi
 
-# rvm whines if it's not at head of path
-export PATH="$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
