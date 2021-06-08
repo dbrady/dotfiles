@@ -74,10 +74,10 @@ if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
 
-# CMM-specific stuffs - if more than this path needs to be here, please make a
-# .cmm file and source_files() it
-if [[ $PATH != *"cmm/bin"* ]]; then
-    export PATH=~/cmm/private_bin:~/cmm/bin:$PATH
+# Acima-specific stuffs - if more than this path needs to be here, please make a
+# .acima file and source_files() it
+if [[ $PATH != *"acima/bin"* ]]; then
+    export PATH=~/acima/bin:$PATH
 fi
 
 if [[ $PATH != *"$HOME/bin"* ]]; then
@@ -174,12 +174,15 @@ export OPSCODE_USER=ratgeyser
 # situation. Likely that if I ever need this again, I won't remember if even
 # existed. Try living with this dead code and if it bugs, delete it.)
 #
-if [ `hostname` = "CMMC02Z22VKLVCH" ]; then
+# CMM
+# if [ `hostname` = "CMMC02Z22VKLVCH" ]; then
+# Acima
+if [ `hostname` = "Mac0825Pro.local" ]; then
     # rvm default 2.2.2
     # rvm default 2.2.9
-    rvm default 2.4.6
+    rvm default 2.6.5
 else
-    case `uname -a | awk '{print $1}'` in
+    case `uname -s` in
         Linux)
             source /etc/profile.d/rvm.sh
             ;;
@@ -190,8 +193,16 @@ else
             echo '~/.bash_profile has no clue what OS this is; not setting rvm defaults.'
             ;;
     esac
-    rvm default 2.6.5
 fi
+
+if [ `uname -s` = "Darwin" ]; then
+    # I'll never let go of bash until they physically bar me from installing it.
+    # zsh is NOT an acceptable bash unless you're not using any of bash's features.
+    # That said, I get why AAPL is doing this. bash going GPL v3 poses a genuine
+    # threat to the privacy of their OS.
+    export BASH_SILENCE_DEPRECATION_WARNING=1
+fi
+
 
 # Setup ssh agent
 # ssh-add -L &> /dev/null
