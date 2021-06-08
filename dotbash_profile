@@ -74,6 +74,10 @@ if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
 
+if [[ $PATH != *"spark/bin"* ]]; then
+    export PATH=~/devel/spark/bin:$PATH
+fi
+
 # CMM-specific stuffs - if more than this path needs to be here, please make a
 # .cmm file and source_files() it
 if [[ $PATH != *"cmm/bin"* ]]; then
@@ -218,6 +222,15 @@ fi
 if [ `uname -s` == "Linux" ]; then
     export FLEX_HOME=/home/dbrady/devel/flex_sdk_4_6/
     export PATH=$PATH:$FLEX_HOME/bin
+fi
+
+# rvm whines if it's not at head of path
+export PATH="$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
+
+# manual implementation of ponysay because lol
+sayfortune
+if [ -e ~/applejack.txt ] ; then
+    cat ~/applejack.txt
 fi
 
 # NVM

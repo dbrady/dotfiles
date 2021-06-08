@@ -97,11 +97,23 @@ alias gws="echo 'git commit -m whitespace' && git commit -m whitespace"
 alias gca="echo 'git commit -a' && git commit -a"
 alias gsb="git branch | cut -c 3- | selecta | xargs git checkout"
 
+# From therubymug via tcaruso - Pick and choose what you want to add.  This
+# stages all new files as empty entries so they still show up in git diff, then
+# it does a --patch add to stage things in hunks. Run `git help add` for more
+# details.
+
+# BEWARE: The -N will add all new files found so if you're like me and in the
+# habit of littering the repo with temporary scripts and test data, this alias
+# is not your friend. I'm keeping it because it's worth its weight in gold just
+# for reminding me that git add -p is a thing
+alias gnap="git add -N . && git add -p"
+
 # Open Finder on Linux
 alias 'xo'='xdg-open .'
 
 # forgive me, heh
-alias 'fucking'='sudo'
+alias 'fucking'='sudo' # fucking make-me-a-sandwich => ok
+alias 'just-fucking-do-it'='sudo !!' # make-me-a-sandwich => NO; just-fucking-do-it => ok
 
 # how big is this terminal?
 alias 'xy'='echo ${COLUMNS}x${LINES}'
