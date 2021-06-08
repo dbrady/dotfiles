@@ -6,11 +6,13 @@ case `uname -s` in
         alias ls="ls -G --color=auto"
         alias ll="ls -l --color=auto"
         alias emacs="emacs -nw"
+        alias tem="emacs -nw -q -l $HOME/.emacstiny"
         ;;
     Darwin)
         alias ls="ls -G"
         alias ll="ls -l"
         alias 'top'='top -o cpu'
+        alias tem="emacs -nw -q -l $HOME/.emacstiny"
         ;;
     *)
         echo '~/.aliases cannot set ls/ll options: I have no clue what OS this is. :-('
@@ -81,6 +83,7 @@ alias bap='time bundle exec cap'
 # ...now I'm just being silly
 alias bun='time bundle exec rails runner'
 
+alias routes='echo bundle exec rails routes && bundle exec rails routes'
 alias birb='bundle exec irb'
 alias bert='time bundle exec rake test'
 alias bers='bundle exec rails server'
