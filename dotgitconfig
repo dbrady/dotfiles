@@ -1,7 +1,26 @@
+# COPY this file to ~, DO NOT SYMLINK IT. Then EDIT the email if necessary. A
+# machine change usually means changing clients which in turn is likely to
+# change my email address. If the new machine is a Mac, update the excludesfile
+# path.
+
+[user]
+	email = dbrady@shinybit.com
+	name = David Brady
 [core]
 	excludesfile = /Users/dbrady/.gitignore
 [push]
-	default = current
+        # git help config and search for push.default to see the various push
+	# types. simple pushes the current branch to the same server I got the
+	# branch from, but will error out if the branch is out of sync.
+	default = simple
 [alias]
 	yolo = push --force-with-lease
 	glog = log --all --pretty='format:%d %Cgreen%h%Creset %an - %s' --graph
+[fetch]
+        # fetch prune true will automatically cleanup local branches that have
+	# been deleted from the remote.
+	prune=true
+[diff]
+        # if code is MOVED in git, color it yellow instead of coloring it as a
+	# red deletion and a green addition.
+	colorMoved = zebra

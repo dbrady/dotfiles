@@ -231,6 +231,12 @@ if [ `uname -s` == "Linux" ]; then
     export PATH=$PATH:$FLEX_HOME/bin
 fi
 
+# my manual implementation of ponysay because lol
+sayfortune
+if [ -e ~/applejack.txt ] ; then
+    cat ~/applejack.txt
+fi
+
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
