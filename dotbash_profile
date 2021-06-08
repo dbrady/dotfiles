@@ -224,10 +224,7 @@ if [ `uname -s` == "Linux" ]; then
     export PATH=$PATH:$FLEX_HOME/bin
 fi
 
-# rvm whines if it's not at head of path
-export PATH="$HOME/.rvm/bin:$PATH" # Add RVM to PATH for scripting
-
-# manual implementation of ponysay because lol
+# my manual implementation of ponysay because lol
 sayfortune
 if [ -e ~/applejack.txt ] ; then
     cat ~/applejack.txt
