@@ -117,6 +117,9 @@ alias 'xo'='xdg-open .'
 # forgive me, heh
 alias 'fucking'='sudo' # fucking make-me-a-sandwich => ok
 alias 'just-fucking-do-it'='sudo !!' # make-me-a-sandwich => NO; just-fucking-do-it => ok
+# SFW alts
+alias 'effing'='sudo' # effing make-me-a-sandwich => ok
+alias 'just-effing-do-it'='sudo !!' # make-me-a-sandwich => NO; just-effing-do-it => ok
 
 # how big is this terminal?
 alias 'xy'='echo ${COLUMNS}x${LINES}'
