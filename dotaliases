@@ -12,7 +12,8 @@ case `uname -s` in
         alias ls="ls -G"
         alias ll="ls -l"
         alias 'top'='top -o cpu'
-        alias tem="emacs -nw -q -l $HOME/.emacstiny"
+        alias 'tem'="emacs -nw -q -l $HOME/.emacstiny"
+        alias 'vim'='echo WELCOME TO DAVELAND, USE \\vim TO RUN THE REAL vim; tem'
         ;;
     *)
         echo '~/.aliases cannot set ls/ll options: I have no clue what OS this is. :-('
