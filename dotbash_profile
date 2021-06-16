@@ -181,6 +181,9 @@ if [ `hostname` = "Mac0825Pro.local" ]; then
     # rvm default 2.2.2
     # rvm default 2.2.9
     rvm default 2.6.5
+
+    # MP tests need this every time, so
+    SPEC_SEED=true
 else
     case `uname -s` in
         Linux)
