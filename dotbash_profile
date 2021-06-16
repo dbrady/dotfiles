@@ -236,8 +236,8 @@ fi
 
 # my manual implementation of ponysay because lol
 sayfortune
-if [ -e ~/applejack.txt ] ; then
-    cat ~/applejack.txt
+if [ -e ~/bin/applejack.txt ] ; then
+    cat ~/bin/applejack.txt
 fi
 
 # NVM
