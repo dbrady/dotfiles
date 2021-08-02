@@ -59,16 +59,19 @@ function bexbe() {
 
 # Programming crap
 
-## Bundler & binstubs - have to call out to ~/bin/{rspec,rake,rspec} now; they
-## check for a local binstub and run it; if not they run bundle exec _.
 alias b='bundle'
 alias be='bundle exec'
 alias bex='bexbe'
 alias beg='bundle exec guard'
-alias ber='bundle exec rspec'
-alias berp='bundle exec rspec -f p'
-alias berf='bundle exec rspec -f d'
+# moving these to bin/ so they can echo $@
+# alias ber='bundle exec rspec'
+# alias berp='bundle exec rspec -f p'
+# alias berf='bundle exec rspec -f d'
 alias berfd='echo USE berf INSTEAD'
+#alias birb='bundle exec irb'
+#alias bert='time bundle exec rake test'
+#alias bers='bundle exec rails server'
+#alias berc='bundle exec rails console'
 # TODO: Let's see which of these two gains traction faster in my brain
 # ...or at all. Dear Future me: I wrote these on 2018-09-10. If they're
 # still here and you're not using them, yank 'em. --Past Me
@@ -84,11 +87,6 @@ alias bap='time bundle exec cap'
 # ...now I'm just being silly
 alias bun='time bundle exec rails runner'
 
-alias routes='echo bundle exec rails routes && bundle exec rails routes'
-alias birb='bundle exec irb'
-alias bert='time bundle exec rake test'
-alias bers='bundle exec rails server'
-alias berc='bundle exec rails console'
 
 ## Misc Programming
 
