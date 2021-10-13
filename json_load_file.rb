@@ -11,5 +11,5 @@ module JSON
     pretty_generate parse json
   end
 end
-$stderr.puts "So, doin' a lot of JSON work lately, eh? I just created JSON.load_file(filename [, options]) for you. You're welcome. (So you can symbolize_names: true)"
+$stderr.puts "So, doin' a lot of JSON work lately, eh? I just created JSON.load_file(filename [, options]) for you. You're welcome. ([options] are so can symbolize_names: true)"
 $stderr.puts "Also! I just added JSON.purtify(json). It does JSON.pretty_generate(JSON.parse(json)) so you don't have to!"
