@@ -74,6 +74,10 @@ if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
 
+if [[ $PATH != *"acima/devel/merchant_portal/app/local_hacks"* ]]; then
+    export PATH=~/acima/devel/merchant_portal/app/local_hacks:$PATH
+fi
+
 # Acima-specific stuffs - if more than this path needs to be here, please make a
 # .acima file and source_files() it
 if [[ $PATH != *"acima/bin"* ]]; then
@@ -183,7 +187,11 @@ if [ `hostname` = "Mac0825Pro.local" ]; then
     rvm default 2.6.5
 
     # MP tests need this every time, so
-    SPEC_SEED=true
+    export TZ='America/Denver'
+    export SPEC_SEED=true
+    # Acima AWS
+    export AWS_PROFILE=acima-nonprod
+    export KUBECONFIG=~/.kube/nonprod/preflight
 else
     case `uname -s` in
         Linux)
