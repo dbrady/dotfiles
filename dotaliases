@@ -81,7 +81,7 @@ alias berfod='bundle exec rspec -f d --order=defined'
 # HAHAHA why haven't I thought of this 1000 times already
 alias bake='time bundle exec rake'
 # ...or this
-alias bails='time bundle exec rails'
+alias bails='bundle exec rails'
 # ...or this
 alias bap='time bundle exec cap'
 # ...now I'm just being silly
