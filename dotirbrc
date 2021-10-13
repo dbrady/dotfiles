@@ -3,42 +3,91 @@ require 'pp'
 
 # ----------------------------------------------------------------------
 # Metric Conversions
-module MetricSystemForDummies
-  def c_to_f
-    32.0 + (self * 9.0) / 5.0
+# module MetricSystemForDummies
+#   def c_to_f
+#     32.0 + (self * 9.0) / 5.0
+#   end
+
+#   def f_to_c
+#     (self - 32.0) * 5.0 / 9.0
+#   end
+
+#   def lb_to_kg
+#     self / 2.2
+#   end
+
+#   def kg_to_lb
+#     self * 2.2
+#   end
+
+#   def cm_to_in
+#     self / 2.54
+#   end
+
+#   def in_to_cm
+#     self * 2.54
+#   end
+# end
+
+# class Numeric
+#   include MetricSystemForDummies
+# end
+
+# begin
+#   # looksee is awesome. Adds gorgeous Object#ls method
+#   # https://github.com/oggy/looksee
+#   require 'looksee'
+# rescue LoadError => e
+#   $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
+# end
+
+require File.expand_path("~/dotfiles/json_load_file")
+
+# Hello Acima MP Rails
+if defined? Rails
+
+  ZBONCAK_ID=41499
+  ZBONCAK_GUID="merc-5c5d37fb-071c-4739-b832-bfafc93db09b"
+  DAVE_USER_ID=2892
+  DAVE_API_USER_ID=377
+
+  puts 'def load_merchant; Merchant.find(41499); end # Find Zboncak-Adams easily'
+  puts 'def load_user; User.find(2892); end # Find my user easily'
+  puts 'def load_api_user; ApiUser.find(377); end'
+  puts "def load_hacks -> load all files in app/local_hacks"
+
+  def load_hacks
+    # load all files in app/local_hacks
+    Dir.glob(Rails.root + "app/local_hacks/*").each do |file|
+      puts "Loading #{file}..."
+      load file
+    end
+    nil
   end
 
-  def f_to_c
-    (self - 32.0) * 5.0 / 9.0
+  def load_merchant
+    Merchant.find ZBONCAK_ID
   end
 
-  def lb_to_kg
-    self / 2.2
+  def load_user
+    User.find DAVE_USER_ID
   end
 
-  def kg_to_lb
-    self * 2.2
+  def load_api_user
+    ApiUser.find DAVE_API_USER_ID
   end
 
-  def cm_to_in
-    self / 2.54
-  end
+  class User < ApplicationRecord
+    def add_all_roles!
+      puts "Giving all roles to #{full_name}..."
+      user.role_names = "|#{Role.all.pluck(:short_name) * '|'}|"
+      user.save
+    end
 
-  def in_to_cm
-    self * 2.54
+    def remove_all_roles!
+      puts "Removing all roles from #{full_name}..."
+      user.role_names = ''
+      user.save
+    end
   end
 end
-
-class Numeric
-  include MetricSystemForDummies
-end
-
-begin
-  # looksee is awesome. Adds gorgeous Object#ls method
-  # https://github.com/oggy/looksee
-  require 'looksee'
-rescue LoadError => e
-  $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
-end
-
-require "~/dotfiles/json_load_file"
