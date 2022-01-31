@@ -184,7 +184,7 @@ export OPSCODE_USER=ratgeyser
 if [ `hostname` = "Mac0825Pro.local" ]; then
     # rvm default 2.2.2
     # rvm default 2.2.9
-    rvm default 2.6.5
+    rvm default 2.7.2
 
     # MP tests need this every time, so
     export TZ='America/Denver'
@@ -255,3 +255,4 @@ export NVM_DIR="$HOME/.nvm"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+export SPEC_SEED=true
