@@ -13,7 +13,7 @@ case `uname -s` in
         alias ll="ls -l"
         alias 'top'='top -o cpu'
         alias 'tem'="emacs -nw -q -l $HOME/.emacstiny"
-        alias 'vim'='echo WELCOME TO DAVELAND, USE \\vim TO RUN THE REAL vim; tem'
+        alias 'vim'='echo -e "\033[30;105m WELCOME TO DAVELAND, USE \\\\vim TO RUN THE REAL vim \033[0m"; sleep 1; tem'
         ;;
     *)
         echo '~/.aliases cannot set ls/ll options: I have no clue what OS this is. :-('
@@ -59,24 +59,8 @@ function bexbe() {
 
 # Programming crap
 
-alias b='bundle'
 alias be='bundle exec'
 alias bex='bexbe'
-alias beg='bundle exec guard'
-# moving these to bin/ so they can echo $@
-# alias ber='bundle exec rspec'
-# alias berp='bundle exec rspec -f p'
-# alias berf='bundle exec rspec -f d'
-alias berfd='echo USE berf INSTEAD'
-#alias birb='bundle exec irb'
-#alias bert='time bundle exec rake test'
-#alias bers='bundle exec rails server'
-#alias berc='bundle exec rails console'
-# TODO: Let's see which of these two gains traction faster in my brain
-# ...or at all. Dear Future me: I wrote these on 2018-09-10. If they're
-# still here and you're not using them, yank 'em. --Past Me
-alias berfo='bundle exec rspec -f d --order=defined'
-alias berfod='bundle exec rspec -f d --order=defined'
 
 # HAHAHA why haven't I thought of this 1000 times already
 alias bake='time bundle exec rake'
