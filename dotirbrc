@@ -9,6 +9,7 @@
 # end
 
 require File.expand_path("~/dotfiles/json_load_file")
+require File.expand_path("~/dotfiles/xml_load_file")
 require File.expand_path("~/dotfiles/just_your_methods")
 
 # Hello Acima MP Rails
@@ -37,6 +38,10 @@ if defined? Rails
     Merchant.find ZBONCAK_ID
   end
 
+  def load_location
+    load_merchant.locations.first
+  end
+
   def load_user
     User.find DAVE_USER_ID
   end
@@ -56,6 +61,32 @@ if defined? Rails
       puts "Removing all roles from #{full_name}..."
       user.role_names = ''
       user.save
+    end
+  end
+
+  # for the 49/99 stuff
+  class Location < ApplicationRecord
+    def banksy?
+      puts "location.settings.can_offer_unbanked_application"
+      settings.can_offer_unbanked_application
+    end
+
+    def banksy!(enable=true)
+      puts "location.settings.update!(can_offer_unbanked_application: #{enable.inspect})"
+      settings.update!(can_offer_unbanked_application: enable)
+    end
+  end
+
+
+  class Lease < ApplicationRecord
+    def banksy?
+      puts "lease.settings.unbanked_application"
+      settings.unbanked_application
+    end
+
+    def banksy!(enable=true)
+      puts "lease.settings.update!(unbanked_application: #{enable.inspect})"
+      settings.update!(unbanked_application: true)
     end
   end
 end
