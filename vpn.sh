@@ -1,4 +1,4 @@
-export VPN_USER=eddy.lopez
+export VPN_USER=david.brady
 
 # adds VPN password to macOS Keychain
 function set-vpn-pw() {

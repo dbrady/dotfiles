@@ -181,7 +181,8 @@ export OPSCODE_USER=ratgeyser
 # CMM
 # if [ `hostname` = "CMMC02Z22VKLVCH" ]; then
 # Acima
-if [ `hostname` = "Mac0825Pro.local" ]; then
+david.brady@MAC0825PRO:~/acima/devel/merchant_portal
+if [ `hostname` = "MAC0825PRO.local" ]; then
     # rvm default 2.2.2
     # rvm default 2.2.9
     rvm default 2.7.2
@@ -243,10 +244,14 @@ if [ `uname -s` == "Linux" ]; then
 fi
 
 # my manual implementation of ponysay because lol
-sayfortune
-if [ -e ~/bin/applejack.txt ] ; then
-    cat ~/bin/applejack.txt
-fi
+# sayfortune
+# if [ -e ~/bin/applejack.txt ] ; then
+#     cat ~/bin/applejack.txt
+# fi
+
+# Let's do birbs for a while. (Acima OSX only, since I don't have my Pictures folder under git.)
+# have to call it "term-birb" because "birb" will "bundle exec irb" lol.
+term-birb
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
