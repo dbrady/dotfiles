@@ -122,11 +122,12 @@ source_files ~/.aliases \
   ~/.git-completion.bash \
   ~/.nav \
   ~/.private \
-  ~/bin/ps1_functions \
+  ~/.ps1_functions \
   ~/.bash_functions \
   ~/.current-project \
   ~/.hue.conf \
-  ~/.platform-dev
+  ~/.platform-dev \
+  ~/.vpn
 
 # this must come after git-completion.bash has been sourced
 # turn on path completion for go

@@ -8,3 +8,5 @@ ln -s ~/dotfiles/dotirbrc .irbrc
 ln -s ~/dotfiles/git-completion.bash .git-completion.bash
 ln -s ~/dotfiles/dotprivate .private
 ln -s ~/dotfiles/dotnav .nav
+ln -s dotfiles/ps1_functions .ps1_functions
+ln -s dotfiles/dotvpn .vpn

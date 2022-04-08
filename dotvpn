@@ -27,11 +27,11 @@ function vpn() {
 }
 
 function vpn_display() {
-  if vpn;
+  if [[ $(ifconfig | grep "mtu 1406" ) ]]
     then
-      printf " \e[32m[V]"
+      printf " \e[32m[V]\e[0m"
     else
-      printf " \e[31m[V]"
+      printf " \e[2;31m[V]\e[0m"
   fi
 }
 
