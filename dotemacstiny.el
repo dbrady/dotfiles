@@ -54,3 +54,10 @@
 ;; fundamental-mode-hooks are not actually being run in that startup
 ;; buffer.
 (add-hook 'fundamental-mode-hook 'turn-on-auto-fill)
+
+;; Handle whitespace neatly:
+;; 1. always write a final newline to file
+;; 2. always delete whitespace at ends of lines (and extra newlines at EOF)
+;; 3. trim extra newlines from end of file
+(setq require-final-newline t)
+(add-hook 'write-file-hooks 'delete-trailing-whitespace)
