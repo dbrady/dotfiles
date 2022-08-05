@@ -157,7 +157,7 @@ ps1_rvm()
 
 ps1_update()
 {
-  local prompt_char='$' separator="\n" notime=0
+  local prompt_char='$' separator="\n" notime=0 thisisdocker=''
 
   (( $UID == 0 )) && prompt_char='#'
 
@@ -189,10 +189,22 @@ ps1_update()
     esac
   done
 
-  if (( notime > 0 )) ; then
-      PS1="$(ps1_titlebar)$(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+  if [ "$IS_DOCKER_LOCAL" != "1" ]; then
+      # Not on docker - use my usual prompt nonsense
+      if (( notime > 0 )) ; then
+          PS1="$(ps1_titlebar)$(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+      else
+          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+      fi
   else
-      PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+      # Yes on docker - use my alternative prompt nonsense
+      thisisdocker="\033[1;37;105m ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ \033[0m"
+
+      if (( notime > 0 )) ; then
+          PS1="$(ps1_titlebar)$(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${thisisdocker}${separator}${prompt_char} "
+      else
+          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${thisisdocker}${separator}${prompt_char} "
+      fi
   fi
 }
 
