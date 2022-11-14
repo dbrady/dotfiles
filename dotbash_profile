@@ -116,7 +116,6 @@ source_files()
   return 0
 }
 
-# Example usage:
 source_files ~/.aliases \
   ~/.bash_completions \
   ~/.git-completion.bash \
