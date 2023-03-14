@@ -1,3 +1,4 @@
+#!/bin/bash
 export VPN_USER=david.brady
 
 # adds VPN password to macOS Keychain
@@ -11,14 +12,32 @@ function update-vpn-pw() {
   set-vpn-pw
 }
 
+# 2022-08-30: The old vpn hiccupped every six minutes all
+# afternoon. This was vpndev.acimacredit.com. Talking with IT, they
+# had me change just one or two tiny things[1] and switch to a new vpn
+# they were testing.
+#
+# [1] Upgrading my AnyConnect client, which required me to upgrade my
+# whole dang OS to Monterey because it didn't run on Catalina. Neet.
+#
+# 2022-11-14: The new vpn has stopped working as of last week. :'-(
+# Going back to vpndev and hoping it's not all hangy-wangy.
+#
+# testing vpn
+# acima-minuteman-wired-wpwdkjgtjq.dynamic-m.com
+#
+# tried and true and crashy AF vpn
+# vpndev.acimacredit.com
 function vpnon() {
- printf "0\n$VPN_USER\n$(security find-generic-password -s "AnyConnect" -a "$VPN_USER" -w)\npush" | /opt/cisco/anyconnect/bin/vpn -s connect vpndev.acimacredit.com
+    printf "0\n$VPN_USER\n$(security find-generic-password -s "AnyConnect" -a "$VPN_USER" -w)\npush" | /opt/cisco/# anyconnect/bin/vpn -s connect vpndev.acimacredit.com
+    # printf "0\n$VPN_USER\n$(security find-generic-password -s "AnyConnect" -a "$VPN_USER" -w)\npush" | /opt/cisco/anyconnect/bin/vpn -s connect acima-minuteman-wired-wpwdkjgtjq.dynamic-m.com
 }
 
 alias vpnoff="/opt/cisco/anyconnect/bin/vpn disconnect"
 
 function vpn() {
-  if [[ $(ifconfig | grep "mtu 1406" ) ]]
+  # if [[ $(ifconfig | grep "mtu 1406" ) ]]
+  if [[ $(ifconfig | grep -E '^utun2: ') ]]
   then
    echo "You're connected to the VPN"
   else
@@ -27,7 +46,8 @@ function vpn() {
 }
 
 function vpn_display() {
-  if [[ $(ifconfig | grep "mtu 1406" ) ]]
+  # if [[ $(ifconfig | grep "mtu 1406" ) ]]
+  if [[ $(ifconfig | grep -E '^utun2: ') ]]
     then
       printf " \e[32m[V]\e[0m"
     else
