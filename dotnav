@@ -1,6 +1,7 @@
 # nav
 alias cdp='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services_package/dataservices && cd ~/acima/devel/data_services_package/dataservices'
 alias cdw='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services/etl/warehouse && cd ~/acima/devel/data_services/etl/warehouse'
+alias cdb='echo "Type nav to see all nav commands" && echo cd ~/bin && cd ~/bin'
 alias cdfw='echo "Type nav to see all nav commands" && echo -e "\033[1;37;44mThis is the finance SUBMODULE\033[0m" && echo cd ~/acima/devel/data_services/etl/warehouse/finance && cd ~/acima/devel/data_services/etl/warehouse/finance'
 alias cdfr='echo "Type nav to see all nav commands" && echo -e "\033[1;37;45mThis is the finance REPO\033[0m" && echo cd ~/acima/devel/data_services_finance && cd ~/acima/devel/data_services_finance'
 
