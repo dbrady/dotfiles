@@ -4,10 +4,15 @@ export GEMEDITOR=$(echo `which emacs` -nw)
 export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 
+# Flags suggested by homebrew
+export LDFLAGS="-L/opt/homebrew/opt/curl/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/curl/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/curl/lib/pkgconfig"
+
 case `uname -a | awk '{print $1}'` in
     Linux)
-	# export JAVA_HOME='/usr/lib/jvm/default-java'
-	export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64/'
+        # export JAVA_HOME='/usr/lib/jvm/default-java'
+        export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64/'
         ;;
     Darwin)
         export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
@@ -149,7 +154,7 @@ if command -v ps1_set >/dev/null 2>&1 ; then
     elif [ `hostname` == "CMMVMOSX045" ]; then
         ps1_set --prompt "💊­"
         export PS2=💊💊­
-    elif [ `hostname` == "Mac0825Pro.local" ]; then
+    elif [ `hostname` == "Mac1205Pro.local" ]; then
         ps1_set --prompt "💳"
         export PS2=💳💳
     else
@@ -261,3 +266,5 @@ export NVM_DIR="$HOME/.nvm"
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 export SPEC_SEED=true
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
