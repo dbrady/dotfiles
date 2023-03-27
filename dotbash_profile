@@ -169,6 +169,12 @@ else
     export PS1="!!! It's \D{%H} O'Clock! Time to install rvm to fix your prompt!\n$ "
 fi
 
+
+# force 256-color terminal in docker
+if [ $IS_DOCKER_LOCAL == "1" ]; then
+    export TERM=xterm-256color
+fi
+
 export MANPATH=/opt/local/share/man:$MANPATH
 
 # For some reason unbeknownst to me, emacs started from the CLI opens an XWindows version of emacs but with keyboard input still locked to the terminal.
