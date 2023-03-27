@@ -75,6 +75,10 @@ IN="\[\033[0m\]"
 
 export HISTFILESIZE=10000
 
+if [[ $PATH != *"~/bin"* ]]; then
+    export PATH=~/bin:$PATH
+fi
+
 if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
