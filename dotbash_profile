@@ -75,17 +75,20 @@ IN="\[\033[0m\]"
 
 export HISTFILESIZE=10000
 
-if [[ $PATH != *"~/bin"* ]]; then
-    export PATH=~/bin:$PATH
+# Whin SHIFTING dirs onto head of PATH, last shift is the first/winner.
+# postgres Acima (dev version)
+if [[ $PATH != *"/opt/homebrew/bin"* ]]; then
+    export PATH=/opt/homebrew/bin:$PATH
+fi
+
+if [[ $PATH != *"$HOME/bin"* ]]; then
+    export PATH=$HOME/bin:$PATH
 fi
 
 if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
 
-if [[ $PATH != *"acima/devel/merchant_portal/app/local_hacks"* ]]; then
-    export PATH=~/acima/devel/merchant_portal/app/local_hacks:$PATH
-fi
 
 # Acima-specific stuffs - if more than this path needs to be here, please make a
 # .acima file and source_files() it
@@ -93,13 +96,8 @@ if [[ $PATH != *"acima/bin"* ]]; then
     export PATH=~/acima/bin:$PATH
 fi
 
-if [[ $PATH != *"$HOME/bin"* ]]; then
-    export PATH=$HOME/bin:$PATH
-fi
-
-# postgres Acima (dev version)
-if [[ $PATH != *"/usr/local/opt/postgresql@13/bin"* ]]; then
-    export PATH="/usr/local/opt/postgresql@13/bin:$PATH"
+if [[ $PATH != *"acima/devel/merchant_portal/app/local_hacks"* ]]; then
+    export PATH=~/acima/devel/merchant_portal/app/local_hacks:$PATH
 fi
 
 source_files()
@@ -190,7 +188,7 @@ export OPSCODE_USER=ratgeyser
 # CMM
 # if [ `hostname` = "CMMC02Z22VKLVCH" ]; then
 # Acima
-if [ `hostname` = "MAC1205PRO.local" ]; then
+if [ `hostname` = "Mac1205Pro.local" ]; then
     rvm default 3.1.1
 
     # MP tests need this every time, so
