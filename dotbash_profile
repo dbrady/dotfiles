@@ -165,7 +165,7 @@ fi
 
 
 # force 256-color terminal in docker
-if [ $IS_DOCKER_LOCAL == "1" ]; then
+if [ "$IS_DOCKER_LOCAL" == "1" ]; then
     export TERM=xterm-256color
 fi
 
