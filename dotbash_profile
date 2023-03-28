@@ -255,10 +255,6 @@ fi
 #     cat ~/bin/applejack.txt
 # fi
 
-# Let's do birbs for a while. (Acima OSX only, since I don't have my Pictures folder under git.)
-# have to call it "term-birb" because "birb" will "bundle exec irb" lol.
-term-birb
-
 # NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -268,4 +264,13 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$PATH:$HOME/.rvm/bin"
 export SPEC_SEED=true
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [ ! "$IS_DOCKER_LOCAL" == "1" ]; then
+    # Let's do birbs for a while. (Acima OSX only, since I don't have my Pictures
+    # folder under git since I don't wanna get my repo copywronged.)  Have to call
+    # it "term-birb" because "birb" will "bundle exec irb" lol.
+    term-birb
+
+    # brew shellenv will dump all the homebrew variables. eval() on it will
+    # export them into the current bash session.
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
