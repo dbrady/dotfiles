@@ -1,53 +1,66 @@
 #!/bin/bash
-export VPN_USER=david.brady
-
-# adds VPN password to macOS Keychain
-function set-vpn-pw() {
-  security add-generic-password -s "AnyConnect" -a "$VPN_USER" -p
-}
-
-# removes and adds new VPN password to macOS Keychain
-function update-vpn-pw() {
-  security -q delete-generic-password -s "AnyConnect" -a "$VPN_USER"
-  set-vpn-pw
-}
-
-# 2022-08-30: The old vpn hiccupped every six minutes all
-# afternoon. This was vpndev.acimacredit.com. Talking with IT, they
-# had me change just one or two tiny things[1] and switch to a new vpn
-# they were testing.
 #
-# [1] Upgrading my AnyConnect client, which required me to upgrade my
-# whole dang OS to Monterey because it didn't run on Catalina. Neet.
-#
-# 2022-11-14: The new vpn has stopped working as of last week. :'-(
-# Going back to vpndev and hoping it's not all hangy-wangy.
-#
-# testing vpn
-# acima-minuteman-wired-wpwdkjgtjq.dynamic-m.com
-#
-# tried and true and crashy AF vpn
-# vpndev.acimacredit.com
-function vpnon() {
-    printf "0\n$VPN_USER\n$(security find-generic-password -s "AnyConnect" -a "$VPN_USER" -w)\npush" | /opt/cisco/# anyconnect/bin/vpn -s connect vpndev.acimacredit.com
-    # printf "0\n$VPN_USER\n$(security find-generic-password -s "AnyConnect" -a "$VPN_USER" -w)\npush" | /opt/cisco/anyconnect/bin/vpn -s connect acima-minuteman-wired-wpwdkjgtjq.dynamic-m.com
-}
 
-alias vpnoff="/opt/cisco/anyconnect/bin/vpn disconnect"
+# 2023-03-28: This checks ifconfig for a specific utun or mtu connection, which
+# is a mostly-but-not-always-reliable side effect. On Apple Silicon, ifconfig
+# does not change. So I did some digging around and discovered that Cisco
+# provides a tool for OSX to determine VPN status directly:
+# `/opt/cisco/anyconnect/bin/vpn state` will report `state: Disconnected` or
+# `state: Connected`. (It does this 3 times; I do not know why. So there's still
+# some magic here to cargo cult around.)
+#
+# I don't use any of the other tools here, favoring the GUI, but I do like
+# seeing if the VPN is up or not on my command-line, so I'm going to comment out
+# everything in here except for the vpn state detection.
 
-function vpn() {
-  # if [[ $(ifconfig | grep "mtu 1406" ) ]]
-  if [[ $(ifconfig | grep -E '^utun2: ') ]]
-  then
-   echo "You're connected to the VPN"
-  else
-   echo "You're not connected to the VPN"
-  fi
-}
+# export VPN_USER=david.brady
+#
+# # adds VPN password to macOS Keychain
+# function set-vpn-pw() {
+#   security add-generic-password -s "AnyConnect" -a "$VPN_USER" -p
+# }
+#
+# # removes and adds new VPN password to macOS Keychain
+# function update-vpn-pw() {
+#   security -q delete-generic-password -s "AnyConnect" -a "$VPN_USER"
+#   set-vpn-pw
+# }
+#
+# # 2022-08-30: The old vpn hiccupped every six minutes all
+# # afternoon. This was vpndev.acimacredit.com. Talking with IT, they
+# # had me change just one or two tiny things[1] and switch to a new vpn
+# # they were testing.
+# #
+# # [1] Upgrading my AnyConnect client, which required me to upgrade my
+# # whole dang OS to Monterey because it didn't run on Catalina. Neet.
+# #
+# # 2022-11-14: The new vpn has stopped working as of last week. :'-(
+# # Going back to vpndev and hoping it's not all hangy-wangy.
+# #
+# # testing vpn
+# # acima-minuteman-wired-wpwdkjgtjq.dynamic-m.com
+# #
+# # tried and true and crashy AF vpn
+# # vpndev.acimacredit.com
+# function vpnon() {
+#     printf "0\n$VPN_USER\n$(security find-generic-password -s "AnyConnect" -a "$VPN_USER" -w)\npush" | /opt/cisco/# anyconnect/bin/vpn -s connect vpndev.acimacredit.com
+#     # printf "0\n$VPN_USER\n$(security find-generic-password -s "AnyConnect" -a "$VPN_USER" -w)\npush" | /opt/cisco/anyconnect/bin/vpn -s connect acima-minuteman-wired-wpwdkjgtjq.dynamic-m.com
+# }
+#
+# alias vpnoff="/opt/cisco/anyconnect/bin/vpn disconnect"
+#
+# function vpn() {
+#   # if [[ $(ifconfig | grep "mtu 1406" ) ]]
+#   if [[ $(ifconfig | grep -E '^utun2: ') ]]
+#   then
+#    echo "You're connected to the VPN"
+#   else
+#    echo "You're not connected to the VPN"
+#   fi
+# }
 
 function vpn_display() {
-  # if [[ $(ifconfig | grep "mtu 1406" ) ]]
-  if [[ $(ifconfig | grep -E '^utun2: ') ]]
+    if [[ $(/opt/cisco/anyconnect/bin/vpn state | grep 'state: Connected') ]]
     then
       printf " \e[32m[V]\e[0m"
     else

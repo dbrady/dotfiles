@@ -135,12 +135,8 @@ source_files ~/.aliases \
   ~/.platform-dev \
   ~/.vpn
 
-# this must come after git-completion.bash has been sourced
-# turn on path completion for go
-#
-# There's a way to trap error exit status and change your prompt based on that;
-# since my CMM prompt is a pill (U+1F48A, 💊 ), a good emoji for that might be
-# the syringe (U+1F489, 💉 )
+# Turn on path completion for my go command.
+# This must come after git-completion.bash.
 complete -o default -o nospace -F _git_checkout go
 
 # PS1 EMOJIS
