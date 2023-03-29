@@ -60,20 +60,23 @@
 # }
 
 function vpn_display() {
-    if [[ $(/opt/cisco/anyconnect/bin/vpn state | grep 'state: Connected') ]]
-    then
-        # 32 = green [V]
-        printf " \e[32m[V]\e[0m"
-    else
-        if [ "$IS_DOCKER_LOCAL" != "1" ] && [[ $(ifconfig | grep 10.1.180.154) ]]
-        then
-            # 96;40 = light cyan [O] = "you are [O]nsite"
-            printf " \e[96;40m[O]\e[0m"
+    # skip all this crap if we're on Docker. Don't spend all those extra
+    # milliseconds invoking vpn and ifconfig.
+    if [ "$IS_DOCKER_LOCAL" != "1" ]; then
+        if [[ $(/opt/cisco/anyconnect/bin/vpn state | grep 'state: Connected') ]]; then
+            # 32 = green [V]
+            printf " \e[32m[V]\e[0m"
         else
-            # 2;31 = dim red [V]
-            printf " \e[2;31m[V]\e[0m"
+            # Check for my onsite dedicated IP. If docker
+            if [[ $(ifconfig | grep 10.1.180.154) ]]; then
+                # 96;40 = light cyan [O] = "you are [O]nsite"
+                printf " \e[96;40m[O]\e[0m"
+            else
+                # 2;31 = dim red [V]
+                printf " \e[2;31m[V]\e[0m"
+            fi
         fi
-  fi
+    fi
 }
 
 # --------------------------------------------------------------------------------
