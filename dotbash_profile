@@ -155,6 +155,9 @@ if command -v ps1_set >/dev/null 2>&1 ; then
     elif [ `hostname` == "Mac1205Pro.local" ]; then
         ps1_set --prompt "💳"
         export PS2=💳💳
+    elif [ `hostname` == "31b95b7de045" ]; then
+        ps1_set --prompt "🚢"
+        export PS2=🚢🚢
     else
         ps1_set --prompt "🎸"
         export PS2=🎶🎵
