@@ -68,7 +68,7 @@ function vpn_display() {
             printf " \e[32m[V]\e[0m"
         else
             # Check for my onsite dedicated IP. If docker
-            if [[ $(ifconfig | grep 10.1.180.154) ]]; then
+            if [[ $(ifconfig | grep 10.1.180.) ]]; then
                 # 96;40 = light cyan [O] = "you are [O]nsite"
                 printf " \e[96;40m[O]\e[0m"
             else
