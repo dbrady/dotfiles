@@ -1,12 +1,17 @@
 # nav
-alias cdp='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services_package/dataservices && cd ~/acima/devel/data_services_package/dataservices'
-alias cdw='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services/etl/warehouse && cd ~/acima/devel/data_services/etl/warehouse'
+
+## Dev/Tools Mine
 alias cdb='echo "Type nav to see all nav commands" && echo cd ~/bin && cd ~/bin'
-alias cdfw='echo "Type nav to see all nav commands" && echo -e "\033[1;37;44mThis is the finance SUBMODULE\033[0m" && echo cd ~/acima/devel/data_services/etl/warehouse/finance && cd ~/acima/devel/data_services/etl/warehouse/finance'
-alias cdfr='echo "Type nav to see all nav commands" && echo -e "\033[1;37;45mThis is the finance REPO\033[0m" && echo cd ~/acima/devel/data_services_finance && cd ~/acima/devel/data_services_finance'
-
-alias cdf='echo -e "\033[1;37;41mcdf has been deprecated, please specify cdfw or cdfr for the warehouse submodule or the actual finance repo.\033[0m"'
-
-alias cdmp='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/merchant_portal && cd ~/acima/devel/merchant_portal'
-
+alias cds='echo "Type nav to see all nav commands" && echo cd ~/devel/scrapbin && cd ~/devel/scrapbin'
 alias nav='cat ~/.nav'
+
+## DS
+alias cdf='echo -e "\033[1;37;41mcdf has been deprecated.\033[0m\033[31m It used to cd into the finance directory. Please use cdfw or cdfr to specify the warehouse submodule or the actual finance repo.\033[0m"'
+alias cdfr='echo "Type nav to see all nav commands" && echo -e "\033[1;37;45mThis is the finance REPO\033[0m" && echo cd ~/acima/devel/data_services_finance && cd ~/acima/devel/data_services_finance'
+alias cdfw='echo "Type nav to see all nav commands" && echo -e "\033[1;37;44mThis is the finance SUBMODULE\033[0m" && echo cd ~/acima/devel/data_services/etl/warehouse/finance && cd ~/acima/devel/data_services/etl/warehouse/finance'
+alias cdp='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services_package/dataservices && cd ~/acima/devel/data_services_package/dataservices'
+alias cdu='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services/utilities && cd ~/acima/devel/data_services/utilities'
+alias cdw='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services/etl/warehouse && cd ~/acima/devel/data_services/etl/warehouse'
+
+## MP
+alias cdmp='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/merchant_portal && cd ~/acima/devel/merchant_portal'
