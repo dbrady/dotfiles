@@ -121,3 +121,8 @@ fi
 source ~/.bash_profile
 ssh-add >/dev/null 2>&1
 export REQUESTS_CA_BUNDLE=/private/tmp/CMMCERTROOT-CA.pem
+
+# Disable C-s (pause terminal output). I don't use pause terminal output, it
+# bugs me that a human has to notice the terminal is hung and hit C-q to unpause
+# it, and I instinctively use (reverse-i-search) and (i-search) C-r/C-s a lot.
+stty -ixon
