@@ -76,9 +76,9 @@ IN="\[\033[0m\]"
 export HISTFILESIZE=10000
 
 # Whin SHIFTING dirs onto head of PATH, last shift is the first/winner.
-# postgres Acima (dev version)
+# postgres Acima (postgresql@13 because I wanted a psql for reference)
 if [[ $PATH != *"/opt/homebrew/bin"* ]]; then
-    export PATH=/opt/homebrew/bin:$PATH
+    export PATH=/opt/homebrew/Cellar/postgresql\@13/13.11/bin:$PATH
 fi
 
 if [[ $PATH != *"$HOME/bin"* ]]; then
