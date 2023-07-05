@@ -277,3 +277,4 @@ if [ ! "$IS_DOCKER_LOCAL" == "1" ]; then
     # export them into the current bash session.
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+rvm default 3.2.2
