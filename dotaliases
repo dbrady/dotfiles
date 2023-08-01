@@ -13,7 +13,13 @@ case `uname -s` in
         alias ll="ls -l"
         alias 'top'='top -o cpu'
         alias 'tem'="emacs -nw -q -l $HOME/.emacstiny"
-        alias 'vim'='echo -e "\033[30;105m WELCOME TO DAVELAND, USE \\\\vim TO RUN THE REAL vim \033[0m"; sleep 1; tem'
+
+        # 2023-08-01: Turning this off. It was a good hack when there
+        # were all these CLI tools ignoring $EDITOR and launching vim
+        # at me. The last few times, however, I have genuinely wanted
+        # vim, and this "help" just felt like an overly cute and
+        # annoying nanny.
+        # alias 'vim'='echo -e "\033[30;105m WELCOME TO DAVELAND, USE \\\\vim TO RUN THE REAL vim \033[0m"; sleep 1; tem'
         ;;
     *)
         echo '~/.aliases cannot set ls/ll options: I have no clue what OS this is. :-('
