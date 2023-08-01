@@ -163,7 +163,7 @@ if command -v ps1_set >/dev/null 2>&1 ; then
         export PS2=🎶🎵
     fi
 else
-    export PS1="!!! It's \D{%H} O'Clock! Time to install rvm to fix your prompt!\n$ "
+    export PS1="!!! It's \D{%H} O'Clock! Check your dotfiles folder for ps1_functions.\n$ "
 fi
 
 
@@ -180,22 +180,11 @@ export MANPATH=/opt/local/share/man:$MANPATH
 
 export OPSCODE_USER=ratgeyser
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# 2023-07-31 - Switching to rbenv because the keyserver poisoning is real :'-(
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
-# Is this my CMM work machine?
-#
-# (Legacy, kept for shape-of-code reference. Discussion: normally I favor "delete this and
-# if I need it I'll get it out of source control" but I'm only in here once every 1-2
-# years, and only to make shallow edits to maintain this for a new
-# situation. Likely that if I ever need this again, I won't remember if even
-# existed. Try living with this dead code and if it bugs, delete it.)
-#
-# CMM
-# if [ `hostname` = "CMMC02Z22VKLVCH" ]; then
 # Acima
 if [ `hostname` = "Mac1205Pro.local" ]; then
-    rvm default 3.1.1
-
     # MP tests need this every time, so
     export TZ='America/Denver'
     export SPEC_SEED=true
@@ -211,7 +200,7 @@ else
             echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. That's weird, right? NOT setting rvm defaults."
             ;;
         *)
-            echo '~/.bash_profile has no clue what OS this is; not setting rvm defaults.'
+            echo "~/.bash_profile has no clue what OS this is. So that's kinda neat I guess."
             ;;
     esac
 fi
@@ -263,10 +252,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-export SPEC_SEED=true
-
+# $IS_DOCKER_LOCAL is a flag we set in data_services to distinguish between "prodlike, because Docker" and "prodlike, because production"
 if [ ! "$IS_DOCKER_LOCAL" == "1" ]; then
     # Let's do birbs for a while. (Acima OSX only, since I don't have my Pictures
     # folder under git since I don't wanna get my repo copywronged.)  Have to call
@@ -277,4 +263,8 @@ if [ ! "$IS_DOCKER_LOCAL" == "1" ]; then
     # export them into the current bash session.
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
-rvm default 3.2.2
+
+# rbenv
+eval "$(rbenv init - bash)"
+rbenv global 3.2.2
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
