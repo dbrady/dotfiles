@@ -187,10 +187,20 @@ export OPSCODE_USER=ratgeyser
 if [ `hostname` = "Mac1205Pro.local" ]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
-    export SPEC_SEED=true
+
+    # This adds 80 seconds to the MP spec suite. It is good to pass in when we
+    # need the whole suite to interop correctly, but when trying to TDD it is
+    # agonizing.
+    # export SPEC_SEED=true
+
     # Acima AWS
     export AWS_PROFILE=acima-nonprod
     export KUBECONFIG=~/.kube/nonprod/preflight
+
+    # Atlas>Artemis>Hermes gave the option to install postgresql@13 as an app,
+    # and self-containment is teh win. But now I need the CLI tools in my path,
+    # so...
+    export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/13/bin"
 else
     case `uname -s` in
         Linux)
@@ -265,6 +275,7 @@ if [ ! "$IS_DOCKER_LOCAL" == "1" ]; then
 fi
 
 # rbenv
-eval "$(rbenv init - bash)"
-rbenv global 3.2.2
+# eval "$(rbenv init - bash)"
+# rbenv global 3.2.2
+export PATH="/Users/davidbrady/.rbenv/shims/:$PATH"
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
