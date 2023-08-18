@@ -81,7 +81,7 @@ ps1_git()
           if [[ -n "${branch}" ]] ; then # Happiness! This is a feature/story branch :)
               color=32 # green
               # TODO: don't show PR info if get-pr-id returns -1
-              pr=":PR-$(git get-pr-id)"
+              pr=" \033[1;37;42mPR-$(git get-pr-id)"
           else
               color=0 # reset
           fi
@@ -89,7 +89,7 @@ ps1_git()
   esac
 
   [[ $color -gt 0 ]] &&
-    printf "\[\033[${attr}${color}m\](git:${branch}${pr}$(ps1_git_status):$sha1)\[\033[0m\] $(ps1_git_email) "
+      printf "\[\033[${attr}${color}m\](git:${branch}$(ps1_git_status):$sha1)${pr}\[\033[0m\] $(ps1_git_email) "
 }
 
 ps1_git_email()
