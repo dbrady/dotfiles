@@ -1,17 +1,24 @@
 # nav
+_nav_to() {
+  echo "Type nav to see all nav commands"
+  echo -e "\033[36mcd \"$1\""
+  cd "$1"
+}
 
 ## Dev/Tools Mine
-alias cdb='echo "Type nav to see all nav commands" && echo cd ~/bin && cd ~/bin'
-alias cds='echo "Type nav to see all nav commands" && echo cd ~/devel/scrapbin && cd ~/devel/scrapbin'
+alias cdb='_nav_to ~/bin'
+alias cds='_nav_to ~/devel/scrapbin'
 alias nav='cat ~/.nav'
 
-## DS
-# alias cdf='echo -e "\033[1;37;41mcdf has been deprecated.\033[0m\033[31m It used to cd into the finance directory. Please use cdfw or cdfr to specify the warehouse submodule or the actual finance repo.\033[0m"'
-# alias cdfr='echo "Type nav to see all nav commands" && echo -e "\033[1;37;45mThis is the finance REPO\033[0m" && echo cd ~/acima/devel/data_services_finance && cd ~/acima/devel/data_services_finance'
-# alias cdfw='echo "Type nav to see all nav commands" && echo -e "\033[1;37;44mThis is the finance SUBMODULE\033[0m" && echo cd ~/acima/devel/data_services/etl/warehouse/finance && cd ~/acima/devel/data_services/etl/warehouse/finance'
-# alias cdu='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services/utilities && cd ~/acima/devel/data_services/utilities'
-# alias cdw='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/data_services/etl/warehouse && cd ~/acima/devel/data_services/etl/warehouse'
+## Atlas
+alias cdmp='_nav_to ~/acima/devel/merchant_portal'
+alias cdmpr='_nav_to ~/acima/devel/merchant_portal.review'
+alias cdmpw='_nav_to ~/acima/devel/merchant_portal.wiki'
+alias cdams='_nav_to /Users/davidbrady/acima/devel/application_management_system'
+alias cdbb='_nav_to ~/Documents/rspec-brownbag/'
+alias cdcc='_nav_to /Users/davidbrady/acima/devel/credit_card_service'
+alias cdw='_nav_to ~/acima/devel/merchant_portal.wiki'
 
-
-## MP
-alias cdmp='echo "Type nav to see all nav commands" && echo cd ~/acima/devel/merchant_portal && cd ~/acima/devel/merchant_portal'
+# CREDIT-103
+alias cdspec='_nav_to ~/acima/devel/merchant_portal/spec/domains/fund/funding/requests/credit'
+alias cdapp='_nav_to ~/acima/devel/merchant_portal/app/domains/fund/funding/requests/credit'
