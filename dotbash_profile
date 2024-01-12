@@ -5,9 +5,10 @@ export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 
 # Flags suggested by homebrew
-export LDFLAGS="-L/opt/homebrew/opt/curl/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/curl/include"
+export LDFLAGS="-L/opt/homebrew/opt/curl/lib -L/opt/homebrew/opt/libpq/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/curl/include -I/opt/homebrew/opt/libpq/include"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/curl/lib/pkgconfig"
+
 
 case `uname -a | awk '{print $1}'` in
     Linux)
@@ -89,15 +90,10 @@ if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
 
-
 # Acima-specific stuffs - if more than this path needs to be here, please make a
 # .acima file and source_files() it
 if [[ $PATH != *"acima/bin"* ]]; then
     export PATH=~/acima/bin:$PATH
-fi
-
-if [[ $PATH != *"acima/devel/merchant_portal/app/local_hacks"* ]]; then
-    export PATH=~/acima/devel/merchant_portal/app/local_hacks:$PATH
 fi
 
 source_files()
@@ -153,8 +149,10 @@ if command -v ps1_set >/dev/null 2>&1 ; then
         ps1_set --prompt "💊­"
         export PS2=💊💊­
     elif [ `hostname` == "Mac1205Pro.local" ]; then
-        ps1_set --prompt "💳"
-        export PS2=💳💳
+        # ps1_set --prompt "💳"
+        # export PS2=💳💳
+        ps1_set --prompt "$"
+        export PS2=">"
     elif [ `hostname` == "31b95b7de045" ]; then
         ps1_set --prompt "🚢"
         export PS2=🚢🚢
@@ -200,8 +198,9 @@ if [ `hostname` = "Mac1205Pro.local" ]; then
     # export SPEC_SEED=true
 
     # Acima AWS
-    export AWS_PROFILE=acima-nonprod
-    export KUBECONFIG=~/.kube/nonprod/preflight
+    export AWS_PROFILE=AcimaNonprod-NonProdDeveloperAccess
+    # export KUBECONFIG=~/.kube/nonprod/preflight
+    export KUBECONFIG=~/.kube/config
 
     # Atlas>Artemis>Hermes gave the option to install postgresql@13 as an app,
     # and self-containment is teh win. But now I need the CLI tools in my path,
@@ -223,10 +222,15 @@ fi
 
 if [ `uname -s` = "Darwin" ]; then
     # I'll never let go of bash until they physically bar me from installing it.
-    # zsh is NOT an acceptable bash unless you're not using any of bash's features.
-    # That said, I get why AAPL is doing this. bash going GPL v3 poses a genuine
-    # threat to the privacy of their OS.
+    # zsh is NOT an acceptable bash unless you're not using any of bash's
+    # features.  That said, I get why AAPL is doing this. bash going GPL v3
+    # poses a genuine threat to the privacy of their OS. Oh wait I just
+    # remembered I don't care
     export BASH_SILENCE_DEPRECATION_WARNING=1
+
+    # LOL THIS IS FOR MP ON M1
+    export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+    export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 fi
 
 
@@ -245,7 +249,8 @@ if [ `uname -s` == "Darwin" ]; then
 
     # capybara-webkit needs quicktime 5.5, which is the last version of QT to support webkit bindings
     # get it with brew install qt@5.5
-    export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
+    # 2023-10-16 - Homebrew is in a different place on this macheen now
+    # export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
 
     # for mtr (OSX)
     export PATH=$PATH:/usr/local/sbin
@@ -280,6 +285,10 @@ if [ ! "$IS_DOCKER_LOCAL" == "1" ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# This is for Acima/OSX
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+# rbenv
+# eval "$(rbenv init - bash)"
+# rbenv global 3.2.2
+# export PATH="/Users/davidbrady/.rbenv/shims/:$PATH"
+
+
 echo "bash_profile finished loading"
