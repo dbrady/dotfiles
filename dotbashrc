@@ -126,3 +126,4 @@ export REQUESTS_CA_BUNDLE=/private/tmp/CMMCERTROOT-CA.pem
 # bugs me that a human has to notice the terminal is hung and hit C-q to unpause
 # it, and I instinctively use (reverse-i-search) and (i-search) C-r/C-s a lot.
 stty -ixon
+echo "bashrc finished loading"
