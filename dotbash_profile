@@ -179,7 +179,7 @@ export MANPATH=/opt/local/share/man:$MANPATH
 export OPSCODE_USER=ratgeyser
 
 # 2023-07-31 - Switching to rbenv because the keyserver poisoning is real :'-(
-# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+#%[[%-s%"$HOME/.rvm/scripts/rvm"%]]%&&%source%"$HOME/.rvm/scripts/rvm"%#%Load%RVM%into%a%shell%session%*as%a%function*
 
 # Acima
 if [ `hostname` = "Mac1205Pro.local" ]; then
@@ -276,9 +276,13 @@ fi
 
 # rbenv
 # eval "$(rbenv init - bash)"
-rbenv global 3.2.2
-export PATH="/Users/davidbrady/.rbenv/shims/:$PATH"
+# 2024-01-10 trying rvm agaim
+# rbenv global 3.2.2
+# export PATH="/Users/davidbrady/.rbenv/shims/:$PATH"
 
 # LOL THIS IS FOR MP ON M1
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
+. /opt/homebrew/opt/asdf/etc/bash_completion.d/asdf.bash

@@ -12,13 +12,76 @@ require File.expand_path("~/dotfiles/json_load_file")
 require File.expand_path("~/dotfiles/xml_load_file")
 require File.expand_path("~/dotfiles/just_your_methods")
 
+begin
+  require "text-table"
+rescue LoadError
+  puts "Could not load gem text-table. explain_conditions() will not work."
+end
+
 # Hello Acima MP Rails
 if defined? Rails
 
-  # ZBONCAK_ID=41499
-  # ZBONCAK_GUID="merc-5c5d37fb-071c-4739-b832-bfafc93db09b"
-  # DAVE_USER_ID=2892
-  # DAVE_API_USER_ID=377
+  # TEMP FOR CREDIT-492, PARTS PROBABLY WORTH GENERALIZING
+  def prepare_contract_for_credit_492(contract=nil)
+    contract ||= Lease.last
+    puts "Preparing contract #{contract.lease_number}".yellow
+
+    amount_approved ||= contract.amount_approved
+    available_amount ||= contract.amount_approved
+
+    puts "Creating CreditContract".yellow
+    credit_contract = CreditContract.create!(amount_approved:, available_amount:, transaction_id: "2222", customer_account_id: 4111_1111_1111_1111.to_s)
+    contract.update!(amount_approved:, credit_contract_id: credit_contract.id)
+
+    puts "Setting up conditions".yellow
+    conditions = [LeaseConditionType::ID_VERIFICATION, LeaseConditionType::CONFIRM_PURCHASE]
+    types = LeaseConditionType.where(code: conditions)
+    types.each {|type| LeaseCondition.create!(lease_condition_type: type, lease: contract, how_many_required: 1, required_by_workflow_state: ::Lease::WAITING_FOR_SUPPORTING_DOCUMENTS, is_optional: false )}
+
+    puts "Creating invoice".yellow
+    puts ">>>> THIS TAKES A MINUTE, PLEASE BE PATIENT <<<<".bold.white
+    ::Scripts::Api::EndPoints::Invoices::V2::CreateOrUpdate.run
+
+    puts "Creating credit invoice".yellow
+    contract.invoice.credit_invoice = CreditInvoice.create!(total_amount: contract.amount_approved)
+    contract.invoice.save!
+
+    puts "Creating lease contract".yellow
+    lease_contract = LeaseContract.create!(
+      lease: contract,
+      max_approval_amount: amount_approved,
+      amount_approved: amount_approved,
+      available_amount:amount_approved
+    )
+
+    contract.lease_contract = lease_contract
+    contract.save!
+    puts "Converted lease #{contract.lease_number}: #{contract.applicant.full_name} approved for $#{contract.amount_approved}".yellow
+
+    puts "Click here to open the purchase confirmation customer flow:".yellow
+    ::Process::TextMessages::Credit::PurchaseConfirmation::Create.run(lease: contract).url
+ end
+
+  class Lease < ApplicationRecord
+    def cpt; consumer_product_type; end
+    def cpts; consumer_product_types; end
+
+    def workflow_state_history
+      last_workflow_state = nil
+
+      versions.map.with_index do |version, index|
+        next unless version.object
+
+        object = JSON.parse(version.object)
+        workflow_state = object["workflow_state"]
+        if last_workflow_state != workflow_state
+          last_workflow_state = workflow_state
+          timestamp = version.created_at.strftime("%F %T")
+          "#{timestamp}: #{workflow_state}"
+        end
+      end.compact
+    end
+  end
 
   DAVE_USER_ID=4607
   DAVE_MERCHANT_ID=50_000
@@ -94,133 +157,207 @@ if defined? Rails
     puts "Could not load user, merchant, or location: #{e}"
   end
 
-  def convert_lease_to_credit(contract, amount_approved=1500, available_amount=1500)
-    CreditContract.create(amount_approved:, available_amount:)
-    contract.update(consumer_product_type: "credit", amount_approved:, credit_contract_id: CreditContract.last.id)
+  def load_last_contract
+    Lease.order(:created_at).last.tap do |contract|
+      puts "Loaded contract #{contract.id} for #{contract.applicant.full_name}"
+    end
   end
-end
 
+  def convert_lease_to_credit(contract=nil, amount_approved=nil, available_amount=nil)
+    contract ||= Lease.last
+    amount_approved ||= contract.amount_approved
+    available_amount ||= contract.amount_approved
 
-# Cadged from Ramses
-def apply!(merchant_id = nil)
-  access_token = ::Scripts::Api::Helpers::Auth0Token.generate_access_token(application: :aperture)
-  api_user = ::Scripts::Api::Helpers::ApiUser.setup(handle: :api_test)
-  headers = ::Scripts::Api::Helpers::Headers.setup(access_token: access_token, user: api_user)
-  merchant = merchant_id ? ::Merchant.find(merchant_id) : ::Scripts::Api::Helpers::Merchant.default
-  merchant = if merchant_id.present?
-               ::Merchant.find(merchant_id)
-             else
-               ::Scripts::Api::Helpers::Merchant.default
-             end
-  location = merchant.locations.first
+    puts "Creating CreditContract..."
+    credit_contract = CreditContract.create!(amount_approved:, available_amount:)
+    contract.update!(amount_approved:, credit_contract_id: credit_contract.id)
 
-  body = generate_application_body(merchant, location)
-  path = "/services/api/private/contracts"
+    # Add necessary conditions or it won't go
+    conditions = [LeaseConditionType::ID_VERIFICATION, LeaseConditionType::CONFIRM_PURCHASE]
+    puts "Adding lease conditions #{conditions}"
+    types = LeaseConditionType.where(code: conditions)
+    puts "Types to add: #{types.map(&:code).inspect}"
 
-  response = ::Scripts::Api::Helpers::Request.post(
-    body:    body,
-    headers: headers,
-    path:    path,
-  )
-  body = JSON.parse(response.body)
-  message = if body["response"].present?
-              {
-                status:       body["status"],
-                code:         body["code"],
-                message:      body["message"],
-                lease_id:     body["response"]["id"],
-                guid:         body["response"]["guid"],
-                lease_number: body["response"]["lease_number"],
-                merchant_id:  merchant.id,
-                location_dba: location.dba,
-              }
-            else
-              {
-                status:  body["status"],
-                code:    body["code"],
-                message: body["message"],
-              }
-            end
-  pp(message)
-end
+    types.each {|type| LeaseCondition.create!(lease_condition_type: type, lease: contract, how_many_required: 1, required_by_workflow_state: ::Lease::WAITING_FOR_SUPPORTING_DOCUMENTS, is_optional: false )}
 
-def generate_application_body(merchant, location)
-  {
-    contract: {
-      mobile_apply_phone:                  "",
-      card_application:                    false,
-      trustev_session_id:                  "",
-      manual_pay:                          nil,
-      applicant:                           {
-        first_name:                    ::Faker::Name.safe_first_name,
-        middle_name:                   "",
-        last_name:                     ::Faker::Name.safe_last_name,
-        address_1:                     "384 LOGAN AVE",
-        address_2:                     "",
-        city:                          "SALT LAKE CITY",
-        state:                         "UT",
-        zip:                           "84115",
-        verified_address:              false,
-        email:                         "test#{::Faker::Number.digits(9)}@example.com",
-        main_phone:                    ::Faker::PhoneNumber.clean_phone_number,
-        main_phone_type:               "mobile",
-        dob:                           "1935-08-20",
-        id_document_number:            "991231231214",
-        id_document_state_code:        "UT",
-        id_document_type:              "drivers_license",
-        id_document_expiry_date:       (DateTime.now + 5.years).strftime("%F"),
-        ssn:                           ::Faker::Number.digits(9),
-        bank_name:                     "First Utah Bank",
-        routing_number:                ::Faker::Bank.routing_number,
-        account_number:                ::Faker::Bank.account_number,
-        income_source:                 "full_time_job",
-        employment_net_monthly_income: "4000",
-        income_net_per_paycheck:       "1846",
-        income_payment_method:         "direct_deposit",
-        last_payday_on:                DateTime.now.strftime("%F"),
-        next_payday_on:                (DateTime.now + 1.month).strftime("%F"),
-        pay_frequency:                 "monthly",
-        income_schedule_recur_on:      "day_of_week",
-        income_schedule_recurrence:    {
-          start_time: {
-            time: "2019-06-02T06:00:00.000Z",
-            zone: "Mountain Time (US & Canada)",
-          },
-          rrules:     [
-            {
-              validations: {
-                day: [
-                  3,
-                ],
-              },
-              rule_type:   "IceCube::WeeklyRule",
-              interval:    2,
-              week_start:  0,
+    # enum is going away, keep this around for old branches
+    # contract.credit! if contract.respond_to? :credit!
+
+    puts "Converted lease #{contract.lease_number}: #{contract.applicant.full_name} approved for $#{contract.amount_approved}".yellow
+  end
+
+  def add_lease_contract_to_lease(contract=nil)
+    contract ||= Lease.last
+
+    lease_contract = LeaseContract.new lease: contract
+    lease_contract.max_approval_amount = lease_contract.amount_approved = lease_contract.available_amount = contract.amount_approved
+    lease_contract.save!
+
+    contract.lease_contract = lease_contract
+    contract.save!
+  end
+
+  def signature_url_for_lease(lease=nil)
+    lease ||= Lease.last
+    signature_url(lease.id)
+  end
+
+  def signature_url(lease_id)
+    token = ::Legacy::Leasing::LeaseToken.create_token('sign-lease', lease_id)
+    url = Rails.application.routes.url_helpers.new_customer_lease_agreements_signatures_url(id: token.to_s)
+    url
+  end
+
+  # Cadged from Ramses
+  def apply!(merchant_id = nil)
+    access_token = ::Scripts::Api::Helpers::Auth0Token.generate_access_token(application: :aperture)
+    api_user = ::Scripts::Api::Helpers::ApiUser.setup(handle: :api_test)
+    headers = ::Scripts::Api::Helpers::Headers.setup(access_token: access_token, user: api_user)
+    merchant = merchant_id ? ::Merchant.find(merchant_id) : ::Scripts::Api::Helpers::Merchant.default
+    merchant = if merchant_id.present?
+                 ::Merchant.find(merchant_id)
+               else
+                 ::Scripts::Api::Helpers::Merchant.default
+               end
+    location = merchant.locations.first
+
+    body = generate_application_body(merchant, location)
+    path = "/services/api/private/contracts"
+
+    response = ::Scripts::Api::Helpers::Request.post(
+      body:    body,
+      headers: headers,
+      path:    path,
+    )
+    body = JSON.parse(response.body)
+    message = if body["response"].present?
+                {
+                  status:       body["status"],
+                  code:         body["code"],
+                  message:      body["message"],
+                  lease_id:     body["response"]["id"],
+                  guid:         body["response"]["guid"],
+                  lease_number: body["response"]["lease_number"],
+                  merchant_id:  merchant.id,
+                  location_dba: location.dba,
+                }
+              else
+                {
+                  status:  body["status"],
+                  code:    body["code"],
+                  message: body["message"],
+                }
+              end
+    pp(message)
+  end
+
+  def explain_conditions(lease_or_conditions=nil)
+    conditions = lease_or_conditions ||= Lease.last.lease_conditions
+    table = []
+
+    format = "| %3s | %-35s | %-35s | %-9s | %-12s |"
+    bar = (format % ["","","","",""]).gsub(/\s/, '-').gsub(/\|/, '+')
+
+    table << bar
+    table << format % ["idx", "condition", "required_by_workflow_state", "satisfied", "required_now"]
+    table << bar
+
+    conditions.each.with_index do |condition, index|
+      table << format % [index, condition.code, condition.required_by_workflow_state, condition.satisfied?, condition.required_now?]
+    end
+    table << bar
+
+    table.join("\n")
+
+    # table = Text::Table.new
+    # table.head = ["idx", "condition", "required_by_workflow_state", "satisfied", "required_now"]
+    # table.rows = []
+
+    # conditions.each.with_index do |condition, index|
+    #   table.rows << [index, condition.code, condition.required_by_workflow_state, condition.satisfied?, condition.required_now?]
+    # end
+
+    # puts table
+  end
+
+  def generate_application_body(merchant, location)
+    {
+      contract: {
+        mobile_apply_phone:                  "",
+        card_application:                    false,
+        trustev_session_id:                  "",
+        manual_pay:                          nil,
+        applicant:                           {
+          first_name:                    ::Faker::Name.safe_first_name,
+          middle_name:                   "",
+          last_name:                     ::Faker::Name.safe_last_name,
+          address_1:                     "384 LOGAN AVE",
+          address_2:                     "",
+          city:                          "SALT LAKE CITY",
+          state:                         "UT",
+          zip:                           "84115",
+          verified_address:              false,
+          email:                         "test#{::Faker::Number.digits(9)}@example.com",
+          main_phone:                    ::Faker::PhoneNumber.clean_phone_number,
+          main_phone_type:               "mobile",
+          dob:                           "1935-08-20",
+          id_document_number:            "991231231214",
+          id_document_state_code:        "UT",
+          id_document_type:              "drivers_license",
+          id_document_expiry_date:       (DateTime.now + 5.years).strftime("%F"),
+          ssn:                           ::Faker::Number.digits(9),
+          bank_name:                     "First Utah Bank",
+          routing_number:                ::Faker::Bank.routing_number,
+          account_number:                ::Faker::Bank.account_number,
+          income_source:                 "full_time_job",
+          employment_net_monthly_income: "4000",
+          income_net_per_paycheck:       "1846",
+          income_payment_method:         "direct_deposit",
+          last_payday_on:                DateTime.now.strftime("%F"),
+          next_payday_on:                (DateTime.now + 1.month).strftime("%F"),
+          pay_frequency:                 "monthly",
+          income_schedule_recur_on:      "day_of_week",
+          income_schedule_recurrence:    {
+            start_time: {
+              time: "2019-06-02T06:00:00.000Z",
+              zone: "Mountain Time (US & Canada)",
             },
-          ],
-          rtimes:     [],
-          extimes:    [],
+            rrules:     [
+              {
+                validations: {
+                  day: [
+                    3,
+                  ],
+                },
+                rule_type:   "IceCube::WeeklyRule",
+                interval:    2,
+                week_start:  0,
+              },
+            ],
+            rtimes:     [],
+            extimes:    [],
+          },
+          income_details_attributes:     {
+            transformed_weekly_pay: false,
+          },
+          application_source:            "merchant",
+          referrer_url:                  "http:\/\/localhost:3000\/merchant\/contracts\/2185266",
+          tongue_code:                   "en",
         },
-        income_details_attributes:     {
-          transformed_weekly_pay: false,
+        campaign_source:                     {
+          utm_source:   "",
+          utm_medium:   "",
+          utm_campaign: "",
+          utm_term:     "",
+          utm_content:  "",
+          gclid:        "",
         },
-        application_source:            "merchant",
-        referrer_url:                  "http:\/\/localhost:3000\/merchant\/contracts\/2185266",
-        tongue_code:                   "en",
+        consent_to_automated_communications: false,
+        location_guid:                       location.guid,
+        merchant_guid:                       merchant.guid,
       },
-      campaign_source:                     {
-        utm_source:   "",
-        utm_medium:   "",
-        utm_campaign: "",
-        utm_term:     "",
-        utm_content:  "",
-        gclid:        "",
-      },
-      consent_to_automated_communications: false,
-      location_guid:                       location.guid,
-      merchant_guid:                       merchant.guid,
-    },
-  }
+    }
+  end
 end
 
 # jp - like pp, but in JSON.
@@ -239,4 +376,92 @@ def jp(object)
 
   # TODO: COLORIZE ME. Sadly we don't get that for free from pretty_generate.
   puts JSON.pretty_generate(data)
+end
+
+# array_to_table - poor man's text-table
+def array_to_table(rows)
+  return "" if rows.empty?
+
+  left_justify = Hash.new(false)
+  longests = Hash.new(0)
+
+  rows.each do |row|
+    row.each.with_index do |item, index|
+      left_justify[index] ||= item.to_s =~ /[^0-9-+.,]/
+      longests[index] = [(longests[index] || 0), item.to_s.size].max
+    end
+  end
+
+  formats = longests.keys.map do |key|
+    size = longests[key]
+    sign = left_justify[key] ? "-" : ""
+
+    "%#{sign}#{size}s"
+  end
+
+  format = "| #{formats.join(' | ')} |"
+
+  rows.each do |row|
+    puts format % row
+  end
+
+  nil
+end
+
+# hash_to_table - poor man's text-table
+#
+# TODO: Do we care if the rows have different keys? Nah. You get what you get.
+def hash_to_table(rows)
+  return "" if rows.empty?
+
+  left_justify = Hash.new(false)
+  longests = Hash.new(0)
+
+  rows.each do |row|
+    row.each_pair do |key, value|
+      left_justify[key] ||= value.to_s =~ /[^0-9+.,]/
+      longests[key] = [key.size, longests[key], value.size].max
+    end
+  end
+
+  formats = longests.keys.map do |key|
+    size = longests[key]
+    sign = left_justify[key] ? "-" : ""
+
+    "%#{sign}#{size}s"
+  end
+
+  format = "| #{formats.join(' | ')} |"
+
+  puts format % rows.first.keys
+
+  rows.each do |row|
+    puts format % row.values
+  end
+
+  nil
+end
+
+def to_table(rows)
+  # delegate to array_to_table, hash_to_table, hash_to_table(rows.map(&:attributes)), etc.
+  return "" if rows.empty?
+
+  longests = Hash.new(0)
+
+  rows.each do |row|
+    if row.is_a? Hash
+      row.keys.each_pair {|key, value| longests[key] = [key.size, value.to_s.size, longests[key]].max }
+    else
+      row.each.with_index {|value, index| longests[index] = [value.to_s.size, longests[index]].max }
+    end
+  end
+
+  format = "| " + longests.values.map {|size| "%#{size}s" }.join(" | ") + " |"
+
+  rows.each do |row|
+    values = row.values rescue row
+    puts format % values
+  end
+
+  nil
 end
