@@ -101,7 +101,7 @@ source_files()
   local file
 
   for file in "$@" ; do
-
+    echo -e "\033[32msource_files(): sourcing $file\033[0m"
     file=${file/\~\//$HOME\/} # Expand ~/
 
     if [[ -s "${file}" ]] ; then
@@ -157,8 +157,8 @@ if command -v ps1_set >/dev/null 2>&1 ; then
         ps1_set --prompt "🚢"
         export PS2=🚢🚢
     else
-        ps1_set --prompt "🎸"
-        export PS2=🎶🎵
+        ps1_set --prompt '$'
+        export PS2='$$'
     fi
 else
     export PS1="!!! It's \D{%H} O'Clock! Check your dotfiles folder for ps1_functions.\n$ "
@@ -179,7 +179,12 @@ export MANPATH=/opt/local/share/man:$MANPATH
 export OPSCODE_USER=ratgeyser
 
 # 2023-07-31 - Switching to rbenv because the keyserver poisoning is real :'-(
-#%[[%-s%"$HOME/.rvm/scripts/rvm"%]]%&&%source%"$HOME/.rvm/scripts/rvm"%#%Load%RVM%into%a%shell%session%*as%a%function*
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+# 2024-01-09 - Switching to asdf because rbenv shims eat 100-500ms on startup
+# rbenv
+# eval "$(rbenv init - bash)"
+# rbenv global 3.2.2
+# export PATH="/Users/davidbrady/.rbenv/shims/:$PATH"
 
 # Acima
 if [ `hostname` = "Mac1205Pro.local" ]; then
@@ -216,10 +221,15 @@ fi
 
 if [ `uname -s` = "Darwin" ]; then
     # I'll never let go of bash until they physically bar me from installing it.
-    # zsh is NOT an acceptable bash unless you're not using any of bash's features.
-    # That said, I get why AAPL is doing this. bash going GPL v3 poses a genuine
-    # threat to the privacy of their OS.
+    # zsh is NOT an acceptable bash unless you're not using any of bash's
+    # features.  That said, I get why AAPL is doing this. bash going GPL v3
+    # poses a genuine threat to the privacy of their OS. Oh wait I just
+    # remembered I don't care
     export BASH_SILENCE_DEPRECATION_WARNING=1
+
+    # LOL THIS IS FOR MP ON M1
+    export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+    export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 fi
 
 
@@ -286,3 +296,5 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
 . /opt/homebrew/opt/asdf/etc/bash_completion.d/asdf.bash
+
+echo "bash_profile finished loading"
