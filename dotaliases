@@ -49,6 +49,9 @@ alias 'up2'='cd ../..'
 alias 'up3'='cd ../../..'
 alias 'up4'='cd ../../../..'
 
+# I always forget to set -table with sqlite3
+alias 'sql3'="echo -e '\033[36msqlite3 -table\033[0m'; sqlite3 -table"
+
 alias 'cdpy'='echo "cd ~/devel/scrapbin/python" && cd ~/devel/scrapbin/python'
 
 # docker
