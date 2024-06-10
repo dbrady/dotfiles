@@ -187,7 +187,10 @@ export OPSCODE_USER=ratgeyser
 # export PATH="/Users/davidbrady/.rbenv/shims/:$PATH"
 
 # Acima
-if [ `hostname` = "Mac1205Pro.local" ]; then
+# if [ `hostname` = "Mac1205Pro.local" ]; then
+
+# 2024-05-21: IT renamed my laptop remotely and didn't tell me. FFS Maersk.
+if [ `hostname` = "Acima-Mac1205Pro.local" ]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
 
@@ -211,7 +214,7 @@ else
             source /etc/profile.d/rvm.sh
             ;;
         Darwin)
-            echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. That's weird, right? NOT setting rvm defaults."
+            echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. ($(hostname)) That's weird, right? NOT setting rvm defaults."
             ;;
         *)
             echo "~/.bash_profile has no clue what OS this is. So that's kinda neat I guess."
