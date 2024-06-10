@@ -137,14 +137,24 @@ if defined? Rails
   class User < ApplicationRecord
     def add_all_roles!
       puts "Giving all roles to #{full_name}..."
-      user.role_names = "|#{Role.all.pluck(:short_name) * '|'}|"
-      user.save
+      self.role_names = "|#{Role.all.pluck(:short_name) * '|'}|"
+      save
+    end
+
+    def make_coworker!
+      roles = %w[location_staff payment_proc invoice_handler apply_handler delivery_handler]
+      roles.each {|role| self.add_role!(role) }
+    end
+
+    def make_not_coworker!
+      roles = %w[location_staff payment_proc invoice_handler apply_handler delivery_handler]
+      roles.each {|role| self.remove_role!(role) }
     end
 
     def remove_all_roles!
       puts "Removing all roles from #{full_name}..."
-      user.role_names = ''
-      user.save
+      role_names = ''
+      save
     end
   end
 
@@ -251,19 +261,28 @@ if defined? Rails
     pp(message)
   end
 
-  def explain_conditions(lease_or_conditions=nil)
-    conditions = lease_or_conditions ||= Lease.last.lease_conditions
+  def explain_conditions(lease=nil)
+    conditions ||= Lease.last
+    conditions = conditions.lease_conditions
+
     table = []
 
     format = "| %3s | %-35s | %-35s | %-9s | %-12s |"
     bar = (format % ["","","","",""]).gsub(/\s/, '-').gsub(/\|/, '+')
-
     table << bar
     table << format % ["idx", "condition", "required_by_workflow_state", "satisfied", "required_now"]
     table << bar
 
     conditions.each.with_index do |condition, index|
-      table << format % [index, condition.code, condition.required_by_workflow_state, condition.satisfied?, condition.required_now?]
+      color = (condition.required_now? && !condition.satisfied?) ? :red : :green
+
+      table << (format % [
+                  index,
+                  condition.code,
+                  condition.required_by_workflow_state,
+                  condition.satisfied?,
+                  condition.required_now?
+                ]).send(color)
     end
     table << bar
 
@@ -277,7 +296,7 @@ if defined? Rails
     #   table.rows << [index, condition.code, condition.required_by_workflow_state, condition.satisfied?, condition.required_now?]
     # end
 
-    # puts table
+    puts table
   end
 
   def generate_application_body(merchant, location)
@@ -358,7 +377,43 @@ if defined? Rails
       },
     }
   end
+
+  def prequal_split(merchant_id: nil)
+    merchant_id ||= DAVE_MERCHANT_ID
+    puts "::Scripts::Api::EndPoints::Applications::PrequalSplit.run(merchant_id: #{merchant_id})".cyan
+    ::Scripts::Api::EndPoints::Applications::PrequalSplit.run(merchant_id:)
+  end
+
+  def accept_credit_offer(lease_or_guid: nil)
+    lease_guid = if lease_or_guid.is_a? Lease
+              lease_or_guid.guid
+            elsif lease_or_guid.present?
+              lease_or_guid
+            else
+              Lease.last.guid
+            end
+    puts "::Scripts::Api::EndPoints::Contracts::SatisfyConditions::AcceptCreditOffer.run(#{lease_guid})".cyan
+    ::Scripts::Api::EndPoints::Contracts::SatisfyConditions::AcceptCreditOffer.run(lease_guid)
+  end
+
+  def build_signing_url(lease_or_id: nil)
+    lease_id = if lease_or_id.is_a? Lease
+                   lease_or_id.id
+                 elsif lease_or_id.present?
+                   lease_or_id
+                 else
+                   Lease.last.guid
+                 end
+    puts "::Process::TextMessages::Signatures::BuildSigningUrl.build(#{lease_id})"
+    ::Process::TextMessages::Signatures::BuildSigningUrl.build(lease_id)
+  end
+
+  def who
+    Lease.last.applicant.full_name
+  end
+
 end
+# End Rails
 
 # jp - like pp, but in JSON.
 # - if it response to as_json, it calls that, so jp rails_object will work.
