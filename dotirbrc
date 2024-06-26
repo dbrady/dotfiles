@@ -81,6 +81,19 @@ if defined? Rails
         end
       end.compact
     end
+
+    # env is one of :localhost, :preflight, :production
+    def whatup(env: :localhost)
+      lease = self
+      template = <<TEMPLATE
+Lease ID and Number: <%= lease.id %> (<%= lease.lease_number %>)
+Customer: <%= lease.applicant.full_name %>
+Location (Merchant): <%= lease.location.dba %> (<%= lease.merchant.dba %>)
+User Link: <userspace_url>
+Merchant Link: <merchant_url>
+TEMPLATE
+      puts ERB.new(template).result(binding)
+    end
   end
 
   DAVE_USER_ID=4607
@@ -442,7 +455,7 @@ def array_to_table(rows)
 
   rows.each do |row|
     row.each.with_index do |item, index|
-      left_justify[index] ||= item.to_s =~ /[^0-9-+.,]/
+      left_justify[index] ||= item.to_s =~ /[^0-9\-+.,]/
       longests[index] = [(longests[index] || 0), item.to_s.size].max
     end
   end
@@ -497,8 +510,8 @@ def hash_to_table(rows)
   nil
 end
 
+# Calls hash_to_table or array_to_table
 def to_table(rows)
-  # delegate to array_to_table, hash_to_table, hash_to_table(rows.map(&:attributes)), etc.
   return "" if rows.empty?
 
   longests = Hash.new(0)
