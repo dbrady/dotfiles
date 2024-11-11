@@ -166,7 +166,7 @@ TEMPLATE
 
     def remove_all_roles!
       puts "Removing all roles from #{full_name}..."
-      role_names = ''
+      self.role_names = ''
       save
     end
   end
