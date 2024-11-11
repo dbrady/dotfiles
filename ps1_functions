@@ -199,7 +199,8 @@ ps1_update()
           PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${prompt_char} "
       else
             # Acima Work Machine
-          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+          # PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${prompt_char} "
       fi
   else
       # Yes on docker - use my alternative prompt nonsense
