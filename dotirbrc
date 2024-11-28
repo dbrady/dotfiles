@@ -154,14 +154,24 @@ TEMPLATE
       save
     end
 
-    def make_coworker!
+    def make_coworker!(location: nil)
+      remove_all_roles!
       roles = %w[location_staff payment_proc invoice_handler apply_handler delivery_handler]
       roles.each {|role| self.add_role!(role) }
+      locations_as_assigned_user << location if location
+      save
     end
 
     def make_not_coworker!
+      remove_all_roles!
       roles = %w[location_staff payment_proc invoice_handler apply_handler delivery_handler]
       roles.each {|role| self.remove_role!(role) }
+    end
+
+    def make_developer!
+      remove_all_roles!
+      roles = %w(accounting admin auditor lead_proc legal master_admin user_admin developer)
+      roles.each {|role| self.add_role!(role) }
     end
 
     def remove_all_roles!
