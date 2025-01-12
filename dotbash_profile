@@ -153,6 +153,9 @@ if command -v ps1_set >/dev/null 2>&1 ; then
     elif [ `hostname` == "Mac0825Pro.local" ]; then
         ps1_set --prompt "💳"
         export PS2=💳💳
+    elif [ `hostname` == "thinky" ]; then
+        ps1_set --prompt "🧠"
+        export PS2=🧠💭
     else
         ps1_set --prompt "🎸"
         export PS2=🎶🎵
@@ -198,6 +201,7 @@ else
     case `uname -s` in
         Linux)
             source /etc/profile.d/rvm.sh
+            rvm default 3.4.1
             ;;
         Darwin)
             echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. That's weird, right? NOT setting rvm defaults."
