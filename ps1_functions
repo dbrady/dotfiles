@@ -57,7 +57,7 @@ ps1_identity()
 
 ps1_git()
 {
-  local branch="" sha1="" line="" attr="" color=0
+  local branch="" sha1="" line="" attr="" color=0 pr=""
 
   shopt -s extglob # Important, for our nice matchers :)
 
@@ -80,6 +80,8 @@ ps1_git()
       *)
           if [[ -n "${branch}" ]] ; then # Happiness! This is a feature/story branch :)
               color=32 # green
+              # TODO: don't show PR info if get-pr-id returns -1
+              pr=" \033[1;37;42mPR-$(git get-pr-id)"
           else
               color=0 # reset
           fi
@@ -87,7 +89,7 @@ ps1_git()
   esac
 
   [[ $color -gt 0 ]] &&
-    printf "\[\033[${attr}${color}m\](git:${branch}$(ps1_git_status):$sha1)\[\033[0m\] $(ps1_git_email) "
+      printf "\[\033[${attr}${color}m\](git:${branch}$(ps1_git_status):$sha1)${pr}\[\033[0m\] $(ps1_git_email) "
 }
 
 ps1_git_email()
@@ -125,7 +127,9 @@ ps1_git_email()
             ;;
         "abf0f4f7072d77a68ccec42247fe1e4f") fgcolor="1;38;5;27"; bgcolor="48;5;15" ;; # kp - bold blue on white
         "745932c691e01f288d7b56625296afe8") fgcolor="1;38;5;15"; bgcolor="48;5;17" ;; # ks - bold white on blue
-        "fdbc33b336274f0b0e65030f7e39d435") fgcolor="1;38;5;15"; bgcolor="48;5;33" ;; # acima - bold white on light blue
+        "fdbc33b336274f0b0e65030f7e39d435") fgcolor="1;38;5;15"; bgcolor="48;5;33" ;; # acimacredit - bold white on light blue
+        "d9ade019b6afb77f890ac5c93845f029") fgcolor="1;38;5;15"; bgcolor="48;5;33" ;; # acima - bold white on light blue
+
         # default
         *)                                  bgcolor=41   ; fgcolor="1;37" ;; # bold white on bright red
     esac
@@ -157,7 +161,7 @@ ps1_rvm()
 
 ps1_update()
 {
-  local prompt_char='$' separator="\n" notime=0
+  local prompt_char='$' separator="\n" notime=0 thisisdocker=''
 
   (( $UID == 0 )) && prompt_char='#'
 
@@ -189,10 +193,20 @@ ps1_update()
     esac
   done
 
-  if (( notime > 0 )) ; then
-      PS1="$(ps1_titlebar)$(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+  if [ "$IS_DOCKER_LOCAL" != "1" ]; then
+      # Not on docker - use my usual prompt nonsense
+      if [ `uname -s` == "Linux" ]; then
+          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${prompt_char} "
+      else
+            # Acima Work Machine
+          # PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${prompt_char} "
+      fi
   else
-      PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
+      # Yes on docker - use my alternative prompt nonsense
+      thisisdocker="\033[1;37;105m ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ \033[0m"
+
+      PS1="$(ps1_titlebar)$(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${thisisdocker}${separator}${prompt_char} "
   fi
 }
 

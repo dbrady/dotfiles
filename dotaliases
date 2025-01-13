@@ -13,7 +13,13 @@ case `uname -s` in
         alias ll="ls -l"
         alias 'top'='top -o cpu'
         alias 'tem'="emacs -nw -q -l $HOME/.emacstiny"
-        alias 'vim'='echo -e "\033[30;105m WELCOME TO DAVELAND, USE \\\\vim TO RUN THE REAL vim \033[0m"; sleep 1; tem'
+
+        # 2023-08-01: Turning this off. It was a good hack when there
+        # were all these CLI tools ignoring $EDITOR and launching vim
+        # at me. The last few times, however, I have genuinely wanted
+        # vim, and this "help" just felt like an overly cute and
+        # annoying nanny.
+        # alias 'vim'='echo -e "\033[30;105m WELCOME TO DAVELAND, USE \\\\vim TO RUN THE REAL vim \033[0m"; sleep 1; tem'
         ;;
     *)
         echo '~/.aliases cannot set ls/ll options: I have no clue what OS this is. :-('
@@ -43,6 +49,10 @@ alias 'up2'='cd ../..'
 alias 'up3'='cd ../../..'
 alias 'up4'='cd ../../../..'
 
+# I always forget to set -table with sqlite3
+alias 'sql3'="echo -e '\033[36msqlite3 -table\033[0m'; sqlite3 -table"
+
+alias 'cdpy'='echo "cd ~/devel/scrapbin/python" && cd ~/devel/scrapbin/python'
 
 # docker
 alias 'dc'=`which docker-compose`
@@ -62,15 +72,6 @@ function bexbe() {
 alias be='bundle exec'
 alias bex='bexbe'
 
-# HAHAHA why haven't I thought of this 1000 times already
-alias bake='time bundle exec rake'
-# ...or this
-alias bails='bundle exec rails'
-# ...or this
-alias bap='time bundle exec cap'
-# ...now I'm just being silly
-alias bun='time bundle exec rails runner'
-
 
 ## Misc Programming
 
@@ -87,7 +88,7 @@ alias gsb="git branch | cut -c 3- | selecta | xargs git checkout"
 # stages all new files as empty entries so they still show up in git diff, then
 # it does a --patch add to stage things in hunks. Run `git help add` for more
 # details.
-
+#
 # BEWARE: The -N will add all new files found so if you're like me and in the
 # habit of littering the repo with temporary scripts and test data, this alias
 # is not your friend. I'm keeping it because it's worth its weight in gold just
@@ -97,14 +98,8 @@ alias gnap="git add -N . && git add -p"
 # Open Finder on Linux
 alias 'xo'='xdg-open .'
 
-# forgive me, heh
-alias 'fucking'='sudo' # fucking make-me-a-sandwich => ok
-alias 'just-fucking-do-it'='sudo !!' # make-me-a-sandwich => NO; just-fucking-do-it => ok
-# SFW alts
-alias 'effing'='sudo' # effing make-me-a-sandwich => ok
-alias 'just-effing-do-it'='sudo !!' # make-me-a-sandwich => NO; just-effing-do-it => ok
-
 # how big is this terminal?
+# Can also run ~/bin/xy which checks the tty stuff
 alias 'xy'='echo ${COLUMNS}x${LINES}'
 
 # what's up with my dns?!?

@@ -1,0 +1,17 @@
+# nav
+
+## Dev/Tools Mine
+alias cdb='echo "Type nav to see all nav commands" && echo cd ~/bin && cd ~/bin'
+alias cds='echo "Type nav to see all nav commands" && echo cd ~/devel/scrapbin && cd ~/devel/scrapbin'
+alias nav='cat ~/.nav'
+
+## DS
+alias cdf='echo -e "\033[1;37;41mcdf has been deprecated.\033[0m\033[31m It used to cd into the finance directory. Please use cdfw or cdfr to specify the warehouse submodule or the actual finance repo.\033[0m"'
+alias cdfr='echo "Type nav to see all nav commands" && echo -e "\033[1;37;45mThis is the finance REPO\033[0m" && echo cd ~/data_services_finance && cd ~/data_services_finance'
+alias cdfw='echo "Type nav to see all nav commands" && echo -e "\033[1;37;44mThis is the finance SUBMODULE\033[0m" && echo cd ~/data_services/etl/warehouse/finance && cd ~/data_services/etl/warehouse/finance'
+alias cdp='echo "Type nav to see all nav commands" && echo cd ~/data_services_package/dataservices && cd ~/data_services_package/dataservices'
+alias cdu='echo "Type nav to see all nav commands" && echo cd ~/data_services/utilities && cd ~/data_services/utilities'
+alias cdw='echo "Type nav to see all nav commands" && echo cd ~/data_services/etl/warehouse && cd ~/data_services/etl/warehouse'
+
+## MP
+alias cdmp='echo "Type nav to see all nav commands" && echo cd ~/merchant_portal && cd ~/merchant_portal'
