@@ -91,7 +91,7 @@ source_files()
   local file
 
   for file in "$@" ; do
-    echo -e "\033[32msource_files(): sourcing $file\033[0m"
+    # echo -e "\033[32msource_files(): sourcing $file\033[0m"
     file=${file/\~\//$HOME\/} # Expand ~/
 
     if [[ -s "${file}" ]] ; then
@@ -170,10 +170,12 @@ export MANPATH=/opt/local/share/man:$MANPATH
 
 export OPSCODE_USER=ratgeyser
 
-# 2023-07-31 - Switching to rbenv because the keyserver poisoning is real :'-(
-# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-# 2024-01-09 - Switching to asdf because rbenv shims eat 100-500ms on startup
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+if [ `uname -s` = 'Linux' ]; then
+    # 2023-07-31 - Switching to rbenv because the keyserver poisoning is real :'-(
+    # [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    # 2024-01-09 - Switching to asdf because rbenv shims eat 100-500ms on startup
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+fi
 
 # rbenv
 # eval "$(rbenv init - bash)"
