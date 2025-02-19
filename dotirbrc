@@ -21,6 +21,22 @@ end
 # Hello Acima MP Rails
 if defined? Rails
 
+  # model.schema /
+  class ApplicationRecord
+    class <<self
+      def schema(format: nil)
+        raise ArgumentError, "format must be :sql or :ruby" if format && ![:sql, :ruby].include?(format)
+        # run schema-peek on my table
+        command = "#{File.expand_path('~/bin/schema-peek')} #{table_name}"
+        puts `#{command}`
+      end
+    end
+
+    def schema(format: nil)
+      self.class.schema
+    end
+  end
+
   # TEMP FOR CREDIT-492, PARTS PROBABLY WORTH GENERALIZING
   def prepare_contract_for_credit_492(contract=nil)
     contract ||= Lease.last
