@@ -91,7 +91,7 @@ source_files()
   local file
 
   for file in "$@" ; do
-    echo -e "\033[32msource_files(): sourcing $file\033[0m"
+    # echo -e "\033[32msource_files(): sourcing $file\033[0m"
     file=${file/\~\//$HOME\/} # Expand ~/
 
     if [[ -s "${file}" ]] ; then
