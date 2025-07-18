@@ -21,6 +21,22 @@ end
 # Hello Acima MP Rails
 if defined? Rails
 
+  # model.schema /
+  class ApplicationRecord
+    class <<self
+      def schema(format: nil)
+        raise ArgumentError, "format must be :sql or :ruby" if format && ![:sql, :ruby].include?(format)
+        # run schema-peek on my table
+        command = "#{File.expand_path('~/bin/schema-peek')} #{table_name}"
+        puts `#{command}`
+      end
+    end
+
+    def schema(format: nil)
+      self.class.schema
+    end
+  end
+
   # TEMP FOR CREDIT-492, PARTS PROBABLY WORTH GENERALIZING
   def prepare_contract_for_credit_492(contract=nil)
     contract ||= Lease.last
@@ -97,12 +113,11 @@ TEMPLATE
   end
 
   DAVE_USER_ID=4607
-  DAVE_MERCHANT_ID=50_000
-  DAVE_MERCHANT_GUID="merc-dd0c3664-e428-4531-8eff-d8e8e6fb7a08"
-  DAVE_LOCATION_ID=66126
-  DAVE_LOCATION_GUID="loca-9576f79c-881e-416a-9b0a-53335fac8680"
-  DAVE_LOCATION2_ID=50_000
-  DAVE_LOCATION2_GUID="loca-81c2d3e5-df37-4235-8b99-fd52e468ee76"
+  # DAVE_MERCHANT_ID=50_000
+  DAVE_MERCHANT_ID=69_854
+  DAVE_MERCHANT_GUID="merc-83b716de-9574-4580-bec1-aebf0262fc59"
+  DAVE_LOCATION_ID=94623
+  DAVE_LOCATION_GUID="loca-4ba67c4a-6686-42c2-9928-a5aa48774bed"
 
   puts 'def load_merchant; Merchant.find(DAVE_MERCHANT_ID); end # Find Zboncak-Adams easily'
   puts 'def load_user; User.find(DAVE_USER_ID); end # Find my user easily'
