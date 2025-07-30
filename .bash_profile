@@ -1,4 +1,30 @@
 #!/bin/sh
+
+# Figure out operating system & machine
+OS_NAME=$(uname -s)
+
+IS_OSX=false
+IS_LINUX=false
+IS_WINDOWS=false # tbd, may prefer IS_DOCKER or IS_WSL etc
+
+case "$OS_NAME" in
+    Darwin)
+        IS_OSX=true
+        ;;
+    Linux)
+        IS_LINUX=true
+        ;;
+    CYGWIN*|MINGW*|MSYS*)
+        # YAGNI? Do I ever hit this on WSL or Docker under windows?
+        IS_WINDOWS=true
+        ;;
+    *)
+        echo -e "\033[1;37;41mCannot identify your operating system: '$OS_NAME'\033[0m"
+        ;;
+esac
+
+HOSTNAME=$(hostname)
+
 export EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 export GEMEDITOR=$(echo `which emacs` -nw)
 export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
@@ -10,7 +36,7 @@ export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 # export PKG_CONFIG_PATH="/opt/homebrew/opt/curl/lib/pkgconfig"
 
 
-case `uname -a | awk '{print $1}'` in
+case "$OS_NAME" in
     Linux)
         # export JAVA_HOME='/usr/lib/jvm/default-java'
         export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64/'
@@ -127,64 +153,35 @@ source_files ~/.aliases \
 complete -o default -o nospace -F _git_checkout go
 
 # PS1 EMOJIS
-if command -v ps1_set >/dev/null 2>&1 ; then
-    if [ `hostname` == "poo.local" ]; then
-        ps1_set --prompt "💩 "
-        export PS2=💩💩
-    elif [ `hostname` == "poot" ]; then
-#        ps1_set --prompt "💨­"
-        ps1_set --prompt "💨 "
-        export PS2="💨💨 "
-        # ps1_set --prompt "$"
-    elif [ `hostname` == "CMMVMOSX045" ]; then
-        ps1_set --prompt "💊­"
-        export PS2=💊💊­
-    elif [ `hostname` == "Mac0825Pro.local" ]; then
+
+case "$HOSTNAME" in
+    Simples-MacBook-Pro.local)
         ps1_set --prompt "💳"
         export PS2=💳💳
-    elif [ `hostname` == "thinky" ]; then
+        ;;
+    thinky)
         ps1_set --prompt "🧠"
         export PS2=🧠💭
-    elif [ `hostname` == "31b95b7de045" ]; then
-        ps1_set --prompt "🚢"
-        export PS2=🚢🚢
-    else
+        ;;
+    *)
         ps1_set --prompt '$'
         export PS2='$$'
-    fi
-else
-    export PS1="!!! It's \D{%H} O'Clock! Check your dotfiles folder for ps1_functions.\n$ "
+        echo -e "\033[1;37;41mNEW MACHINE: It's \D{%H} O'Clock! Check .bash_profile and/or .ps1_functions. Do you have my dotfiles repo?\033[0m"
+        ;;
+esac
+
+# 2022-07-25: Hoping this works...
+if [ $IS_OSX ]; then
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    rvm default 3.3.6
 fi
 
-
-# force 256-color terminal in docker
-if [ "$IS_DOCKER_LOCAL" == "1" ]; then
-    export TERM=xterm-256color
-fi
-
-export MANPATH=/opt/local/share/man:$MANPATH
-
-# For some reason unbeknownst to me, emacs started from the CLI opens an XWindows version of emacs but with keyboard input still locked to the terminal.
-# 2015-02-04 Is this dead code? Has no effect in OSX. Turn back on if linux still needs it.
-# alias 'emacs'='emacs -nw'
-
-export OPSCODE_USER=ratgeyser
-
-if [ `uname -s` = 'Linux' ]; then
+if [ $IS_LINUX ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 fi
 
-# 2025-02-07 - Back to rbenv. Installed Sequoia and rvm insists on openssl@1.1, which is no longer installable
-rbenv
-eval "$(rbenv init - bash)"
-rbenv global 3.3.6
-export PATH="/Users/davidbrady/.rbenv/shims/:$PATH"
-
 # Acima
-# if [ `hostname` = "Mac1205Pro.local" ]; then
-
-# 2024-05-21: IT renamed my laptop remotely and didn't tell me. FFS Maersk.
-if [ `hostname` = "Acima-Mac1205Pro.local" ]; then
+if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
 
@@ -196,28 +193,22 @@ if [ `hostname` = "Acima-Mac1205Pro.local" ]; then
     # Acima AWS
     export AWS_PROFILE=AcimaNonprod-NonProdDeveloperAccess
     # export KUBECONFIG=~/.kube/nonprod/preflight
-    export KUBECONFIG=~/.kube/config
+    # export KUBECONFIG=~/.kube/config
 
     # Atlas>Artemis>Hermes gave the option to install postgresql@13 as an app,
     # and self-containment is teh win. But now I need the CLI tools in my path,
     # so...
-    export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/13/bin"
+    # export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/13/bin"
+elif [ $IS_LINUX ]; then
+    source /etc/profile.d/rvm.sh
+    rvm default 3.4.5
+elif [ $IS_OSX ]; then
+    echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. ($HOSTNAME) That's weird, right? NOT setting rvm defaults."
 else
-    case `uname -s` in
-        Linux)
-            source /etc/profile.d/rvm.sh
-            rvm default 3.4.1
-            ;;
-        Darwin)
-            echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. ($(hostname)) That's weird, right? NOT setting rvm defaults."
-            ;;
-        *)
-            echo "~/.bash_profile has no clue what OS this is. So that's kinda neat I guess."
-            ;;
-    esac
+    echo "~/.bash_profile has no clue what OS this is. So that's kinda neat...? I guess?"
 fi
 
-if [ `uname -s` = "Darwin" ]; then
+if [ $IS_OSX ]; then
     # I'll never let go of bash until they physically bar me from installing it.
     # zsh is NOT an acceptable bash unless you're not using any of bash's
     # features.  That said, I get why AAPL is doing this. bash going GPL v3
@@ -226,11 +217,13 @@ if [ `uname -s` = "Darwin" ]; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 
     # LOL THIS IS FOR MP ON M1
+    # 2025-07-22: Now on M4. Verify still needed. Remove this line if ok, remove all of this code after 7/30
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-    export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+    # export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 fi
 
 
+# 2025-07-22: Do I need this on OSX now? I know I need it on thinky and maybe theseus.
 # Setup ssh agent
 # ssh-add -L &> /dev/null
 ssh-add -L >/dev/null 2>&1
@@ -239,74 +232,36 @@ if [ $? -eq 1 ]; then
 fi
 
 # OSX-specific randomness
-if [ `uname -s` == "Darwin" ]; then
-    test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-    # capybara-webkit needs quicktime 5.5, which is the last version of QT to support webkit bindings
-    # get it with brew install qt@5.5
-    # 2023-10-16 - Homebrew is in a different place on this macheen now
-    # export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
-
+if [ $IS_OSX ]; then
     # for mtr (OSX)
     export PATH=$PATH:/usr/local/sbin
+
+    term-birb
+
+    # brew shellenv will dump all the homebrew variables. eval() on it will
+    # export them into the current bash session.
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Linux-specific randomness
-if [ `uname -s` == "Linux" ]; then
-    export FLEX_HOME=/home/dbrady/devel/flex_sdk_4_6/
-    export PATH=$PATH:$FLEX_HOME/bin
-fi
-
-# my manual implementation of ponysay because lol
-# sayfortune
-# if [ -e ~/bin/applejack.txt ] ; then
-#     cat ~/bin/applejack.txt
+# if [ $IS_LINUX ]; then
+    # export FLEX_HOME=/home/dbrady/devel/flex_sdk_4_6/
+    # export PATH=$PATH:$FLEX_HOME/bin
 # fi
 
 # NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# $IS_DOCKER_LOCAL is a flag we set in data_services to distinguish between "prodlike, because Docker" and "prodlike, because production"
+# plist startups
+# if [ $IS_OSX ]; then
+#   ls ~/bin/*.plist | while read plist; do echo launchctl load $plist; launchctl load $plist; done
+# fi
 
-# rbenv
-# eval "$(rbenv init - bash)"
-# 2024-01-10 trying rvm agaim
-# rbenv global 3.2.2
-# export PATH="/Users/davidbrady/.rbenv/shims/:$PATH"
-
-# LOL THIS IS FOR MP ON M1
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-
-# . /opt/homebrew/opt/asdf/libexec/asdf.sh
-# . /opt/homebrew/opt/asdf/etc/bash_completion.d/asdf.bash
-
-if [ `uname -s` == "Darwin" ]; then
-  if [ ! "$IS_DOCKER_LOCAL" == "1" ]; then
-      # Let's do birbs for a while. (Acima OSX only, since I don't have my Pictures
-      # folder under git since I don't wanna get my repo copywronged.)  Have to call
-      # it "term-birb" because "birb" will "bundle exec irb" lol.
-      term-birb
-
-      # brew shellenv will dump all the homebrew variables. eval() on it will
-      # export them into the current bash session.
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-  fi
-
-  # 2024-11-07: Ruby Version Manager Hell. Again. Still.
-  # * rvm still can't install rubies on OSX; Sentinel deletes a key script as a virus
-  # * rbenv is PIG slow, like 1-3 *seconds* to start ruby
-  # * chruby doesn't even ch the ruby
-  # * asdf works BUT doesn't have ruby-3.3.6 yet
-  # * frum. FRUM. FRUM SEEMS TO WORK
-  eval "$(frum init)"
-
-  echo "Loading launchctl crap..."
-  ls ~/bin/*.plist | while read plist; do echo launchctl load $plist; launchctl load $plist; done
+# Final path fixups
+if [ $IS_OSX ]; then
+    export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
 
 # MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, homebrew/bin/go. Eat my shorts, go-lang.
@@ -314,5 +269,4 @@ if [[ $PATH != *"$HOME/bin"* ]]; then
     export PATH=$HOME/bin:$PATH
 fi
 
-echo "bash_profile finished loading"
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+# echo "bash_profile finished loading"
