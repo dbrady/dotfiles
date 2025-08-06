@@ -24,3 +24,5 @@
         # if code is MOVED in git, color it yellow instead of coloring it as a
 	# red deletion and a green addition.
 	colorMoved = zebra
+[pull]
+	rebase = false
