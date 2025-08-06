@@ -42,7 +42,7 @@ case "$OS_NAME" in
         export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64/'
         ;;
     Darwin)
-        export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
+        # export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
         ;;
     *)
         echo '~/.bash_profile has no clue what OS this is; not setting JAVA_HOME.'
@@ -145,7 +145,6 @@ source_files ~/.aliases \
   ~/.current-project \
   ~/.hue.conf \
   ~/.platform-dev \
-  ~/.vpn \
   ~/.aws-hack
 
 # Turn on path completion for my go command.
@@ -199,6 +198,15 @@ if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
     # and self-containment is teh win. But now I need the CLI tools in my path,
     # so...
     # export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/13/bin"
+
+    # pnpm
+    export PNPM_HOME="/Users/davidbrady/Library/pnpm"
+    case ":$PATH:" in
+        *":$PNPM_HOME:"*) ;;
+        *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
+    # pnpm end
+
 elif [ $IS_LINUX ]; then
     source /etc/profile.d/rvm.sh
     rvm default 3.4.5
@@ -241,6 +249,20 @@ if [ $IS_OSX ]; then
     # brew shellenv will dump all the homebrew variables. eval() on it will
     # export them into the current bash session.
     eval "$(/opt/homebrew/bin/brew shellenv)"
+
+    # NVM
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+    # plist startups
+    # if [ $IS_OSX ]; then
+    #   ls ~/bin/*.plist | while read plist; do echo launchctl load $plist; launchctl load $plist; done
+    # fi
+
+    #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+    # --> Dave Says: FALSE. You just want it real bad. And you STILL can't have it.
+    export SDKMAN_DIR="$HOME/.sdkman"
+    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 fi
 
 # Linux-specific randomness
@@ -249,15 +271,6 @@ fi
     # export PATH=$PATH:$FLEX_HOME/bin
 # fi
 
-# NVM
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# plist startups
-# if [ $IS_OSX ]; then
-#   ls ~/bin/*.plist | while read plist; do echo launchctl load $plist; launchctl load $plist; done
-# fi
 
 # Final path fixups
 if [ $IS_OSX ]; then
