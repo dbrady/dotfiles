@@ -15,7 +15,6 @@
 	# branch from, but will error out if the branch is out of sync.
 	default = simple
 [alias]
-	yolo = push --force-with-lease
 	glog = log --all --pretty='format:%d %Cgreen%h%Creset %an - %s' --graph
 [fetch]
         # fetch prune true will automatically cleanup local branches that have
