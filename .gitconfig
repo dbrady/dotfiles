@@ -8,13 +8,13 @@
 	name = David Brady
 [core]
 	excludesfile = /Users/dbrady/.gitignore
+	hooksPath = /Users/dbrady/.githooks
 [push]
         # git help config and search for push.default to see the various push
 	# types. simple pushes the current branch to the same server I got the
 	# branch from, but will error out if the branch is out of sync.
 	default = simple
 [alias]
-	yolo = push --force-with-lease
 	glog = log --all --pretty='format:%d %Cgreen%h%Creset %an - %s' --graph
 [fetch]
         # fetch prune true will automatically cleanup local branches that have
