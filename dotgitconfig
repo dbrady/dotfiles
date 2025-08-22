@@ -8,6 +8,7 @@
 	name = David Brady
 [core]
 	excludesfile = /Users/dbrady/.gitignore
+	hooksPath = /Users/davidbrady/.githooks
 [push]
         # git help config and search for push.default to see the various push
 	# types. simple pushes the current branch to the same server I got the
@@ -24,3 +25,5 @@
         # if code is MOVED in git, color it yellow instead of coloring it as a
 	# red deletion and a green addition.
 	colorMoved = zebra
+[pull]
+	rebase = false

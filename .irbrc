@@ -18,6 +18,16 @@ rescue LoadError
   puts "Could not load gem text-table. explain_conditions() will not work."
 end
 
+def code(path, create: false)
+  path = File.expand_path(path)
+  if !(File.exist?(path) || create)
+    puts "Cannot open #{path}. Does it exist? If you want to rerun with create: true"
+    return nil
+  end
+  system "code", path
+end
+puts "Kernel#code(path) created. code <file> to open in VSCode."
+
 # Hello Acima MP Rails
 if defined? Rails
 
