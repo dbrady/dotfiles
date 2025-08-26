@@ -155,8 +155,9 @@ complete -o default -o nospace -F _git_checkout go
 
 case "$HOSTNAME" in
     Simples-MacBook-Pro.local)
-        ps1_set --prompt "💳"
-        export PS2=💳💳
+        # 2025-08-26 dbrady - turning this off, let $ fall through
+        # ps1_set --prompt "💳"
+        # export PS2=💳💳
         ;;
     thinky)
         ps1_set --prompt "🧠"
