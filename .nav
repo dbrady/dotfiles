@@ -1,7 +1,7 @@
 # nav
 _nav_to() {
   echo "Type nav to see all nav commands"
-  echo -e "\033[36mcd \"$1\""
+  echo -e "\033[36mcd \"$1\"\033[0m"
   cd "$1"
 }
 
