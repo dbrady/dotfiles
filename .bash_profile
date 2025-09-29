@@ -156,6 +156,8 @@ complete -o default -o nospace -F _git_checkout go
 case "$HOSTNAME" in
     Simples-MacBook-Pro.local)
         ps1_set \$
+        export PS2='\\$\\$'
+
         # 2025-08-26 dbrady - turning this off, let $ fall through
         # ps1_set --prompt "💳"
         # export PS2=💳💳
@@ -171,7 +173,7 @@ case "$HOSTNAME" in
         ;;
 esac
 
-# 2022-07-25: Hoping this works...
+# rvm
 if [ $IS_OSX ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
     rvm default 3.3.6
@@ -208,6 +210,9 @@ if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
         *) export PATH="$PNPM_HOME:$PATH" ;;
     esac
     # pnpm end
+
+    # fnm (for ams)
+    # eval "$(fnm env --use-on-cd --shell bash)"
 
 elif [ $IS_LINUX ]; then
     source /etc/profile.d/rvm.sh
@@ -246,7 +251,7 @@ if [ $IS_OSX ]; then
     # for mtr (OSX)
     export PATH=$PATH:/usr/local/sbin
 
-    term-birb
+    command -v term-birb && term-birb
 
     # brew shellenv will dump all the homebrew variables. eval() on it will
     # export them into the current bash session.
