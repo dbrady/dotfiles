@@ -123,11 +123,10 @@ TEMPLATE
   end
 
   DAVE_USER_ID=4607
-  # DAVE_MERCHANT_ID=50_000
-  DAVE_MERCHANT_ID=69_854
-  DAVE_MERCHANT_GUID="merc-83b716de-9574-4580-bec1-aebf0262fc59"
-  DAVE_LOCATION_ID=94623
-  DAVE_LOCATION_GUID="loca-4ba67c4a-6686-42c2-9928-a5aa48774bed"
+  DAVE_MERCHANT_ID=1
+  DAVE_MERCHANT_GUID="merc-c64969e8-50c4-499a-8a5e-379d639cbeeb"
+  DAVE_LOCATION_ID=1
+  DAVE_LOCATION_GUID="loca-f14ea4eb-9779-4ad1-8578-8bda1287a27a"
 
   puts 'def load_merchant; Merchant.find(DAVE_MERCHANT_ID); end # Find Zboncak-Adams easily'
   puts 'def load_user; User.find(DAVE_USER_ID); end # Find my user easily'
@@ -545,7 +544,6 @@ def hash_to_table(rows)
   nil
 end
 
-# Calls hash_to_table or array_to_table
 def to_table(rows)
   return "" if rows.empty?
 
