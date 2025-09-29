@@ -9,6 +9,7 @@ _nav_to() {
 alias cdb='_nav_to ~/bin'
 alias cds='_nav_to ~/devel/scrapbin'
 alias nav='cat ~/.nav'
+alias cdem='_nav_to ~/.emacs.d/personal/preload'
 
 ## Atlas
 alias cdmp='_nav_to ~/acima/devel/merchant_portal'
@@ -18,6 +19,7 @@ alias cdams='_nav_to /Users/davidbrady/acima/devel/application_management_system
 alias cdbb='_nav_to ~/Documents/rspec-brownbag/'
 alias cdcc='_nav_to /Users/davidbrady/acima/devel/credit_card_service'
 alias cdw='_nav_to ~/acima/devel/merchant_portal.wiki'
+alias cdfrs='_nav_to ~/acima/devel/funding-request-service'
 
 # CREDIT-103
 alias cdspec='_nav_to ~/acima/devel/merchant_portal/spec/domains/fund/funding/requests/credit'
