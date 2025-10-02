@@ -30,12 +30,6 @@ export GEMEDITOR=$(echo `which emacs` -nw)
 export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 
-# Flags suggested by homebrew
-# export LDFLAGS="-L/opt/homebrew/opt/curl/lib -L/opt/homebrew/opt/libpq/lib"
-# export CPPFLAGS="-I/opt/homebrew/opt/curl/include -I/opt/homebrew/opt/libpq/include"
-# export PKG_CONFIG_PATH="/opt/homebrew/opt/curl/lib/pkgconfig"
-
-
 case "$OS_NAME" in
     Linux)
         # export JAVA_HOME='/usr/lib/jvm/default-java'
@@ -240,7 +234,7 @@ if [ $IS_OSX ]; then
 
     # brew shellenv will dump all the homebrew variables. eval() on it will
     # export them into the current bash session.
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    # eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Linux-specific randomness
