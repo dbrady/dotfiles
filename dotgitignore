@@ -6,4 +6,4 @@ haxx
 
 # Put this in any repo to disable my pre-commit hook guarding main/master
 # commits
-.git-allow-commit-to-main
+.git-allow-commits-to-main
