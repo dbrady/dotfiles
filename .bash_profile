@@ -30,12 +30,6 @@ export GEMEDITOR=$(echo `which emacs` -nw)
 export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
 
-# Flags suggested by homebrew
-# export LDFLAGS="-L/opt/homebrew/opt/curl/lib -L/opt/homebrew/opt/libpq/lib"
-# export CPPFLAGS="-I/opt/homebrew/opt/curl/include -I/opt/homebrew/opt/libpq/include"
-# export PKG_CONFIG_PATH="/opt/homebrew/opt/curl/lib/pkgconfig"
-
-
 case "$OS_NAME" in
     Linux)
         # export JAVA_HOME='/usr/lib/jvm/default-java'
@@ -224,10 +218,8 @@ if [ $IS_OSX ]; then
     # remembered I don't care
     export BASH_SILENCE_DEPRECATION_WARNING=1
 
-    # LOL THIS IS FOR MP ON M1
-    # 2025-07-22: Now on M4. Verify still needed. Remove this line if ok, remove all of this code after 7/30
+    # LOL THIS IS FOR MP ON Apple Silicon
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-    # export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 fi
 
 
@@ -266,10 +258,9 @@ if [ $IS_OSX ]; then
 fi
 
 # Linux-specific randomness
-# if [ $IS_LINUX ]; then
-    # export FLEX_HOME=/home/dbrady/devel/flex_sdk_4_6/
-    # export PATH=$PATH:$FLEX_HOME/bin
-# fi
+if [ $IS_LINUX ]; then
+    export PATH=$HOME/.local/bin:$PATH
+fi
 
 
 # Final path fixups
