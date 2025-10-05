@@ -7,7 +7,9 @@ _nav_to() {
 
 ## Dev/Tools Mine
 alias cdb='_nav_to ~/bin'
+alias cdg='_nav_to ~/devel/ai/gary'
 alias cds='_nav_to ~/devel/scrapbin'
+alias cdmc='_nav_to ~/applications/prism'
 alias nav='cat ~/.nav'
 
 ## Atlas
