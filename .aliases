@@ -116,3 +116,6 @@ alias 'mydns'='cat /etc/resolv.conf | grep -vE "^#"'
 # Note that to work, this requires an ./all_specs.sh script.
 #
 # alias hop_master_push='export TMP_CURRBRANCH=$(git-currentbranch) && git checkout master && echo "Hopping to master to merge, test and push..." && git merge $TMP_CURRBRANCH && echo "Pulling master from origin..." && git pull origin master && git merge origin/master && echo "Running all specs..." && ./all_specs.sh && echo "Pushing changes..." && git push origin master && echo "Hopping back to $TMP_CURRENTBRANCH" && git checkout $TMP_CURRBRANCH && export $TMP_CURRBRANCH='
+
+# hehe
+alias clod=claude
