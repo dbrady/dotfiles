@@ -5,20 +5,24 @@ _nav_to() {
   cd "$1"
 }
 
+alias nav="grep --color=always -P '(?<=^alias )[^=]+' ~/.nav"
+
+
 ## Dev/Tools Mine
 alias cdb='_nav_to ~/bin'
+alias cdd='_nav_to ~/devel/'
 alias cds='_nav_to ~/devel/scrapbin'
-alias nav='cat ~/.nav'
+alias cdsb='_nav_to ~/devel/shinybit'
 
 ## Atlas
-alias cdmp='_nav_to ~/acima/devel/merchant_portal'
-alias cdmpr='_nav_to ~/acima/devel/merchant_portal.review'
-alias cdmpw='_nav_to ~/acima/devel/merchant_portal.wiki'
-alias cdams='_nav_to /Users/davidbrady/acima/devel/application_management_system'
-alias cdbb='_nav_to ~/Documents/rspec-brownbag/'
-alias cdcc='_nav_to /Users/davidbrady/acima/devel/credit_card_service'
-alias cdw='_nav_to ~/acima/devel/merchant_portal.wiki'
+# alias cdmp='_nav_to ~/acima/devel/merchant_portal'
+# alias cdmpr='_nav_to ~/acima/devel/merchant_portal.review'
+# alias cdmpw='_nav_to ~/acima/devel/merchant_portal.wiki'
+# alias cdams='_nav_to /Users/davidbrady/acima/devel/application_management_system'
+# alias cdbb='_nav_to ~/Documents/rspec-brownbag/'
+# alias cdcc='_nav_to /Users/davidbrady/acima/devel/credit_card_service'
+# alias cdw='_nav_to ~/acima/devel/merchant_portal.wiki'
 
 # CREDIT-103
-alias cdspec='_nav_to ~/acima/devel/merchant_portal/spec/domains/fund/funding/requests/credit'
-alias cdapp='_nav_to ~/acima/devel/merchant_portal/app/domains/fund/funding/requests/credit'
+# alias cdspec='_nav_to ~/acima/devel/merchant_portal/spec/domains/fund/funding/requests/credit'
+# alias cdapp='_nav_to ~/acima/devel/merchant_portal/app/domains/fund/funding/requests/credit'

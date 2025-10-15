@@ -1,0 +1,106 @@
+#!/usr/bin/env ruby
+
+# git-hook to check for NOCOMMIT messages in code that has been staged and abort
+# the commit if found.
+#
+# To use: copy this file into your .git/hooks folder as pre-commit and make sure
+# it is executable (chmod +x pre-commit). Now in your code, type // NOCOMMIT or
+# # NOCOMMIT in a line and save it -- usually with an explanatory message like
+# "# NOCOMMIT -- temp hack for bug #123".  Git will still let you stage the file
+# with git add, but it will stop you from committing the file until you remove
+# the NOCOMMIT comment.
+#
+# Overrides:
+# - Set ALLOW_NOCOMMIT=true to allow you to override all NOCOMMITs in a
+# file. THIS IS EXACTLY AS DANGEROUS AS YOUR USAGE OF NOCOMMIT WAS IN THE FIRST
+# PLACE. I use it for files like this one where NOCOMMIT appears as part of the
+# intended source, not as a directive.
+#
+# - Put NOCOMMIT_IS_OK_HERE on a line with NOCOMMIT to disable for THAT line.
+
+exit 0 if ENV["ALLOW_NOCOMMIT"] == "true"
+
+file = ""
+delta = ""
+line_num = 0
+`git diff-index -p -M --cached HEAD`.each_line do |line|
+  file = line.sub(/^....../, '') if line =~ /^(---|\+\+\+) (a|b)\//
+  if line =~ /^@@ [\-\+\,\d\s]+ @@$/
+    delta = line.rstrip
+    if line =~ /\d \+(\d+),\d/
+      line_num = $1.to_i - 1
+    else
+      line_num = 0
+    end
+  else
+    line_num += 1 if line !~ /^- /
+  end
+
+  if !line.start_with?("-") &&          # the diff contains a DELETE of a NOCOMMIT, which is ok
+     line =~ %r{NOCOMMIT} &&
+     line !~ /NOCOMMIT_IS_OK_HERE/
+    puts <<BANNER
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!                                                                           !!!
+!!!  ##    ##   ####     ####     ####   ##    ## ##    ##   ####   ########  !!!
+!!!  ###   ## ##    ## ##    ## ##    ## ###  ### ###  ###    ##       ##     !!!
+!!!  ####  ## ##    ## ##       ##    ## ## ## ## ## ## ##    ##       ##     !!!
+!!!  ## ## ## ##    ## ##       ##    ## ##    ## ##    ##    ##       ##     !!!
+!!!  ##  #### ##    ## ##       ##    ## ##    ## ##    ##    ##       ##     !!!
+!!!  ##   ### ##    ## ##    ## ##    ## ##    ## ##    ##    ##       ##     !!!
+!!!  ##    ##   ####     ####     ####   ##    ## ##    ##   ####      ##     !!!
+!!!                                                                           !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!                                                                           !!!
+!!!                                                                           !!!
+!!!           COMMIT ABORTED: You are staging a file with NOCOMMIT!           !!!
+!!!                                                                           !!!
+!!!                                                                           !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+BANNER
+    puts "In file: #{file}"
+    puts "In delta #{delta} near line #{line_num}:"
+    puts line
+    exit 1
+  end
+end
+
+  # Check to see if we're on master
+branch=`git current-branch`.strip
+main_branch=`git main-branch`.strip
+
+def log_line(msg="")
+  puts "\033[1;37;41m#{msg}\033[0m"
+end
+
+exit 0 if ENV["ALLOW_MAIN"] == "true" || File.exist?(".git-allow-commits-to-main")
+
+if branch == main_branch
+  warning = <<STAHHHP
+
+STAHHHP!!!
+
+YOU ARE ON A MAIN BRANCH:
+
+#{branch}
+
+STOP TRYING TO COMMIT THIS!
+
+To override this:
+Once: ALLOW_MAIN=true
+Always: touch .git-allow-commits-to-main
+STAHHHP
+  longest_length = warning.each_line.max_by { |it| it.chomp.size }.size
+  warning.each_line do |line|
+    log_line line.chomp.center(longest_length)
+  end
+  exit 1
+end
+
+exit 0
