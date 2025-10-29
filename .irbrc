@@ -86,12 +86,9 @@ if defined? Rails
 
     puts "Click here to open the purchase confirmation customer flow:".yellow
     ::Process::TextMessages::Credit::PurchaseConfirmation::Create.run(lease: contract).url
- end
+  end
 
   class Lease < ApplicationRecord
-    def cpt; consumer_product_type; end
-    def cpts; consumer_product_types; end
-
     def workflow_state_history
       last_workflow_state = nil
 
