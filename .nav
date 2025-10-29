@@ -1,28 +1,29 @@
 # nav
 _nav_to() {
   echo "Type nav to see all nav commands"
-  echo -e "\033[36mcd \"$1\""
+  echo -e "\033[36mcd \"$1\"\033[0m"
   cd "$1"
 }
 
-alias nav="grep --color=always -P '(?<=^alias )[^=]+' ~/.nav"
+# alias nav="grep --color=always -P '(?<=^alias )[^=]+' ~/.nav"
+alias nav='cat ~/.nav'
 
-
-## Dev/Tools Mine
+## Global Nav
 alias cdb='_nav_to ~/bin'
 alias cdd='_nav_to ~/devel/'
+alias cdem='_nav_to ~/.emacs.d/personal/preload'
 alias cds='_nav_to ~/devel/scrapbin'
-alias cdsb='_nav_to ~/devel/shinybit'
+
+## Dev/Tools Mine
+if [[ -s ~/.nav.home ]]; then
+  source ~/.nav.home;
+fi
+
 
 ## Atlas
-# alias cdmp='_nav_to ~/acima/devel/merchant_portal'
-# alias cdmpr='_nav_to ~/acima/devel/merchant_portal.review'
-# alias cdmpw='_nav_to ~/acima/devel/merchant_portal.wiki'
-# alias cdams='_nav_to /Users/davidbrady/acima/devel/application_management_system'
-# alias cdbb='_nav_to ~/Documents/rspec-brownbag/'
-# alias cdcc='_nav_to /Users/davidbrady/acima/devel/credit_card_service'
-# alias cdw='_nav_to ~/acima/devel/merchant_portal.wiki'
+if [[ -s ~/.nav.work ]]; then
+  source ~/.nav.work;
+fi
 
-# CREDIT-103
-# alias cdspec='_nav_to ~/acima/devel/merchant_portal/spec/domains/fund/funding/requests/credit'
-# alias cdapp='_nav_to ~/acima/devel/merchant_portal/app/domains/fund/funding/requests/credit'
+
+echo ".nav loaded."

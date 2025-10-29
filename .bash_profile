@@ -23,6 +23,13 @@ case "$OS_NAME" in
         ;;
 esac
 
+echo "+-------------------------+"
+echo "| IS_OSX: $IS_OSX"        |
+echo "| IS_LINUX: $IS_LINUX"    |
+echo "| IS_WINDOWS: $IS_WINDOWS |"
+echo "+-------------------------+"
+
+
 HOSTNAME=$(hostname)
 
 export EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
@@ -36,7 +43,7 @@ case "$OS_NAME" in
         export JAVA_HOME='/usr/lib/jvm/java-8-openjdk-amd64/'
         ;;
     Darwin)
-        export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
+        # export JAVA_HOME='/System/Library/Frameworks/JavaVM.framework/Home'
         ;;
     *)
         echo '~/.bash_profile has no clue what OS this is; not setting JAVA_HOME.'
@@ -139,7 +146,6 @@ source_files ~/.aliases \
   ~/.current-project \
   ~/.hue.conf \
   ~/.platform-dev \
-  ~/.vpn \
   ~/.aws-hack
 
 # Turn on path completion for my go command.
@@ -150,12 +156,20 @@ complete -o default -o nospace -F _git_checkout go
 
 case "$HOSTNAME" in
     Simples-MacBook-Pro.local)
-        ps1_set --prompt "💳"
-        export PS2=💳💳
+        ps1_set \$
+        export PS2='\\$\\$'
+
+        # 2025-08-26 dbrady - turning this off, let $ fall through
+        # ps1_set --prompt "💳"
+        # export PS2=💳💳
         ;;
     thinky)
         ps1_set --prompt "🧠"
         export PS2=🧠💭
+        ;;
+    theseus)
+        ps1_set --prompt "$"
+        export PS2='$$'
         ;;
     *)
         ps1_set --prompt '$'
@@ -164,7 +178,7 @@ case "$HOSTNAME" in
         ;;
 esac
 
-# 2022-07-25: Hoping this works...
+# rvm
 if [ $IS_OSX ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
     rvm default 3.3.6
@@ -172,6 +186,7 @@ fi
 
 if [ $IS_LINUX ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    rvm default 3.4.1
 fi
 
 # Acima
@@ -193,6 +208,18 @@ if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
     # and self-containment is teh win. But now I need the CLI tools in my path,
     # so...
     # export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/13/bin"
+
+    # pnpm
+    export PNPM_HOME="/Users/davidbrady/Library/pnpm"
+    case ":$PATH:" in
+        *":$PNPM_HOME:"*) ;;
+        *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
+    # pnpm end
+
+    # fnm (for ams)
+    # eval "$(fnm env --use-on-cd --shell bash)"
+
 elif [ $IS_LINUX ]; then
     source /etc/profile.d/rvm.sh
     rvm default 3.4.5
@@ -210,10 +237,8 @@ if [ $IS_OSX ]; then
     # remembered I don't care
     export BASH_SILENCE_DEPRECATION_WARNING=1
 
-    # LOL THIS IS FOR MP ON M1
-    # 2025-07-22: Now on M4. Verify still needed. Remove this line if ok, remove all of this code after 7/30
+    # LOL THIS IS FOR MP ON Apple Silicon
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-    # export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 fi
 
 
@@ -230,28 +255,32 @@ if [ $IS_OSX ]; then
     # for mtr (OSX)
     export PATH=$PATH:/usr/local/sbin
 
-    term-birb
+    command -v term-birb && term-birb
 
     # brew shellenv will dump all the homebrew variables. eval() on it will
     # export them into the current bash session.
-    # eval "$(/opt/homebrew/bin/brew shellenv)"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+
+    # NVM
+    export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+    # plist startups
+    # if [ $IS_OSX ]; then
+    #   ls ~/bin/*.plist | while read plist; do echo launchctl load $plist; launchctl load $plist; done
+    # fi
+
+    #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+    # --> Dave Says: FALSE. You just want it real bad. And you STILL can't have it.
+    export SDKMAN_DIR="$HOME/.sdkman"
+    [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 fi
 
 # Linux-specific randomness
-# if [ $IS_LINUX ]; then
-    # export FLEX_HOME=/home/dbrady/devel/flex_sdk_4_6/
-    # export PATH=$PATH:$FLEX_HOME/bin
-# fi
+if [ $IS_LINUX ]; then
+    export PATH=$HOME/.local/bin:$PATH
+fi
 
-# NVM
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# plist startups
-# if [ $IS_OSX ]; then
-#   ls ~/bin/*.plist | while read plist; do echo launchctl load $plist; launchctl load $plist; done
-# fi
 
 # Final path fixups
 if [ $IS_OSX ]; then
