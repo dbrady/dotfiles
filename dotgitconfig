@@ -1,7 +1,6 @@
-# COPY this file to ~, DO NOT SYMLINK IT. Then EDIT the email if necessary. A
-# machine change usually means changing clients which in turn is likely to
-# change my email address. If the new machine is a Mac, update the excludesfile
-# path.
+# STRONGLY RECOMMENDED: COPY this file, do not SYMLINK it.
+#
+# My excludes and hooks paths all have my home folder fully expanded.
 
 [user]
 	email = dbrady@shinybit.com
