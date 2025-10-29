@@ -6,5 +6,3 @@ alias cdams='_nav_to /Users/davidbrady/acima/devel/application_management_system
 alias cdcc='_nav_to /Users/davidbrady/acima/devel/credit_card_service'
 alias cdw='_nav_to ~/acima/devel/merchant_portal.wiki'
 alias cdfrs='_nav_to ~/acima/devel/funding-request-service'
-
-echo ".nav.work loaded."

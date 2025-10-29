@@ -2,5 +2,3 @@
 alias cdg='_nav_to ~/devel/ai/gary'
 alias cdmc='_nav_to ~/applications/prism'
 alias cdsb='_nav_to ~/devel/shinybit'
-
-echo ".nav.home loaded."

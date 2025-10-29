@@ -23,12 +23,9 @@ case "$OS_NAME" in
         ;;
 esac
 
-echo "+-------------------------+"
-echo "| IS_OSX: $IS_OSX"        |
-echo "| IS_LINUX: $IS_LINUX"    |
-echo "| IS_WINDOWS: $IS_WINDOWS |"
-echo "+-------------------------+"
-
+# if [ $IS_OSX = true ];     then echo "This OS looks like OSX.";     fi
+# if [ $IS_LINUX = true ];   then echo "This OS looks like LINUX.";   fi
+# if [ $IS_WINDOWS = true ]; then echo "This OS looks like WINDOWS."; fi
 
 HOSTNAME=$(hostname)
 
@@ -178,18 +175,19 @@ case "$HOSTNAME" in
         ;;
 esac
 
-# rvm
-if [ $IS_OSX ]; then
+# BEGIN rvm
+if [ $IS_OSX = true ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    rvm default 3.3.6
+    rvm default 3.3.6 > /dev/null
 fi
 
-if [ $IS_LINUX ]; then
+if [ $IS_LINUX = true ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    rvm default 3.4.1
+    rvm default 3.4.5 > /dev/null
 fi
+# END rvm
 
-# Acima
+# BEGIN Acima
 if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
@@ -220,38 +218,31 @@ if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
     # fnm (for ams)
     # eval "$(fnm env --use-on-cd --shell bash)"
 
-elif [ $IS_LINUX ]; then
-    source /etc/profile.d/rvm.sh
-    rvm default 3.4.5
-elif [ $IS_OSX ]; then
-    echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. ($HOSTNAME) That's weird, right? NOT setting rvm defaults."
-else
-    echo "~/.bash_profile has no clue what OS this is. So that's kinda neat...? I guess?"
-fi
-
-if [ $IS_OSX ]; then
     # I'll never let go of bash until they physically bar me from installing it.
     # zsh is NOT an acceptable bash unless you're not using any of bash's
-    # features.  That said, I get why AAPL is doing this. bash going GPL v3
-    # poses a genuine threat to the privacy of their OS. Oh wait I just
-    # remembered I don't care
+    # features. That said, I get why AAPL is doing this. bash going GPL v3 poses
+    # a genuine threat to the privacy of their OS. Oh wait I just remembered I
+    # don't care
     export BASH_SILENCE_DEPRECATION_WARNING=1
 
     # LOL THIS IS FOR MP ON Apple Silicon
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+elif [ $IS_OSX = true ]; then
+    echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. ($HOSTNAME) That's weird, right? NOT setting rvm defaults."
 fi
+# END Acima
 
-
-# 2025-07-22: Do I need this on OSX now? I know I need it on thinky and maybe theseus.
+# BEGIN MIDDLE GLOBAL
 # Setup ssh agent
 # ssh-add -L &> /dev/null
 ssh-add -L >/dev/null 2>&1
 if [ $? -eq 1 ]; then
     ssh-add
 fi
+# END MIDDLE GLOBAL
 
-# OSX-specific randomness
-if [ $IS_OSX ]; then
+# BEGIN OSX-specific randomness
+if [ $IS_OSX = true ]; then
     # for mtr (OSX)
     export PATH=$PATH:/usr/local/sbin
 
@@ -266,7 +257,7 @@ if [ $IS_OSX ]; then
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
     # plist startups
-    # if [ $IS_OSX ]; then
+    # if [ $IS_OSX = true ]; then
     #   ls ~/bin/*.plist | while read plist; do echo launchctl load $plist; launchctl load $plist; done
     # fi
 
@@ -275,19 +266,22 @@ if [ $IS_OSX ]; then
     export SDKMAN_DIR="$HOME/.sdkman"
     [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 fi
+# END OSX-specific randomness
 
-# Linux-specific randomness
-if [ $IS_LINUX ]; then
+# BEGIN Linux-specific randomness
+if [ $IS_LINUX = true ]; then
     export PATH=$HOME/.local/bin:$PATH
 fi
-
+# END Linux-specific randomness
 
 # Final path fixups
-if [ $IS_OSX ]; then
+if [ $IS_OSX = true ]; then
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
 
-# MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, homebrew/bin/go. Eat my shorts, go-lang.
+# MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
+# go-lang. Especially go-lang, thinking you can get in front of MY go
+# command. :-P
 if [[ $PATH != *"$HOME/bin"* ]]; then
     export PATH=$HOME/bin:$PATH
 fi

@@ -24,6 +24,3 @@ fi
 if [[ -s ~/.nav.work ]]; then
   source ~/.nav.work;
 fi
-
-
-echo ".nav loaded."
