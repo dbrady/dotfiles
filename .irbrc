@@ -12,12 +12,6 @@ require File.expand_path("~/dotfiles/json_load_file")
 require File.expand_path("~/dotfiles/xml_load_file")
 require File.expand_path("~/dotfiles/just_your_methods")
 
-begin
-  require "text-table"
-rescue LoadError
-  puts "Could not load gem text-table. explain_conditions() will not work."
-end
-
 def code(path, create: false)
   path = File.expand_path(path)
   if !(File.exist?(path) || create)
