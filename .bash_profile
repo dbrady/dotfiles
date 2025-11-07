@@ -246,7 +246,9 @@ if [ $IS_OSX = true ]; then
     # for mtr (OSX)
     export PATH=$PATH:/usr/local/sbin
 
-    command -v term-birb && term-birb
+    if [ -t 1 ]; then
+        command -v term-birb >/dev/null && term-birb
+    fi
 
     # brew shellenv will dump all the homebrew variables. eval() on it will
     # export them into the current bash session.
