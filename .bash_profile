@@ -183,7 +183,8 @@ fi
 
 if [ $IS_LINUX = true ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    rvm default 3.4.5 > /dev/null
+    # rvm default 3.4.5 > /dev/null
+    rvm default 3.4.7 > /dev/null
 fi
 # END rvm
 
