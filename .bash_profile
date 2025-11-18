@@ -155,6 +155,7 @@ case "$HOSTNAME" in
     Simples-MacBook-Pro.local)
         ps1_set \$
         export PS2='\\$\\$'
+        source_files ~/.nav.work
 
         # 2025-08-26 dbrady - turning this off, let $ fall through
         # ps1_set --prompt "💳"
@@ -163,10 +164,12 @@ case "$HOSTNAME" in
     thinky)
         ps1_set --prompt "🧠"
         export PS2=🧠💭
+        source_files ~/.nav.home
         ;;
     theseus)
         ps1_set --prompt "$"
         export PS2='$$'
+        source_files ~/.nav.home
         ;;
     *)
         ps1_set --prompt '$'
