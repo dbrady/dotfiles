@@ -155,6 +155,7 @@ case "$HOSTNAME" in
     Simples-MacBook-Pro.local)
         ps1_set \$
         export PS2='\\$\\$'
+        source_files ~/.nav.work
 
         # 2025-08-26 dbrady - turning this off, let $ fall through
         # ps1_set --prompt "💳"
@@ -163,10 +164,12 @@ case "$HOSTNAME" in
     thinky)
         ps1_set --prompt "🧠"
         export PS2=🧠💭
+        source_files ~/.nav.home
         ;;
     theseus)
         ps1_set --prompt "$"
         export PS2='$$'
+        source_files ~/.nav.home
         ;;
     *)
         ps1_set --prompt '$'
@@ -183,7 +186,8 @@ fi
 
 if [ $IS_LINUX = true ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    rvm default 3.4.5 > /dev/null
+    # rvm default 3.4.5 > /dev/null
+    rvm default 3.4.7 > /dev/null
 fi
 # END rvm
 
@@ -246,7 +250,9 @@ if [ $IS_OSX = true ]; then
     # for mtr (OSX)
     export PATH=$PATH:/usr/local/sbin
 
-    command -v term-birb && term-birb
+    if [ -t 1 ]; then
+        command -v term-birb >/dev/null && term-birb
+    fi
 
     # brew shellenv will dump all the homebrew variables. eval() on it will
     # export them into the current bash session.

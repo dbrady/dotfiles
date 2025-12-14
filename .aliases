@@ -119,3 +119,7 @@ alias 'mydns'='cat /etc/resolv.conf | grep -vE "^#"'
 
 # this is funny to me because I am 12
 alias clod=claude
+
+# iTerm is getting good at rendering actual images, but when I want ANSI art I
+# want ANSI art, dagnabbit
+alias chansi='chafa -f symbols'
