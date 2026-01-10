@@ -152,6 +152,11 @@ complete -o default -o nospace -F _git_checkout go
 # PS1 EMOJIS
 
 case "$HOSTNAME" in
+    Mac)
+        ps1_set \$
+        export PS2='\\$\\$'
+        source_files ~/.nav.work
+        ;;
     Simples-MacBook-Pro.local)
         ps1_set \$
         export PS2='\\$\\$'
@@ -179,20 +184,20 @@ case "$HOSTNAME" in
 esac
 
 # BEGIN rvm
-if [ $IS_OSX = true ]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    rvm default 3.3.6 > /dev/null
-fi
-
-if [ $IS_LINUX = true ]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    # rvm default 3.4.5 > /dev/null
-    rvm default 3.4.7 > /dev/null
-fi
+# if [ $IS_OSX = true ]; then
+#     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+#     rvm default 3.3.6 > /dev/null
+# fi
+#
+# if [ $IS_LINUX = true ]; then
+#     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+#     # rvm default 3.4.5 > /dev/null
+#     rvm default 3.4.7 > /dev/null
+# fi
 # END rvm
 
 # BEGIN Acima
-if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
+if [[ "$HOSTNAME" == "Simples-MacBook-Pro.local" || "$HOSTNAME" == "Mac" ]]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
 
@@ -291,5 +296,19 @@ fi
 if [[ $PATH != *"$HOME/bin"* ]]; then
     export PATH=$HOME/bin:$PATH
 fi
+
+# BEGIN rvm
+if [ $IS_OSX = true ]; then
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    rvm default 3.3.6 > /dev/null
+fi
+
+if [ $IS_LINUX = true ]; then
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    # rvm default 3.4.5 > /dev/null
+    rvm default 3.4.7 > /dev/null
+fi
+# END rvm
+
 
 # echo "bash_profile finished loading"
