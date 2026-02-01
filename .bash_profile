@@ -253,7 +253,7 @@ fi
 # BEGIN OSX-specific randomness
 if [ $IS_OSX = true ]; then
     # for mtr (OSX)
-    export PATH=$PATH:/usr/local/sbin
+    export PATH=$PATH:/usr/local/sbin:$HOME/.local/bin
 
     if [ -t 1 ]; then
         command -v term-birb >/dev/null && term-birb
@@ -312,3 +312,6 @@ fi
 
 
 # echo "bash_profile finished loading"
+
+# Added by Antigravity
+export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
