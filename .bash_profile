@@ -310,6 +310,11 @@ if [ $IS_LINUX = true ]; then
 fi
 # END rvm
 
+# Noninteractive subshells that need RVM (like Claude) won't trigger rvm's cd() hook. Let's help out.
+if [ -n "$NONINTERACTIVE_SUBSHELL_THAT_NEEDS_RVM" ] && [ -f .ruby-gemset ]; then
+    rvm use "$(cat .ruby-version)@$(cat .ruby-gemset)" > /dev/null 2>&1
+fi
+
 
 # echo "bash_profile finished loading"
 
