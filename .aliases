@@ -120,6 +120,7 @@ alias 'mydns'='cat /etc/resolv.conf | grep -vE "^#"'
 alias claude='NONINTERACTIVE_SUBSHELL_THAT_NEEDS_RVM=1 claude'
 # this is funny to me because I am 12
 alias clod='NONINTERACTIVE_SUBSHELL_THAT_NEEDS_RVM=1 claude'
+alias haiku='NONINTERACTIVE_SUBSHELL_THAT_NEEDS_RVM=1 claude --model claude-haiku-4-6'
 
 # iTerm is getting good at rendering actual images, but when I want ANSI art I
 # want ANSI art, dagnabbit
