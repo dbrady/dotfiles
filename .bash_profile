@@ -184,16 +184,16 @@ case "$HOSTNAME" in
 esac
 
 # BEGIN rvm
-# if [ $IS_OSX = true ]; then
-#     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-#     rvm default 3.3.6 > /dev/null
-# fi
-#
-# if [ $IS_LINUX = true ]; then
-#     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-#     # rvm default 3.4.5 > /dev/null
-#     rvm default 3.4.7 > /dev/null
-# fi
+if [ $IS_OSX = true ]; then
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    rvm default 3.3.6 > /dev/null
+fi
+
+if [ $IS_LINUX = true ]; then
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    # rvm default 3.4.5 > /dev/null
+    rvm default 3.4.7 > /dev/null
+fi
 # END rvm
 
 # BEGIN Acima
@@ -296,19 +296,6 @@ fi
 if [[ $PATH != *"$HOME/bin"* ]]; then
     export PATH=$HOME/bin:$PATH
 fi
-
-# BEGIN rvm
-if [ $IS_OSX = true ]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    rvm default 3.3.6 > /dev/null
-fi
-
-if [ $IS_LINUX = true ]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    # rvm default 3.4.5 > /dev/null
-    rvm default 3.4.7 > /dev/null
-fi
-# END rvm
 
 # Noninteractive subshells that need RVM (like Claude) won't trigger rvm's cd() hook. Let's help out.
 if [ -n "$NONINTERACTIVE_SUBSHELL_THAT_NEEDS_RVM" ] && [ -f .ruby-gemset ]; then
