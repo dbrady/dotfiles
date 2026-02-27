@@ -176,6 +176,11 @@ case "$HOSTNAME" in
         export PS2='$$'
         source_files ~/.nav.home
         ;;
+    vapor)
+        ps1_set --prompt '$'
+        export PS2='\$\$ '
+        source_files ~/.nav.home
+        ;;
     *)
         ps1_set --prompt '$'
         export PS2='$$'
@@ -192,7 +197,7 @@ fi
 if [ $IS_LINUX = true ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
     # rvm default 3.4.5 > /dev/null
-    rvm default 3.4.7 > /dev/null
+    rvm default 3.4.8 > /dev/null
 fi
 # END rvm
 
@@ -307,3 +312,6 @@ fi
 
 # Added by Antigravity
 export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
+
+# OpenClaw Completion
+source "/home/dbrady/.openclaw/completions/openclaw.bash"
