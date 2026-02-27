@@ -290,6 +290,9 @@ if [ $IS_OSX = true ]; then
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
 
+# Added by Antigravity
+export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
+
 # MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
 # go-lang. Especially go-lang, thinking you can get in front of MY go
 # command. :-P
@@ -302,8 +305,8 @@ if [ -n "$NONINTERACTIVE_SUBSHELL_THAT_NEEDS_RVM" ] && [ -f .ruby-gemset ]; then
     rvm use "$(cat .ruby-version)@$(cat .ruby-gemset)" > /dev/null 2>&1
 fi
 
+# I have stanned so hard for spring. Tahoe has finally broken me.
+export DISABLE_SPRING=1
+export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 
 # echo "bash_profile finished loading"
-
-# Added by Antigravity
-export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
