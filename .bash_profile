@@ -23,7 +23,7 @@ case "$OS_NAME" in
         ;;
 esac
 
-# if [ $IS_OSX = true ];     then echo "This OS looks like OSX.";     fi
+# if [ $IS_OSX = true;     then echo "This OS looks like OSX.";     fi
 # if [ $IS_LINUX = true ];   then echo "This OS looks like LINUX.";   fi
 # if [ $IS_WINDOWS = true ]; then echo "This OS looks like WINDOWS."; fi
 
@@ -152,9 +152,15 @@ complete -o default -o nospace -F _git_checkout go
 # PS1 EMOJIS
 
 case "$HOSTNAME" in
+    Mac)
+        ps1_set \$
+        export PS2='\\$\\$'
+        source_files ~/.nav.work
+        ;;
     Simples-MacBook-Pro.local)
         ps1_set \$
         export PS2='\\$\\$'
+        source_files ~/.nav.work
 
         # 2025-08-26 dbrady - turning this off, let $ fall through
         # ps1_set --prompt "💳"
@@ -163,10 +169,17 @@ case "$HOSTNAME" in
     thinky)
         ps1_set --prompt "🧠"
         export PS2=🧠💭
+        source_files ~/.nav.home
         ;;
     theseus)
         ps1_set --prompt "$"
         export PS2='$$'
+        source_files ~/.nav.home
+        ;;
+    vapor)
+        ps1_set --prompt '$'
+        export PS2='\$\$ '
+        source_files ~/.nav.home
         ;;
     *)
         ps1_set --prompt '$'
@@ -184,12 +197,12 @@ fi
 if [ $IS_LINUX = true ]; then
     [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
     # rvm default 3.4.5 > /dev/null
-    rvm default 3.4.7 > /dev/null
+    rvm default 3.4.8 > /dev/null
 fi
 # END rvm
 
 # BEGIN Acima
-if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
+if [[ "$HOSTNAME" == "Simples-MacBook-Pro.local" || "$HOSTNAME" == "Mac" ]]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
 
@@ -245,7 +258,7 @@ fi
 # BEGIN OSX-specific randomness
 if [ $IS_OSX = true ]; then
     # for mtr (OSX)
-    export PATH=$PATH:/usr/local/sbin
+    export PATH=$PATH:/usr/local/sbin:$HOME/.local/bin
 
     if [ -t 1 ]; then
         command -v term-birb >/dev/null && term-birb
@@ -272,10 +285,11 @@ fi
 # END OSX-specific randomness
 
 # BEGIN Linux-specific randomness
-# if [ $IS_LINUX = true ]; then
-#     # claude code
-#     export PATH=$HOME/.local/bin:$PATH
-# fi
+if [ $IS_LINUX = true ]; then
+    if [ $HOSTNAME == "vapor" ]; then
+        source "/home/dbrady/.openclaw/completions/openclaw.bash"
+    fi
+fi
 # END Linux-specific randomness
 
 # Final path fixups
@@ -283,11 +297,23 @@ if [ $IS_OSX = true ]; then
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
 
+# Added by Antigravity
+export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
+
 # MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
 # go-lang. Especially go-lang, thinking you can get in front of MY go
 # command. :-P
 if [[ $PATH != *"$HOME/bin"* ]]; then
     export PATH=$HOME/bin:$PATH
 fi
+
+# Noninteractive subshells that need RVM (like Claude) won't trigger rvm's cd() hook. Let's help out.
+if [ -n "$NONINTERACTIVE_SUBSHELL_THAT_NEEDS_RVM" ] && [ -f .ruby-gemset ]; then
+    rvm use "$(cat .ruby-version)@$(cat .ruby-gemset)" > /dev/null 2>&1
+fi
+
+# I have stanned so hard for spring. Tahoe has finally broken me.
+export DISABLE_SPRING=1
+export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 
 # echo "bash_profile finished loading"
