@@ -272,9 +272,10 @@ fi
 # END OSX-specific randomness
 
 # BEGIN Linux-specific randomness
-if [ $IS_LINUX = true ]; then
-    export PATH=$HOME/.local/bin:$PATH
-fi
+# if [ $IS_LINUX = true ]; then
+#     # claude code
+#     export PATH=$HOME/.local/bin:$PATH
+# fi
 # END Linux-specific randomness
 
 # Final path fixups
