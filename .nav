@@ -1,4 +1,6 @@
-# nav
+# ========================================================================
+# .nav
+# ------------------------------------------------------------------------
 _nav_to() {
   echo "Type nav to see all nav commands"
   echo -e "\033[36mcd \"$1\"\033[0m"
@@ -6,7 +8,7 @@ _nav_to() {
 }
 
 # alias nav="grep --color=always -P '(?<=^alias )[^=]+' ~/.nav"
-alias nav='cat ~/.nav'
+alias nav='cat ~/.nav; [[ -e ~/.nav.work ]] && cat ~/.nav.work; [[ -e ~/.nav.home ]] && cat ~/.nav.home'
 
 ## Global Nav
 alias cdb='_nav_to ~/bin'
