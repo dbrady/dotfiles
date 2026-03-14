@@ -292,9 +292,6 @@ fi
 
 # BEGIN Linux-specific randomness
 if [ $IS_LINUX = true ]; then
-    export PATH=$HOME/.local/bin:$PATH
-
-    # OpenClaw Completions
     if [ $HOSTNAME == "vapor" ]; then
         source "/home/dbrady/.openclaw/completions/openclaw.bash"
     fi
