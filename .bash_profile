@@ -7,12 +7,16 @@ IS_OSX=false
 IS_LINUX=false
 IS_WINDOWS=false # tbd, may prefer IS_DOCKER or IS_WSL etc
 
+CURRENT_RUBY_DEV_VERSION=""
+
 case "$OS_NAME" in
     Darwin)
         IS_OSX=true
+        CURRENT_RUBY_DEV_VERSION=3.3.6
         ;;
     Linux)
         IS_LINUX=true
+        CURRENT_RUBY_DEV_VERSION=3.4.8
         ;;
     CYGWIN*|MINGW*|MSYS*)
         # YAGNI? Do I ever hit this on WSL or Docker under windows?
@@ -189,15 +193,17 @@ case "$HOSTNAME" in
 esac
 
 # BEGIN rvm
-if [ $IS_OSX = true ]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    rvm default 3.3.6 > /dev/null
-fi
+if [[ -s "$HOME/.rvm/scripts/rvm" ]]; then
+    source "$HOME/.rvm/scripts/rvm"
+    rvm default $CURRENT_RUBY_DEV_VERSION > /dev/null
 
-if [ $IS_LINUX = true ]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    # rvm default 3.4.5 > /dev/null
-    rvm default 3.4.8 > /dev/null
+    if [ -f .ruby-version ] && [ -f .ruby-gemset ]; then
+        rvm use "$(cat .ruby-version)@$(cat .ruby-gemset)" > /dev/null 2>&1
+    elif [ -f .ruby-version ]; then
+        rvm use "$(cat .ruby-version)" > /dev/null 2>&1
+    else
+        rvm use "$CURRENT_RUBY_DEV_VERSION" > /dev/null 2>&1
+    fi
 fi
 # END rvm
 
@@ -310,10 +316,6 @@ if [[ $PATH != *"$HOME/bin"* ]]; then
     export PATH=$HOME/bin:$PATH
 fi
 
-# Noninteractive subshells that need RVM (like Claude) won't trigger rvm's cd() hook. Let's help out.
-if [ -n "$NONINTERACTIVE_SUBSHELL_THAT_NEEDS_RVM" ] && [ -f .ruby-gemset ]; then
-    rvm use "$(cat .ruby-version)@$(cat .ruby-gemset)" > /dev/null 2>&1
-fi
 
 # I have stanned so hard for spring. Tahoe has finally broken me.
 export DISABLE_SPRING=1
