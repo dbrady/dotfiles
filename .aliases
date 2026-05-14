@@ -57,21 +57,11 @@ alias 'cdpy'='echo "cd ~/devel/scrapbin/python" && cd ~/devel/scrapbin/python'
 # docker
 alias 'dc'=`which docker-compose`
 
-function bexbe() {
-    echo '██████╗ ███████╗██╗  ██╗         ██╗      ██████╗ ███████╗'
-    echo '██╔══██╗██╔════╝╚██╗██╔╝         ╚██╗     ██╔══██╗██╔════╝'
-    echo '██████╔╝█████╗   ╚███╔╝     █████╗╚██╗    ██████╔╝█████╗  '
-    echo '██╔══██╗██╔══╝   ██╔██╗     ╚════╝██╔╝    ██╔══██╗██╔══╝  '
-    echo '██████╔╝███████╗██╔╝ ██╗         ██╔╝     ██████╔╝███████╗'
-    echo '╚═════╝ ╚══════╝╚═╝  ╚═╝         ╚═╝      ╚═════╝ ╚══════╝'
-    echo GET OUT OF THE HABIT OF USING THIS, DAVE--YOU WANT "be" INSTEAD
-}
-
 # Programming crap
 
 alias be='bundle exec'
 alias bex='bexbe'
-
+alias berc='echo "bundle exec rails console" && bundle exec rails console'
 
 ## Misc Programming
 
@@ -120,7 +110,6 @@ alias 'mydns'='cat /etc/resolv.conf | grep -vE "^#"'
 # this is funny to me because I am 12
 alias clod='claude'
 alias smort='CLAUDE_CODE_EFFORT_LEVEL=high claude'
-alias haiku='claude --model claude-haiku-4-6'
 
 # iTerm is getting good at rendering actual images, but when I want ANSI art I
 # want ANSI art, dagnabbit
