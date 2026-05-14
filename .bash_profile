@@ -20,7 +20,7 @@ case "$OS_NAME" in
         ;;
     Linux)
         IS_LINUX=true
-        CURRENT_RUBY_DEV_VERSION=3.4.8
+        CURRENT_RUBY_DEV_VERSION=3.4.9
         ;;
     CYGWIN*|MINGW*|MSYS*)
         # YAGNI? Do I ever hit this on WSL or Docker under windows?
