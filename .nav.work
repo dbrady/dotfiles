@@ -4,7 +4,9 @@
 # loaded from .nav
 alias cdmp='_nav_to ~/acima/devel/merchant_portal'
 alias cdmpr='_nav_to ~/acima/devel/merchant_portal.review'
+alias cdrmp='_nav_to ~/acima/devel/review.merchant_portal/'
 alias cdmpw='_nav_to ~/acima/devel/wiki.merchant_portal'
+alias cdmpai='_nav_to ~/acima/devel/merchant-portal-ai'
 alias cdams='_nav_to /Users/davidbrady/acima/devel/application_management_system'
 alias cdcc='_nav_to /Users/davidbrady/acima/devel/credit_card_service'
 alias cdw='_nav_to ~/acima/devel/merchant_portal.wiki'

@@ -1,0 +1,8 @@
+# Acima-specific stuffs
+if [[ $PATH != *"acima/bin"* ]]; then
+    export PATH=~/acima/bin:$PATH
+fi
+
+if [[ $PATH != *"$HOME/devel/claire/bin"* ]]; then
+    export PATH=$PATH:$HOME/devel/claire/bin
+fi

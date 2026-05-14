@@ -6,13 +6,17 @@ OS_NAME=$(uname -s)
 IS_OSX=false
 IS_LINUX=false
 IS_WINDOWS=false # tbd, may prefer IS_DOCKER or IS_WSL etc
+IS_ACIMA=false
+if [ "$(hostname)" = "Simples-MacBook-Pro.local" ]; then
+    IS_ACIMA=true
+fi
 
 CURRENT_RUBY_DEV_VERSION=""
 
 case "$OS_NAME" in
     Darwin)
         IS_OSX=true
-        CURRENT_RUBY_DEV_VERSION=3.3.6
+        CURRENT_RUBY_DEV_VERSION=3.4.9
         ;;
     Linux)
         IS_LINUX=true
@@ -108,10 +112,8 @@ if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
 
-# Acima-specific stuffs - if more than this path needs to be here, please make a
-# .acima file and source_files() it
-if [[ $PATH != *"acima/bin"* ]]; then
-    export PATH=~/acima/bin:$PATH
+if [ $IS_ACIMA = true ]; then
+    source_files ~/.acima
 fi
 
 source_files()
@@ -145,9 +147,7 @@ source_files ~/.aliases \
   ~/.ps1_functions \
   ~/.bash_functions \
   ~/.current-project \
-  ~/.hue.conf \
-  ~/.platform-dev \
-  ~/.aws-hack
+  ~/.hue.conf
 
 # Turn on path completion for my go command.
 # This must come after git-completion.bash.
@@ -156,11 +156,6 @@ complete -o default -o nospace -F _git_checkout go
 # PS1 EMOJIS
 
 case "$HOSTNAME" in
-    Mac)
-        ps1_set \$
-        export PS2='\\$\\$'
-        source_files ~/.nav.work
-        ;;
     Simples-MacBook-Pro.local)
         ps1_set \$
         export PS2='\\$\\$'
@@ -208,7 +203,7 @@ fi
 # END rvm
 
 # BEGIN Acima
-if [[ "$HOSTNAME" == "Simples-MacBook-Pro.local" || "$HOSTNAME" == "Mac" ]]; then
+if [ $IS_ACIMA = true ]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
 
@@ -247,7 +242,7 @@ if [[ "$HOSTNAME" == "Simples-MacBook-Pro.local" || "$HOSTNAME" == "Mac" ]]; the
 
     # LOL THIS IS FOR MP ON Apple Silicon
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-elif [ $IS_OSX = true ]; then
+elif [ $IS_ACIMA = true ]; then
     echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. ($HOSTNAME) That's weird, right? NOT setting rvm defaults."
 fi
 # END Acima
@@ -262,7 +257,7 @@ fi
 # END MIDDLE GLOBAL
 
 # BEGIN OSX-specific randomness
-if [ $IS_OSX = true ]; then
+if [ $IS_ACIMA = true ]; then
     # for mtr (OSX)
     export PATH=$PATH:/usr/local/sbin:$HOME/.local/bin
 
@@ -299,7 +294,7 @@ fi
 # END Linux-specific randomness
 
 # Final path fixups
-if [ $IS_OSX = true ]; then
+if [ $IS_ACIMA = true ]; then
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
 
