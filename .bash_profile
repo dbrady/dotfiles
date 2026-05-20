@@ -7,10 +7,10 @@ IS_OSX=false
 IS_LINUX=false
 IS_WINDOWS=false # tbd, may prefer IS_DOCKER or IS_WSL etc
 IS_ACIMA=false
+IS_VAPOR=false
 if [ "$(hostname)" = "Simples-MacBook-Pro.local" ]; then
     IS_ACIMA=true
 fi
-
 CURRENT_RUBY_DEV_VERSION=""
 
 case "$OS_NAME" in
@@ -30,6 +30,11 @@ case "$OS_NAME" in
         echo -e "\033[1;37;41mCannot identify your operating system: '$OS_NAME'\033[0m"
         ;;
 esac
+
+if [ "$(hostname)" = "vapor" ]; then
+    IS_VAPOR=true
+    CURRENT_RUBY_DEV_VERSION=4.0.4
+fi
 
 # if [ $IS_OSX = true;     then echo "This OS looks like OSX.";     fi
 # if [ $IS_LINUX = true ];   then echo "This OS looks like LINUX.";   fi
@@ -314,3 +319,5 @@ export DISABLE_SPRING=1
 export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 
 # echo "bash_profile finished loading"
+
+. "$HOME/.local/bin/env"
