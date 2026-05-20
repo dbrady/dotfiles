@@ -6,13 +6,11 @@ case `uname -s` in
         alias ls="ls -G --color=auto"
         alias ll="ls -l --color=auto"
         alias emacs="emacs -nw"
-        alias tem="emacs -nw -q -l $HOME/.emacstiny"
         ;;
     Darwin)
         alias ls="ls -G"
         alias ll="ls -l"
         alias 'top'='top -o cpu'
-        alias 'tem'="emacs -nw -q -l $HOME/.emacstiny"
 
         # 2023-08-01: Turning this off. It was a good hack when there
         # were all these CLI tools ignoring $EDITOR and launching vim
@@ -108,8 +106,8 @@ alias 'mydns'='cat /etc/resolv.conf | grep -vE "^#"'
 # alias hop_master_push='export TMP_CURRBRANCH=$(git-currentbranch) && git checkout master && echo "Hopping to master to merge, test and push..." && git merge $TMP_CURRBRANCH && echo "Pulling master from origin..." && git pull origin master && git merge origin/master && echo "Running all specs..." && ./all_specs.sh && echo "Pushing changes..." && git push origin master && echo "Hopping back to $TMP_CURRENTBRANCH" && git checkout $TMP_CURRBRANCH && export $TMP_CURRBRANCH='
 
 # this is funny to me because I am 12
-alias clod='claude'
-alias smort='CLAUDE_CODE_EFFORT_LEVEL=high claude'
+alias clod=claude
+
 
 # iTerm is getting good at rendering actual images, but when I want ANSI art I
 # want ANSI art, dagnabbit
