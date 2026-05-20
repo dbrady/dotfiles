@@ -3,6 +3,8 @@
 # Figure out operating system & machine
 OS_NAME=$(uname -s)
 
+
+# My clanker dockers get IS_CLANKER to distinguish them from home linux.
 IS_OSX=false
 IS_LINUX=false
 IS_WINDOWS=false # tbd, may prefer IS_DOCKER or IS_WSL etc
@@ -37,10 +39,33 @@ esac
 
 HOSTNAME=$(hostname)
 
-export EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
+export EDITOR=tem
 export GEMEDITOR=$(echo `which emacs` -nw)
-export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
-export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
+export CVSEDITOR=tem
+export SVN_EDITOR=tem
+
+source_files()
+{
+    local file
+
+    for file in "$@" ; do
+        # echo -e "\033[32msource_files(): sourcing $file\033[0m"
+        file=${file/\~\//$HOME\/} # Expand ~/
+
+        if [[ -s "${file}" ]] ; then
+            source "${file}"
+            # else
+            #     # I found this useful for debugging, now it's just noisy
+            #   if [[ ! -e "${file}" ]] ; then
+            #     printf "NOTICE: ${file} does not exist, not loading.\n"
+            #   else
+            #     true # simply an empty file, no warning necessary.
+            #   fi
+        fi
+    done
+
+    return 0
+}
 
 case "$OS_NAME" in
     Linux)
@@ -116,29 +141,6 @@ if [ $IS_ACIMA = true ]; then
     source_files ~/.acima
 fi
 
-source_files()
-{
-  local file
-
-  for file in "$@" ; do
-    # echo -e "\033[32msource_files(): sourcing $file\033[0m"
-    file=${file/\~\//$HOME\/} # Expand ~/
-
-    if [[ -s "${file}" ]] ; then
-      source "${file}"
-    # else
-    #     # I found this useful for debugging, now it's just noisy
-    #   if [[ ! -e "${file}" ]] ; then
-    #     printf "NOTICE: ${file} does not exist, not loading.\n"
-    #   else
-    #     true # simply an empty file, no warning necessary.
-    #   fi
-    fi
-  done
-
-  return 0
-}
-
 source_files ~/.aliases \
   ~/.bash_completions \
   ~/.git-completion.bash \
@@ -181,9 +183,13 @@ case "$HOSTNAME" in
         source_files ~/.nav.home
         ;;
     *)
-        ps1_set --prompt '$'
-        export PS2='$$'
-        echo -e "\033[1;37;41mNEW MACHINE: It's \D{%H} O'Clock! Check .bash_profile and/or .ps1_functions. Do you have my dotfiles repo?\033[0m"
+        if [ $IS_CLANKER = 1 ]; then
+            export PS2='$$'
+        else
+            ps1_set --prompt '$'
+            export PS2='$$'
+            echo -e "\033[1;37;41mNEW MACHINE: It's \D{%H} O'Clock! Check .bash_profile and/or .ps1_functions. Do you have my dotfiles repo?\033[0m"
+        fi
         ;;
 esac
 
