@@ -264,8 +264,20 @@ fi
 
 # BEGIN OSX-specific randomness
 if [ $IS_ACIMA = true ]; then
+
+    if [[ $PATH != *"$HOME/.local/bin"* ]]; then
+        export PATH=$PATH:$HOME/.local/bin
+    fi
+
     # for mtr (OSX)
-    export PATH=$PATH:/usr/local/sbin:$HOME/.local/bin
+    if [[ $PATH != *"/usr/local/sbin"* ]]; then
+        export PATH=$PATH:/usr/local/sbin
+    fi
+
+    if [[ $PATH != *"$HOME/bin"* ]]; then
+    export PATH=$HOME/bin:$PATH
+fi
+
 
     if [ -t 1 ]; then
         command -v term-birb >/dev/null && term-birb
@@ -305,7 +317,7 @@ if [ $IS_ACIMA = true ]; then
 fi
 
 # Added by Antigravity
-export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
+# export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
 
 # MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
 # go-lang. Especially go-lang, thinking you can get in front of MY go
