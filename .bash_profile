@@ -3,16 +3,26 @@
 # Figure out operating system & machine
 OS_NAME=$(uname -s)
 
+
+# My clanker dockers get IS_CLANKER to distinguish them from home linux.
 IS_OSX=false
 IS_LINUX=false
 IS_WINDOWS=false # tbd, may prefer IS_DOCKER or IS_WSL etc
+IS_ACIMA=false
+if [ "$(hostname)" = "Simples-MacBook-Pro.local" ]; then
+    IS_ACIMA=true
+fi
+
+CURRENT_RUBY_DEV_VERSION=""
 
 case "$OS_NAME" in
     Darwin)
         IS_OSX=true
+        CURRENT_RUBY_DEV_VERSION=3.4.9
         ;;
     Linux)
         IS_LINUX=true
+        CURRENT_RUBY_DEV_VERSION=3.4.9
         ;;
     CYGWIN*|MINGW*|MSYS*)
         # YAGNI? Do I ever hit this on WSL or Docker under windows?
@@ -23,16 +33,39 @@ case "$OS_NAME" in
         ;;
 esac
 
-# if [ $IS_OSX = true ];     then echo "This OS looks like OSX.";     fi
+# if [ $IS_OSX = true;     then echo "This OS looks like OSX.";     fi
 # if [ $IS_LINUX = true ];   then echo "This OS looks like LINUX.";   fi
 # if [ $IS_WINDOWS = true ]; then echo "This OS looks like WINDOWS."; fi
 
 HOSTNAME=$(hostname)
 
-export EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
+export EDITOR=tem
 export GEMEDITOR=$(echo `which emacs` -nw)
-export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
-export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
+export CVSEDITOR=tem
+export SVN_EDITOR=tem
+
+source_files()
+{
+    local file
+
+    for file in "$@" ; do
+        # echo -e "\033[32msource_files(): sourcing $file\033[0m"
+        file=${file/\~\//$HOME\/} # Expand ~/
+
+        if [[ -s "${file}" ]] ; then
+            source "${file}"
+            # else
+            #     # I found this useful for debugging, now it's just noisy
+            #   if [[ ! -e "${file}" ]] ; then
+            #     printf "NOTICE: ${file} does not exist, not loading.\n"
+            #   else
+            #     true # simply an empty file, no warning necessary.
+            #   fi
+        fi
+    done
+
+    return 0
+}
 
 case "$OS_NAME" in
     Linux)
@@ -104,34 +137,9 @@ if [[ $PATH != *"private_bin"* ]]; then
     export PATH=~/private_bin:$PATH
 fi
 
-# Acima-specific stuffs - if more than this path needs to be here, please make a
-# .acima file and source_files() it
-if [[ $PATH != *"acima/bin"* ]]; then
-    export PATH=~/acima/bin:$PATH
+if [ $IS_ACIMA = true ]; then
+    source_files ~/.acima
 fi
-
-source_files()
-{
-  local file
-
-  for file in "$@" ; do
-    # echo -e "\033[32msource_files(): sourcing $file\033[0m"
-    file=${file/\~\//$HOME\/} # Expand ~/
-
-    if [[ -s "${file}" ]] ; then
-      source "${file}"
-    # else
-    #     # I found this useful for debugging, now it's just noisy
-    #   if [[ ! -e "${file}" ]] ; then
-    #     printf "NOTICE: ${file} does not exist, not loading.\n"
-    #   else
-    #     true # simply an empty file, no warning necessary.
-    #   fi
-    fi
-  done
-
-  return 0
-}
 
 source_files ~/.aliases \
   ~/.bash_completions \
@@ -141,9 +149,7 @@ source_files ~/.aliases \
   ~/.ps1_functions \
   ~/.bash_functions \
   ~/.current-project \
-  ~/.hue.conf \
-  ~/.platform-dev \
-  ~/.aws-hack
+  ~/.hue.conf
 
 # Turn on path completion for my go command.
 # This must come after git-completion.bash.
@@ -171,28 +177,39 @@ case "$HOSTNAME" in
         export PS2='$$'
         source_files ~/.nav.home
         ;;
-    *)
+    vapor)
         ps1_set --prompt '$'
-        export PS2='$$'
-        echo -e "\033[1;37;41mNEW MACHINE: It's \D{%H} O'Clock! Check .bash_profile and/or .ps1_functions. Do you have my dotfiles repo?\033[0m"
+        export PS2='\$\$ '
+        source_files ~/.nav.home
+        ;;
+    *)
+        if [ $IS_CLANKER = 1 ]; then
+            export PS2='$$'
+        else
+            ps1_set --prompt '$'
+            export PS2='$$'
+            echo -e "\033[1;37;41mNEW MACHINE: It's \D{%H} O'Clock! Check .bash_profile and/or .ps1_functions. Do you have my dotfiles repo?\033[0m"
+        fi
         ;;
 esac
 
 # BEGIN rvm
-if [ $IS_OSX = true ]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    rvm default 3.3.6 > /dev/null
-fi
+if [[ -s "$HOME/.rvm/scripts/rvm" ]]; then
+    source "$HOME/.rvm/scripts/rvm"
+    rvm default $CURRENT_RUBY_DEV_VERSION > /dev/null
 
-if [ $IS_LINUX = true ]; then
-    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-    # rvm default 3.4.5 > /dev/null
-    rvm default 3.4.7 > /dev/null
+    if [ -f .ruby-version ] && [ -f .ruby-gemset ]; then
+        rvm use "$(cat .ruby-version)@$(cat .ruby-gemset)" > /dev/null 2>&1
+    elif [ -f .ruby-version ]; then
+        rvm use "$(cat .ruby-version)" > /dev/null 2>&1
+    else
+        rvm use "$CURRENT_RUBY_DEV_VERSION" > /dev/null 2>&1
+    fi
 fi
 # END rvm
 
 # BEGIN Acima
-if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
+if [ $IS_ACIMA = true ]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
 
@@ -231,7 +248,7 @@ if [ "$HOSTNAME" == "Simples-MacBook-Pro.local" ]; then
 
     # LOL THIS IS FOR MP ON Apple Silicon
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-elif [ $IS_OSX = true ]; then
+elif [ $IS_ACIMA = true ]; then
     echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. ($HOSTNAME) That's weird, right? NOT setting rvm defaults."
 fi
 # END Acima
@@ -246,9 +263,9 @@ fi
 # END MIDDLE GLOBAL
 
 # BEGIN OSX-specific randomness
-if [ $IS_OSX = true ]; then
+if [ $IS_ACIMA = true ]; then
     # for mtr (OSX)
-    export PATH=$PATH:/usr/local/sbin
+    export PATH=$PATH:/usr/local/sbin:$HOME/.local/bin
 
     if [ -t 1 ]; then
         command -v term-birb >/dev/null && term-birb
@@ -287,9 +304,12 @@ fi
 # END Linux-specific randomness
 
 # Final path fixups
-if [ $IS_OSX = true ]; then
+if [ $IS_ACIMA = true ]; then
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
+
+# Added by Antigravity
+export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
 
 # MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
 # go-lang. Especially go-lang, thinking you can get in front of MY go
@@ -297,6 +317,11 @@ fi
 if [[ $PATH != *"$HOME/bin"* ]]; then
     export PATH=$HOME/bin:$PATH
 fi
+
+
+# I have stanned so hard for spring. Tahoe has finally broken me.
+export DISABLE_SPRING=1
+export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 
 # echo "bash_profile finished loading"
 

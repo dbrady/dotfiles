@@ -71,7 +71,7 @@ BANNER
   end
 end
 
-  # Check to see if we're on master
+  # Check to see if we're on the main branch
 branch=`git current-branch`.strip
 main_branch=`git main-branch`.strip
 

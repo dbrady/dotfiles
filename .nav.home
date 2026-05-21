@@ -1,4 +1,12 @@
+# ========================================================================
+# .nav.home
+# ------------------------------------------------------------------------
 # loaded from .nav
 alias cdg='_nav_to ~/devel/ai/gary'
+alias cdl='_nav_to ~/devel/ai/lyra'
 alias cdmc='_nav_to ~/applications/prism'
 alias cdsb='_nav_to ~/devel/shinybit'
+alias cdtav='_nav_to ~/devel/ai/SillyTavern/'
+alias cdst='_nav_to ~/devel/ai/st-utils/'
+alias cdstp='_nav_to ~/devel/ai/st-utils/assets/prompts'
+alias cdstj='_nav_to ~/devel/ai/st-utils/assets/jb/'
