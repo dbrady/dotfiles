@@ -277,6 +277,12 @@ fi
 # BEGIN Linux-specific randomness
 if [ $IS_LINUX = true ]; then
     export PATH=$HOME/.local/bin:$PATH
+
+    # NVM
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 fi
 # END Linux-specific randomness
 
@@ -293,3 +299,7 @@ if [[ $PATH != *"$HOME/bin"* ]]; then
 fi
 
 # echo "bash_profile finished loading"
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/dbrady/.local/bin:$PATH"
