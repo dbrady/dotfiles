@@ -1,0 +1,32 @@
+name: work
+root: ~/acima/devel
+
+windows:
+  - emacs:
+      root: ~/acima/devel/merchant_portal
+      panes:
+        - emacs
+  - bash:
+      root: ~/acima/devel/merchant_portal
+      panes:
+        -
+  - clod:
+      root: ~/acima/devel/merchant_portal
+      panes:
+        - clod
+  - console:
+      root: ~/acima/devel/merchant_portal
+      panes:
+        - bin/rails console
+  - server:
+      root: ~/acima/devel/merchant_portal
+      panes:
+        - bin/rails server
+  - reviews:
+      root: ~/acima/devel/review.merchant_portal
+      panes:
+        - CLOD
+  - reviews-con:
+      root: ~/acima/devel/review.merchant_portal
+      panes:
+        -

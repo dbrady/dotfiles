@@ -1,0 +1,24 @@
+name: more
+root: ~/acima/devel
+
+windows:
+  - AMC:
+      root: ~/acima/devel/application-management-client
+      panes:
+        - ./start
+  - BasicAccess:
+      root: ~/acima/devel/basic_access
+      panes:
+        - ./bin/rails server
+  - aperture7777:
+      root: ~/acima/devel/aperture
+      panes:
+        - ./start1
+  - aperture7778:
+      root: ~/acima/devel/aperture
+      panes:
+        - ./start2
+  - keycloak:
+      root: ~/acima/devel/my-keycloak-theme
+      panes:
+        - echo 'COME SET ME UP LOL'

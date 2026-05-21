@@ -1,0 +1,24 @@
+name: research
+root: <%= ENV["CURRENT_PROJECT"] %>
+
+windows:
+  - emacs:
+      layout: main-vertical
+      panes:
+        - emacs
+  - code:
+      panes:
+        - cd "$CURRENT_PROJECT"
+  - clod:
+      panes:
+        - cd "$CURRENT_PROJECT"
+  - console:
+      # split vertically, then split right pane horizontally
+      layout: "main-vertical"
+      panes:
+        - cd "$CURRENT_PROJECT"
+        - cd "$CURRENT_PROJECT"
+        - cd "$CURRENT_PROJECT"
+  - server:
+      panes:
+        - cd "$CURRENT_PROJECT"
