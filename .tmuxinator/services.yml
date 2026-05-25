@@ -1,0 +1,32 @@
+name: services
+root: ~/acima/devel
+
+windows:
+  - ams:
+      root: ~/acima/devel/application_management_system
+      panes:
+        - bin/rails s -p 3030
+  - amq:
+      root: ~/acima/devel/application_management_system
+      panes:
+        - bundle exec sidekiq
+  - mpq:
+      root: ~/acima/devel/merchant_portal
+      panes:
+        - bundle exec sidekiq
+  - anycable:
+      root: ~/acima/devel/merchant_portal
+      panes:
+        - bundle exec anycable --log-grpc
+  - anycable-go:
+      root: ~/acima/devel/kipper
+      panes:
+        - anycable-go --host=0.0.0.0 --port=3334 --debug --rpc_host=localhost:50051
+  - kipper:
+      root: ~/acima/devel/kipper
+      panes:
+        - bin/rails s -p 3002
+  - gc:
+      root: ~/acima/devel/global_customer
+      panes:
+        - bin/rails s -p 3008

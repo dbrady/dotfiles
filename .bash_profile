@@ -269,8 +269,20 @@ fi
 
 # BEGIN OSX-specific randomness
 if [ $IS_ACIMA = true ]; then
+
+    if [[ $PATH != *"$HOME/.local/bin"* ]]; then
+        export PATH=$PATH:$HOME/.local/bin
+    fi
+
     # for mtr (OSX)
-    export PATH=$PATH:/usr/local/sbin:$HOME/.local/bin
+    if [[ $PATH != *"/usr/local/sbin"* ]]; then
+        export PATH=$PATH:/usr/local/sbin
+    fi
+
+    if [[ $PATH != *"$HOME/bin"* ]]; then
+    export PATH=$HOME/bin:$PATH
+fi
+
 
     if [ -t 1 ]; then
         command -v term-birb >/dev/null && term-birb
@@ -298,9 +310,12 @@ fi
 
 # BEGIN Linux-specific randomness
 if [ $IS_LINUX = true ]; then
-    if [ $HOSTNAME == "vapor" ]; then
-        source "/home/dbrady/.openclaw/completions/openclaw.bash"
-    fi
+    export PATH=$HOME/.local/bin:$PATH
+
+    # NVM
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 # END Linux-specific randomness
 
@@ -310,7 +325,7 @@ if [ $IS_ACIMA = true ]; then
 fi
 
 # Added by Antigravity
-export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
+# export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
 
 # MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
 # go-lang. Especially go-lang, thinking you can get in front of MY go
@@ -327,3 +342,6 @@ export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 # echo "bash_profile finished loading"
 
 . "$HOME/.local/bin/env"
+
+# Added by Antigravity CLI installer
+export PATH="/home/dbrady/.local/bin:$PATH"
