@@ -35,7 +35,7 @@ esac
 
 if [ "$(hostname)" = "vapor" ]; then
     IS_VAPOR=true
-    CURRENT_RUBY_DEV_VERSION=4.0.4
+    CURRENT_RUBY_DEV_VERSION=3.4.9
 fi
 
 # if [ $IS_OSX = true;     then echo "This OS looks like OSX.";     fi
