@@ -7,3 +7,8 @@ haxx
 # Put this in any repo to disable my pre-commit hook guarding main/master
 # commits
 .git-allow-commits-to-main
+
+
+
+# Global gitignore on swarmforge--for now. 2026-05-28, I gotta get it working and paying off first.
+swarmforge

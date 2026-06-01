@@ -1,5 +1,6 @@
 # .aliases - because my alias collection is way outta control
-
+[[ -n "$__ALIASES_LOADED" ]] && return
+__ALIASES_LOADED=1
 
 case `uname -s` in
     Linux)
@@ -57,6 +58,8 @@ alias 'dc'=`which docker-compose`
 
 # Programming crap
 
+## Bundler
+alias bi='echo "bundle install" && bundle install'
 alias be='bundle exec'
 alias bex='bexbe'
 alias berc='echo "bundle exec rails console" && bundle exec rails console'

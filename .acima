@@ -1,4 +1,0 @@
-# Acima-specific stuffs
-if [[ $PATH != *"acima/bin"* ]]; then
-    export PATH=~/acima/bin:$PATH
-fi
