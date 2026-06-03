@@ -1,18 +1,44 @@
 #!/bin/sh
 
-# Figure out operating system & machine
-OS_NAME=$(uname -s)
+. ~/.bash_functions
 
-IS_OSX=false
-IS_LINUX=false
-IS_WINDOWS=false # tbd, may prefer IS_DOCKER or IS_WSL etc
+source_files ~/.aliases \
+  ~/.bash_completions \
+  ~/.current-project \
+  ~/.git-completion.bash \
+  ~/.hue.conf \
+  ~/.nav \
+  ~/.private \
+  ~/.ps1_functions
 
-CURRENT_RUBY_DEV_VERSION=""
+source_files ~/.env
 
+if [ -e $HOME/.env ]; then
+    # Check for this machine's config and load it up - put OS_NAME and IS_(OS) in here etc.
+    source_files ~/.env
+else
+    # Figure out operating system & machine
+    OS_NAME=$(uname -s)
+
+    # My clanker dockers get IS_CLANKER to distinguish them from home linux.
+    IS_OSX=false
+    IS_LINUX=false
+    IS_WINDOWS=false # tbd, may prefer IS_DOCKER or IS_WSL etc
+    IS_ACIMA=false
+
+    if [ "$(hostname)" = "Simples-MacBook-Pro.local" ]; then
+    # if [ "$(hostname)" = "Mac" ]; then
+        echo -e '\033[1;37;41m *** LOOKS LIKE YOU ARE ON YOUR WORK MACHINE BUT .env IS NOT SET! GO DO THIS SOONER RATHER THAN LATER: ***\033[0m'
+        echo 'ln -s ~/dotfiles/.acima.env ~/.env'
+        IS_ACIMA=true
+    fi
+fi
+
+# TODO: move to .env files
 case "$OS_NAME" in
     Darwin)
         IS_OSX=true
-        CURRENT_RUBY_DEV_VERSION=3.3.6
+        CURRENT_RUBY_DEV_VERSION=3.4.9
         ;;
     Linux)
         IS_LINUX=true
@@ -31,12 +57,13 @@ esac
 # if [ $IS_LINUX = true ];   then echo "This OS looks like LINUX.";   fi
 # if [ $IS_WINDOWS = true ]; then echo "This OS looks like WINDOWS."; fi
 
+# TODO: move to .env
 HOSTNAME=$(hostname)
 
-export EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
+export EDITOR=tem
 export GEMEDITOR=$(echo `which emacs` -nw)
-export CVSEDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
-export SVN_EDITOR=$(echo `which emacs` -nw -q -l ~/.emacstiny)
+export CVSEDITOR=tem
+export SVN_EDITOR=tem
 
 case "$OS_NAME" in
     Linux)
@@ -51,51 +78,13 @@ case "$OS_NAME" in
         ;;
 esac
 
-# === OSX Specific ======================================================
-# Search the ls manpage for "CLICOLOR" and "color designators for an
-# explanation of this goodness.
-
-# CLICOLOR: Search "man ls" for "CLICOLOR" and "color designators".
-# a: black                                        1.  directory
-# b: red                                          2.  symbolic link
-# c: green                                        3.  socket
-# d: brown                                        4.  pipe
-# e: blue                                         5.  executable
-# f: magenta                                      6.  block special
-# g: cyan                                         7.  character special
-# h: light grey                                   8.  executable with setuid bit set
-# A: bold black, usually shows up as dark grey    9.  executable with setgid bit set
-# B: bold red                                     10. directory writable to others, with sticky bit
-# C: bold green                                   11. directory writable to others, without sticky bit
-# D: bold brown, usually shows up as yellow
-# E: bold blue
-# F: bold magenta
-# G: bold cyan
-# H: bold light grey; looks like bright white
-# x: default foreground or background
-#
-# The standard Mac OSX colors are: exfxcxdxbxegedabagacad
-#
-# TODO: export these to functions or scripts called light_bg or dark_bg, etc.
-export CLICOLOR=1
-# Standard colors look good on a white background
-# export LSCOLORS=exfxcxdxbxegedabagacad
-# export LS_COLORS=exfxcxdxbxegedabagacad
-
-# Swap blue/cyan for better visibility on dark bg
-#export LSCOLORS=gxfxcxdxbxegedabagacad
-# === OSX Specific ======================================================
-
-# Use less by default b/c search works better. But keep most inifile
-# here for tweaking.
-#export PAGER="most"
-export MOST_INIFILE='/etc/most.rc'
-
+# Doesn't work on OSX - Test on linux, move to linux env or remove
 GREP_OPTIONS='--color=auto'
 GREP_COLOR='1;32'
 
 # ----------------------------------------------------------------------
 # Terminal colours (after installing GNU coreutils)
+# Doesn't work on OSX - Test on linux, move to linux env or remove
 NM="\[\033[0;38m\]" #means no background and white lines
 HI="\[\033[0;37m\]" #change this for letter colors
 HII="\[\033[0;31m\]" #change this for letter colors
@@ -104,64 +93,29 @@ IN="\[\033[0m\]"
 
 export HISTFILESIZE=10000
 
-if [[ $PATH != *"private_bin"* ]]; then
-    export PATH=~/private_bin:$PATH
-fi
-
-# Acima-specific stuffs - if more than this path needs to be here, please make a
-# .acima file and source_files() it
-if [[ $PATH != *"acima/bin"* ]]; then
-    export PATH=~/acima/bin:$PATH
-fi
-
-source_files()
-{
-  local file
-
-  for file in "$@" ; do
-    # echo -e "\033[32msource_files(): sourcing $file\033[0m"
-    file=${file/\~\//$HOME\/} # Expand ~/
-
-    if [[ -s "${file}" ]] ; then
-      source "${file}"
-    # else
-    #     # I found this useful for debugging, now it's just noisy
-    #   if [[ ! -e "${file}" ]] ; then
-    #     printf "NOTICE: ${file} does not exist, not loading.\n"
-    #   else
-    #     true # simply an empty file, no warning necessary.
-    #   fi
-    fi
-  done
-
-  return 0
-}
+add_to_path ~/private_bin
 
 source_files ~/.aliases \
   ~/.bash_completions \
+  ~/.current-project \
   ~/.git-completion.bash \
+  ~/.hue.conf \
   ~/.nav \
   ~/.private \
-  ~/.ps1_functions \
-  ~/.bash_functions \
-  ~/.current-project \
-  ~/.hue.conf \
-  ~/.platform-dev \
-  ~/.aws-hack
+  ~/.ps1_functions
 
 # Turn on path completion for my go command.
 # This must come after git-completion.bash.
+# ~/bin/go is my git checkout helper. Bite me, golang. ;-)
+#
+# Dear Future Dave: If you ever learn go, I trust you to do the right
+# thing. --Love, Past Dave
 complete -o default -o nospace -F _git_checkout go
 
 # PS1 EMOJIS
 
 case "$HOSTNAME" in
-    Mac)
-        ps1_set \$
-        export PS2='\\$\\$'
-        source_files ~/.nav.work
-        ;;
-    Simples-MacBook-Pro.local)
+    Mac|Simples-MacBook-Pro.local)
         ps1_set \$
         export PS2='\\$\\$'
         source_files ~/.nav.work
@@ -185,10 +139,13 @@ case "$HOSTNAME" in
         export PS2='\$\$ '
         source_files ~/.nav.home
         ;;
-    *)
-        ps1_set --prompt '$'
+    clanker*)
         export PS2='$$'
-        echo -e "\033[1;37;41mNEW MACHINE: It's \D{%H} O'Clock! Check .bash_profile and/or .ps1_functions. Do you have my dotfiles repo?\033[0m"
+        ;;
+    *)
+      ps1_set --prompt '$'
+      export PS2='$$'
+      echo -e "\033[1;37;41mNEW MACHINE: It's \D{%H} O'Clock! Check .bash_profile and/or .ps1_functions. Do you have my dotfiles repo?\033[0m"
         ;;
 esac
 
@@ -208,7 +165,7 @@ fi
 # END rvm
 
 # BEGIN Acima
-if [[ "$HOSTNAME" == "Simples-MacBook-Pro.local" || "$HOSTNAME" == "Mac" ]]; then
+if [ $IS_ACIMA = true ]; then
     # MP tests need this every time, so
     export TZ='America/Denver'
 
@@ -247,7 +204,7 @@ if [[ "$HOSTNAME" == "Simples-MacBook-Pro.local" || "$HOSTNAME" == "Mac" ]]; the
 
     # LOL THIS IS FOR MP ON Apple Silicon
     export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-elif [ $IS_OSX = true ]; then
+elif [ $IS_ACIMA = true ]; then
     echo "~/.bash_profile: I see you're on OSX but NOT your usual work machine. ($HOSTNAME) That's weird, right? NOT setting rvm defaults."
 fi
 # END Acima
@@ -262,9 +219,21 @@ fi
 # END MIDDLE GLOBAL
 
 # BEGIN OSX-specific randomness
-if [ $IS_OSX = true ]; then
+if [ $IS_ACIMA = true ]; then
+
+    if [[ $PATH != *"$HOME/.local/bin"* ]]; then
+        export PATH=$PATH:$HOME/.local/bin
+    fi
+
     # for mtr (OSX)
-    export PATH=$PATH:/usr/local/sbin:$HOME/.local/bin
+    if [[ $PATH != *"/usr/local/sbin"* ]]; then
+        export PATH=$PATH:/usr/local/sbin
+    fi
+
+    if [[ $PATH != *"$HOME/bin"* ]]; then
+    export PATH=$HOME/bin:$PATH
+fi
+
 
     if [ -t 1 ]; then
         command -v term-birb >/dev/null && term-birb
@@ -306,12 +275,12 @@ fi
 # END Linux-specific randomness
 
 # Final path fixups
-if [ $IS_OSX = true ]; then
+if [ $IS_ACIMA = true ]; then
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
 
 # Added by Antigravity
-export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
+# export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
 
 # MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
 # go-lang. Especially go-lang, thinking you can get in front of MY go
@@ -326,3 +295,7 @@ export DISABLE_SPRING=1
 export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 
 # echo "bash_profile finished loading"
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/dbrady/.local/bin:$PATH"
