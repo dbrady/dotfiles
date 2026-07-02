@@ -261,12 +261,16 @@ fi
 
 # BEGIN Linux-specific randomness
 if [ $IS_LINUX = true ]; then
-    export PATH=$HOME/.local/bin:$PATH
+    if [ $HOSTNAME == "vapor" ]; then
+        source "/home/dbrady/.openclaw/completions/openclaw.bash"
+    else
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-    # NVM
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+        nvm use --lts
+        nvm alias default 'lts/*'
+    fi
 fi
 # END Linux-specific randomness
 

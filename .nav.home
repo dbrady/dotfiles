@@ -2,6 +2,7 @@
 # .nav.home
 # ------------------------------------------------------------------------
 # loaded from .nav
+alias cdd='_nav_to ~/Downloads/'
 alias cdg='_nav_to ~/devel/ai/gary'
 alias cdl='_nav_to ~/devel/ai/lyra'
 alias cdmc='_nav_to ~/applications/prism'
@@ -10,3 +11,7 @@ alias cdtav='_nav_to ~/devel/ai/SillyTavern/'
 alias cdst='_nav_to ~/devel/ai/st-utils/'
 alias cdstp='_nav_to ~/devel/ai/st-utils/assets/prompts'
 alias cdstj='_nav_to ~/devel/ai/st-utils/assets/jb/'
+alias cdc='_nav_to ~/devel/ai/ComfyUI/'
+alias cdcw='_nav_to ~/devel/ai/ComfyUI/user/default/workflows/'
+alias cdco='_nav_to ~/devel/ai/ComfyUI/output/'
+alias cdcad='_nav_to ~/devel/cadaver/'
