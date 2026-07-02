@@ -59,9 +59,7 @@ alias 'dc'=`which docker-compose`
 # Programming crap
 
 ## Bundler
-alias bi='echo "bundle install" && bundle install'
 alias be='bundle exec'
-alias bex='bexbe'
 alias berc='echo "bundle exec rails console" && bundle exec rails console'
 
 ## Misc Programming
