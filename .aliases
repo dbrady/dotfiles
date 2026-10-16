@@ -113,3 +113,9 @@ alias 'mydns'='cat /etc/resolv.conf | grep -vE "^#"'
 # iTerm is getting good at rendering actual images, but when I want ANSI art I
 # want ANSI art, dagnabbit
 alias chansi='chafa -f symbols'
+
+# batcat -> bat. Ubuntu names it batcat (name clash); Homebrew calls it bat, so
+# only alias where batcat exists or the Mac loses bat entirely.
+if command -v batcat >/dev/null 2>&1; then
+    alias bat=batcat
+fi
