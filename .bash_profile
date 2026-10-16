@@ -299,3 +299,10 @@ export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 
 # Added by Antigravity CLI installer
 export PATH="/home/dbrady/.local/bin:$PATH"
+
+# direnv: auto-load per-directory .envrc files (e.g. project venvs). Must stay
+# below ps1_set, which overwrites PROMPT_COMMAND and would wipe out the hook.
+# Guarded so machines without direnv don't print "command not found".
+if command -v direnv >/dev/null 2>&1; then
+    eval "$(direnv hook bash)"
+fi
