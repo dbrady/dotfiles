@@ -129,6 +129,11 @@ case "$HOSTNAME" in
         export PS2=🧠💭
         source_files ~/.nav.home
         ;;
+    toothache)
+        ps1_set --prompt "🦷"
+        export PS2=🦷🪥
+        source_files ~/.nav.home
+        ;;
     theseus)
         ps1_set --prompt "$"
         export PS2='$$'
