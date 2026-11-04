@@ -279,17 +279,6 @@ if [ $IS_ACIMA = true ]; then
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
 
-# Added by Antigravity
-# export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
-
-# MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
-# go-lang. Especially go-lang, thinking you can get in front of MY go
-# command. :-P
-if [[ $PATH != *"$HOME/bin"* ]]; then
-    export PATH=$HOME/bin:$PATH
-fi
-
-
 # I have stanned so hard for spring. Tahoe has finally broken me.
 export DISABLE_SPRING=1
 export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
@@ -299,3 +288,16 @@ export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 
 # Added by Antigravity CLI installer
 export PATH="/home/dbrady/.local/bin:$PATH"
+
+# qlty
+export QLTY_INSTALL="$HOME/.qlty"
+export PATH=$QLTY_INSTALL/bin:$PATH
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
+# MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
+# go-lang. Especially go-lang, thinking you can get in front of MY go
+# command. :-P
+if [[ $PATH != *"$HOME/bin"* ]]; then
+    export PATH=$HOME/bin:$PATH
+fi

@@ -45,3 +45,23 @@ source_files()
 # $ makeline = 40
 # => ========================================
 makeline() { printf "%${2:-$COLUMNS}s\n" ""|tr " " ${1:-#}; }
+
+# ----------------------------------------------------------------------
+# bundle()
+#
+# Intercept bare `bundle` (deprecated: bundler wants an explicit
+# subcommand now). With args, pass straight through to the real bundle
+# silently. With no args, delegate to `bfi`, which prints the warning +
+# `bundle install` reminder and then runs it.
+#
+# WHY a function and not a PATH shim: RVM's bundle sits ahead of ~/bin in
+# PATH, so a ~/bin/bundle script would never be reached. A function is
+# resolved before PATH; `command bundle` bypasses this function to hit
+# the real RVM binary without recursing.
+bundle() {
+    if (( $# == 0 )); then
+        bundle-fucking-install
+    else
+        command bundle "$@"
+    fi
+}

@@ -5,7 +5,7 @@ windows:
   - AMC:
       root: ~/acima/devel/application-management-client
       panes:
-        - ./start
+        - ./start dev
   - BasicAccess:
       root: ~/acima/devel/basic_access
       panes:
@@ -13,12 +13,12 @@ windows:
   - aperture7777:
       root: ~/acima/devel/aperture
       panes:
-        - ./start1
+        - ./gradlew :aperture-gateway:bootRun --args='--server.port=7777'
   - aperture7778:
       root: ~/acima/devel/aperture
       panes:
-        - ./start2
+        - ./gradlew :aperture-gateway:bootRun --args='--server.port=7778'
   - keycloak:
-      root: ~/acima/devel/my-keycloak-theme
+      root: ~/acima/devel/dagger/themes/mp-keycloak-theme
       panes:
-        - echo 'COME SET ME UP LOL'
+        - echo "yarn docker:up:host-db\nyarn dev:watch\nyarn storybook"
