@@ -304,6 +304,9 @@ if command -v direnv >/dev/null 2>&1; then
     eval "$(direnv hook bash)"
 fi
 
+# rust
+. "$HOME/.cargo/env"
+
 # MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
 # go-lang. Especially go-lang, thinking you can get in front of MY go
 # command. :-P
