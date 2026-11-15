@@ -1,0 +1,13 @@
+name: thinky
+root: ~/devel
+
+windows:
+  - emacs:
+      panes:
+        - emacs
+  - bash:
+      panes:
+        -
+  - clod:
+      panes:
+        - clod
