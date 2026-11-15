@@ -13,15 +13,15 @@ windows:
   - clod:
       root: ~/acima/devel/merchant_portal
       panes:
-        - claude
+        - clod
   - console:
       root: ~/acima/devel/merchant_portal
       panes:
-        - bin/rails console
+        - start console
   - server:
       root: ~/acima/devel/merchant_portal
       panes:
-        - bin/rails server
+        - start server
   - reviews:
       root: ~/acima/devel/review.merchant_portal
       panes:
@@ -30,3 +30,7 @@ windows:
       root: ~/acima/devel/review.merchant_portal
       panes:
         -
+  - rs-fake:
+      root: ~/acima/devel/review.merchant_portal
+      panes:
+        - ruby tools/team/dbrady/rewards_service_fake.rb

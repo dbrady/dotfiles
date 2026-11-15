@@ -30,3 +30,7 @@ windows:
       root: ~/acima/devel/global_customer
       panes:
         - bin/rails s -p 3008
+  - rewards-fake:
+    root: ~/acima/devel/merchant_portal
+      panes:
+        - ruby tools/team/dbrady/rewards_service_fake.rb

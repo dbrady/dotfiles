@@ -272,9 +272,6 @@ if [ $IS_LINUX = true ]; then
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-        nvm use --lts
-        nvm alias default 'lts/*'
     fi
 fi
 # END Linux-specific randomness
@@ -283,17 +280,6 @@ fi
 if [ $IS_ACIMA = true ]; then
     export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 fi
-
-# Added by Antigravity
-# export PATH="/Users/davidbrady/.antigravity/antigravity/bin:$PATH"
-
-# MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
-# go-lang. Especially go-lang, thinking you can get in front of MY go
-# command. :-P
-if [[ $PATH != *"$HOME/bin"* ]]; then
-    export PATH=$HOME/bin:$PATH
-fi
-
 
 # I have stanned so hard for spring. Tahoe has finally broken me.
 export DISABLE_SPRING=1
@@ -305,9 +291,25 @@ export DISABLE_DEV_BOOTUP_OPTIMIZATIONS=true
 # Added by Antigravity CLI installer
 export PATH="/home/dbrady/.local/bin:$PATH"
 
+# qlty
+export QLTY_INSTALL="$HOME/.qlty"
+export PATH=$QLTY_INSTALL/bin:$PATH
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
 # direnv: auto-load per-directory .envrc files (e.g. project venvs). Must stay
 # below ps1_set, which overwrites PROMPT_COMMAND and would wipe out the hook.
 # Guarded so machines without direnv don't print "command not found".
 if command -v direnv >/dev/null 2>&1; then
     eval "$(direnv hook bash)"
+fi
+
+# rust
+. "$HOME/.cargo/env"
+
+# MY BIN FOLDER GOES FIRST, DAMMIT - I'm looking at you, rvm. And homebrew. And
+# go-lang. Especially go-lang, thinking you can get in front of MY go
+# command. :-P
+if [[ $PATH != *"$HOME/bin"* ]]; then
+    export PATH=$HOME/bin:$PATH
 fi
