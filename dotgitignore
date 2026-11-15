@@ -16,3 +16,5 @@ swarmforge
 
 # Global on .claude to make autoworkflows autowork. merchant-portal-ai  does some things and now MP clobbers it because they're jerks.
 .claude
+
+**/.claude/settings.local.json
