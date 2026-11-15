@@ -14,6 +14,8 @@ alias nav='cat ~/.nav; [[ -e ~/.nav.work ]] && cat ~/.nav.work; [[ -e ~/.nav.hom
 alias cdb='_nav_to ~/bin'
 alias cdd='_nav_to ~/devel/'
 alias cdem='_nav_to ~/.emacs.d/personal/preload'
+alias cdpb='_nav_to ~/private_bin'
+alias cdrma='_nav_to ~/devel/rma'
 alias cds='_nav_to ~/devel/scrapbin'
 
 ## Dev/Tools Mine
