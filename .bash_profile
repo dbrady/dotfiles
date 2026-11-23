@@ -38,11 +38,11 @@ fi
 case "$OS_NAME" in
     Darwin)
         IS_OSX=true
-        CURRENT_RUBY_DEV_VERSION=3.4.9
+        CURRENT_RUBY_DEV_VERSION=3.4.13
         ;;
     Linux)
         IS_LINUX=true
-        CURRENT_RUBY_DEV_VERSION=3.4.9
+        CURRENT_RUBY_DEV_VERSION=3.4.13
         ;;
     CYGWIN*|MINGW*|MSYS*)
         # YAGNI? Do I ever hit this on WSL or Docker under windows?
