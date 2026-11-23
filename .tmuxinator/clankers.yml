@@ -1,0 +1,16 @@
+name: clankers
+root: ~/acima/devel
+
+windows:
+  - emacs:
+      panes:
+        - emacs
+  - bash:
+      panes:
+        -
+  - clankers!:
+      panes:
+        - export CLANKER_NAME=alice
+        - export CLANKER_NAME=bob
+        - export CLANKER_NAME=carol
+        - export CLANKER_NAME=dave

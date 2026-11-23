@@ -159,6 +159,29 @@ ps1_rvm()
   command -v rvm-prompt >/dev/null 2>&1 && printf "%s" " $(rvm-prompt) "
 }
 
+# Python venv segment. direnv exports VIRTUAL_ENV into this shell when a project
+# .envrc activates a venv, but direnv flatly refuses to export PS1 (you'll see
+# "PS1 cannot be exported") — so the venv name never rides along the way rvm's
+# does. We render it ourselves here instead, from the variable direnv DID give
+# us. Everything is read without spawning a process: the project label is the
+# directory that owns the .venv, and the Python version is lifted straight out
+# of pyvenv.cfg (uv writes it as `version_info = 3.12.x`). Shows nothing at all
+# when no venv is active, so it's invisible everywhere except project dirs.
+ps1_venv()
+{
+  [[ -n "$VIRTUAL_ENV" ]] || return 0
+
+  local proj pyver=""
+  proj="$(basename "$(dirname "$VIRTUAL_ENV")")"
+  [[ -r "$VIRTUAL_ENV/pyvenv.cfg" ]] &&
+    pyver="$(sed -n 's/^version_info *= *//p' "$VIRTUAL_ENV/pyvenv.cfg")"
+
+  # bold white on magenta — a colour none of the git/rvm segments use, so the
+  # venv tag can't be mistaken for a branch/email badge.
+  printf "\[\033[1;37;45m\] 🐍 venv:%s%s \[\033[0m\] " \
+    "$proj" "${pyver:+ py$pyver}"
+}
+
 ps1_update()
 {
   local prompt_char='$' separator="\n" notime=0 thisisdocker=''
@@ -196,17 +219,17 @@ ps1_update()
   if [ "$IS_DOCKER_LOCAL" != "1" ]; then
       # Not on docker - use my usual prompt nonsense
       if [ `uname -s` == "Linux" ]; then
-          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${prompt_char} "
+          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(ps1_venv)${separator}${prompt_char} "
       else
             # Acima Work Machine
           # PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(vpn_display)${separator}${prompt_char} "
-          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${prompt_char} "
+          PS1="$(ps1_titlebar)\D{%H:%M:%S} $(ps1_identity)$(ps1_git)$(ps1_rvm)$(ps1_venv)${separator}${prompt_char} "
       fi
   else
       # Yes on docker - use my alternative prompt nonsense
       thisisdocker="\033[1;37;105m ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ THIS IS DOCKER ~~~ \033[0m"
 
-      PS1="$(ps1_titlebar)$(ps1_identity)$(ps1_git)$(ps1_rvm)${separator}${thisisdocker}${separator}${prompt_char} "
+      PS1="$(ps1_titlebar)$(ps1_identity)$(ps1_git)$(ps1_rvm)$(ps1_venv)${separator}${thisisdocker}${separator}${prompt_char} "
   fi
 }
 

@@ -1,5 +1,6 @@
 # .aliases - because my alias collection is way outta control
-
+[[ -n "$__ALIASES_LOADED" ]] && return
+__ALIASES_LOADED=1
 
 case `uname -s` in
     Linux)
@@ -57,8 +58,8 @@ alias 'dc'=`which docker-compose`
 
 # Programming crap
 
+## Bundler
 alias be='bundle exec'
-alias bex='bexbe'
 alias berc='echo "bundle exec rails console" && bundle exec rails console'
 
 ## Misc Programming
@@ -112,3 +113,9 @@ alias 'mydns'='cat /etc/resolv.conf | grep -vE "^#"'
 # iTerm is getting good at rendering actual images, but when I want ANSI art I
 # want ANSI art, dagnabbit
 alias chansi='chafa -f symbols'
+
+# batcat -> bat. Ubuntu names it batcat (name clash); Homebrew calls it bat, so
+# only alias where batcat exists or the Mac loses bat entirely.
+if command -v batcat >/dev/null 2>&1; then
+    alias bat=batcat
+fi
