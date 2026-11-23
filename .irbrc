@@ -8,10 +8,13 @@
 #   $stderr.puts "~/.irbrc:#{__LINE__}: Could not load looksee/shortcuts: looksee gem not present in this gemset"
 # end
 
+osx  = `uname -s`.strip == "Darwin"
+
+
 require File.expand_path("~/dotfiles/json_load_file")
 require File.expand_path("~/dotfiles/xml_load_file")
 require File.expand_path("~/dotfiles/just_your_methods")
-require File.expand_path("~/private_bin/acima_methods")
+require File.expand_path("~/private_bin/acima_methods") if osx
 
 def code(path, create: false)
   path = File.expand_path(path)
